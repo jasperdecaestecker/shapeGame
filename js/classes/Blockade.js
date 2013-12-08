@@ -22,13 +22,14 @@ var Blockade = (function()
 	Blockade.prototype.draw = function()
 	{
 		console.log(this.blockadeShape);
-		switch(blockadeShapes[this.blockadeShape])
+		switch(this.blockadeShape)
 		{
 			case "square":
 				this.shape.graphics.c();
 				this.shape.graphics.f("FF0000");
 				this.shape.graphics.drawRect(0,0,this.width,this.height);
 				this.shape.graphics.ef();
+				//console.log("makeSquare");
 			break;
 			case "circle":
 				this.shape.graphics.c();

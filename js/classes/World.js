@@ -15,6 +15,11 @@ var World = (function()
 		this.container.addChild(element);
 	};
 
+	World.prototype.removeChild = function(element)
+	{
+		this.container.removeChild(element);
+	};
+
 	World.prototype.followPlayerX = function(player, width, offset)
 	{
 		var x = -(player.x - (width/2)) + offset;
