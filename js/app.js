@@ -43,7 +43,7 @@
 	function loadMap()
 	{
 
-		var nameMap = "map2";
+		var nameMap = "map1";
 		var flickerAPI = "js/maps/"+nameMap+".json";
 		$.getJSON( flickerAPI, 
 		{

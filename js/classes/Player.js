@@ -81,34 +81,8 @@ var Player = (function()
 
 	Player.prototype.nextShape = function(shape)
 	{
-<<<<<<< HEAD
-		//console.log("currentPlayerShape" + currentPlayerShape);
-
-		this.draw(shape);
 		this.currentPlayerShape = shape;
-
-		/*if(this.currentPlayerShape == playerShapes.length-1)
-=======
-		console.log("next shape " + this.currentPlayerShape);
-		switch(this.currentPlayerShape)
->>>>>>> 8cc7da9bd6ef54b2773eeaec3f9b939eec96d574
-		{
-			case "square":
-			this.currentPlayerShape = "triangle"
-			break;
-			case "triangle":
-			this.currentPlayerShape = "circle";
-			break;
-			case "circle":
-			this.currentPlayerShape = "square";
-			break;
-		}
-<<<<<<< HEAD
-		this.draw(this.currentPlayerShape);*/
-=======
-
 		this.draw(this.currentPlayerShape);
->>>>>>> 8cc7da9bd6ef54b2773eeaec3f9b939eec96d574
 	}
 
 	Player.prototype.update = function()
