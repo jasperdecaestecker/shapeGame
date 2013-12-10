@@ -37,7 +37,6 @@
 		window.onkeyup = keyup;
 		window.onkeydown = keydown;
 
-		var achievement = new Achievement();
 	}
 
 
@@ -99,13 +98,7 @@
 				startLocation.x = layerData.objects[i].x;
 				startLocation.y = layerData.objects[i].y;
 
-				// met de gid van de layerdata kan je ook een texture uit een sprite halen voor bv een object.
-				/*var cellBitmap = new createjs.Sprite(tilesetSheet);
-					cellBitmap.gotoAndStop(layerData.objects[i].gid);
-					  cellBitmap.x = startLocation.x
-		            cellBitmap.y = startLocation.y
-		            world.addChild(cellBitmap);*/
-				player = new Player(startLocation.x,startLocation.y,20,20,0);
+				player = new Player(startLocation.x,startLocation.y,20,20,"square");
 				player.gravity = world.gravity;
 				player.friction = world.friction;
 				world.addChild(player.shape);
@@ -244,12 +237,15 @@
 					if(blockades[j].blockadeShape == player.currentPlayerShape)
 					{
 						console.log("safe");
+
 					}
 					else
 					{
 						console.log("dead");
 						player.x = startLocation.x;
 						player.y = startLocation.y;
+						var achievement = new Achievement();
+
 					}
 					break;
 			}

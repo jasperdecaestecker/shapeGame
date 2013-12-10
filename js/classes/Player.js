@@ -32,12 +32,13 @@ var Player = (function()
 		
 		
 		this.draw(currentPlayerShape);
+		console.log("current player shape " +currentPlayerShape);
 	}
 
-	Player.prototype.draw = function(playerShapeNumber)
+	Player.prototype.draw = function(currentPlayerShape)
 	{
 		//console.log(playerShapes[playerShapeNumber]);
-		switch(playerShapes[playerShapeNumber])
+		switch(currentPlayerShape)
 		{
 			case "square":
 				this.shape.graphics.c();
