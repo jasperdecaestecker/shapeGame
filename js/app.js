@@ -36,6 +36,7 @@
 
 		window.onkeyup = keyup;
 		window.onkeydown = keydown;
+
 	}
 
 
@@ -98,12 +99,6 @@
 				startLocation.x = layerData.objects[i].x;
 				startLocation.y = layerData.objects[i].y;
 
-				// met de gid van de layerdata kan je ook een texture uit een sprite halen voor bv een object.
-				/*var cellBitmap = new createjs.Sprite(tilesetSheet);
-					cellBitmap.gotoAndStop(layerData.objects[i].gid);
-					  cellBitmap.x = startLocation.x
-		            cellBitmap.y = startLocation.y
-		            world.addChild(cellBitmap);*/
 				player = new Player(startLocation.x,startLocation.y,20,20,"square");
 				player.gravity = world.gravity;
 				player.friction = world.friction;
@@ -233,7 +228,6 @@
 
 		for(var i = 0; i < boxes.length; i++)
 		{
-				//console.log(CollisionDetection.checkCollision(player,boxes[i]));
 				switch(CollisionDetection.checkCollision(player,boxes[i],true))
 				{
 					case "l":
@@ -263,12 +257,15 @@
 					if(blockades[j].blockadeShape == player.currentPlayerShape)
 					{
 						console.log("safe");
+						var achievement = new Achievement();
+
 					}
 					else
 					{
 						console.log("dead");
 						player.x = startLocation.x;
 						player.y = startLocation.y;
+
 					}
 					break;
 			}
@@ -291,37 +288,6 @@
 
 	}
 
-	/*function buildBlockades()
-	{
-		var blockade = new Blockade(140,180,20,20,1);
-		world.addChild(blockade.shape);
-		blockades.push(blockade);
-
-		var blockade = new Blockade(270,380,20,20,2);
-		world.addChild(blockade.shape);
-		blockades.push(blockade);
-
-		world.removeChild(blockade.shape);
-	}
-
-	function buildPlatforms()
-	{
-		var platform = new Platform(0,200,150,10);
-		world.addChild(platform.shape);
-		boxes.push(platform);
-
-		var platform = new Platform(150,450,50,10);
-		world.addChild(platform.shape);
-		boxes.push(platform);
-
-		var platform = new Platform(250,400,50,10);
-		world.addChild(platform.shape);
-		boxes.push(platform);
-
-		var platform = new Platform(380,380,50,10);
-		world.addChild(platform.shape);
-		boxes.push(platform);
-	}*/
 
 	function buildBounds()
 	{
