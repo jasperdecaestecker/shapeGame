@@ -42,7 +42,8 @@
 	function loadMap()
 	{
 
-		var flickerAPI = "js/maps/map1.json";
+		var nameMap = "map2";
+		var flickerAPI = "js/maps/"+nameMap+".json";
 		$.getJSON( flickerAPI, 
 		{
 			format: "json"
@@ -50,7 +51,7 @@
 		{
 			mapData = data;
 			tileset = new Image();
-			tileset.src = "js/maps/tile_map1.png";
+			tileset.src = "js/maps/tile_"+nameMap+".png";
 			tileset.onLoad = initLayers();
 		});
 	}
@@ -103,10 +104,11 @@
 					  cellBitmap.x = startLocation.x
 		            cellBitmap.y = startLocation.y
 		            world.addChild(cellBitmap);*/
-				player = new Player(startLocation.x,startLocation.y,20,20,0);
+				player = new Player(startLocation.x,startLocation.y,20,20,"square");
 				player.gravity = world.gravity;
 				player.friction = world.friction;
 				world.addChild(player.shape);
+				world.addChild(player.container);
     		}
 		}
 		if(layerData.name == "obstakels")
@@ -162,14 +164,32 @@
 	function keydown(e)
 	{
 		keys[e.keyCode] = true;
+		console.log(e.keyCode);
+		//
 	}
 
 	function update()
 	{
+		// 65 A 90 Z 69 E 82 R 
+		//console.logs
+		if(keys[65])
+		{
+			player.nextShape("square");
+		}
+		if(keys[90])
+		{
+			player.nextShape("triangle");
+		}
+		if(keys[69])
+		{
+			player.nextShape("circle");
+		}
+
+		//circle
+
 		if(keys[32])
 		{
 			// change shape
-			player.nextShape();
 			keys[32] = false;
 		}
 		if(keys[37])

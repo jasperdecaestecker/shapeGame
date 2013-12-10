@@ -29,15 +29,16 @@ var Player = (function()
 		this.shape.x = this.x;
 		this.shape.y = this.y;
 
+
 		
 		
-		this.draw(currentPlayerShape);
+		this.draw();
 	}
 
-	Player.prototype.draw = function(playerShapeNumber)
+	Player.prototype.draw = function()
 	{
 		//console.log(playerShapes[playerShapeNumber]);
-		switch(playerShapes[playerShapeNumber])
+		switch(this.currentPlayerShape)
 		{
 			case "square":
 				this.shape.graphics.c();
@@ -50,6 +51,20 @@ var Player = (function()
 				this.shape.graphics.f("00FF00");
 				this.shape.graphics.drawCircle(0,0,this.height);
 				this.shape.graphics.ef();
+				/*var imageData = {images: ["manneke.png"], frames: {width:40, height:48} }; 
+				var tilesetSheet = new createjs.SpriteSheet(imageData);
+				var cellBitmap = new createjs.Sprite(tilesetSheet);
+				cellBitmap.x = this.x;
+				cellBitmap.y = this.y;
+				//cellBitmap.gotoAndStop(layerData.data[i] - 1);
+
+
+		//this.whale = new createjs.Container(); 
+		//this.shape = new createjs.Shape();
+		console.log(cellBitmap);
+		this.container.addChild(cellBitmap);*/
+
+
 			break;
 			case "triangle":
 				this.shape.graphics.c();
@@ -67,10 +82,14 @@ var Player = (function()
 		}
 	}
 
-	Player.prototype.nextShape = function()
+	Player.prototype.nextShape = function(shape)
 	{
 		//console.log("currentPlayerShape" + currentPlayerShape);
-		if(this.currentPlayerShape == playerShapes.length-1)
+
+		this.draw(shape);
+		this.currentPlayerShape = shape;
+
+		/*if(this.currentPlayerShape == playerShapes.length-1)
 		{
 			this.currentPlayerShape = 0;
 		}
@@ -78,7 +97,7 @@ var Player = (function()
 		{
 			this.currentPlayerShape++;
 		}
-		this.draw(this.currentPlayerShape);
+		this.draw(this.currentPlayerShape);*/
 	}
 
 	Player.prototype.update = function()
@@ -93,6 +112,8 @@ var Player = (function()
 
 		this.x += this.velX;
 		this.y += this.velY;
+		/*this.container.x = this.x;
+		this.container.y = this.x;*/
 		this.shape.x = this.x;
 		this.shape.y = this.y;
 		//this.shape.y = this.y;
