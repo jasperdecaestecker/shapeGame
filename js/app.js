@@ -237,6 +237,7 @@
 					if(blockades[j].blockadeShape == player.currentPlayerShape)
 					{
 						console.log("safe");
+						var achievement = new Achievement();
 
 					}
 					else
@@ -244,7 +245,6 @@
 						console.log("dead");
 						player.x = startLocation.x;
 						player.y = startLocation.y;
-						var achievement = new Achievement();
 
 					}
 					break;

@@ -38,6 +38,7 @@ var Player = (function()
 	Player.prototype.draw = function(currentPlayerShape)
 	{
 		//console.log(playerShapes[playerShapeNumber]);
+		console.log("draw");
 		switch(currentPlayerShape)
 		{
 			case "square":
@@ -70,15 +71,20 @@ var Player = (function()
 
 	Player.prototype.nextShape = function()
 	{
-		//console.log("currentPlayerShape" + currentPlayerShape);
-		if(this.currentPlayerShape == playerShapes.length-1)
+		console.log("next shape " + this.currentPlayerShape);
+		switch(this.currentPlayerShape)
 		{
-			this.currentPlayerShape = 0;
+			case "square":
+			this.currentPlayerShape = "triangle"
+			break;
+			case "triangle":
+			this.currentPlayerShape = "circle";
+			break;
+			case "circle":
+			this.currentPlayerShape = "square";
+			break;
 		}
-		else
-		{
-			this.currentPlayerShape++;
-		}
+
 		this.draw(this.currentPlayerShape);
 	}
 
