@@ -12,6 +12,7 @@
 
 	var tileset;
 	var mapData;
+	var vehicle;
 
 	function init()
 	{
@@ -141,14 +142,40 @@
 
 	            if(layerData.name == "platforms" && layerData.data[i] != 0)
 	            {
+	            	/*//normal platform
 					var platform = new Platform(cellBitmap.x, cellBitmap.y,tilewidth,tileheight);
-					//world.addChild(platform.shape);
-					boxes.push(platform);
+					boxes.push(platform);*/
+
+					//moving platform
+					var movingPlatform = new Platform(cellBitmap.x, cellBitmap.y,tilewidth,tileheight);
+					vehicle = new SteeredVehicle(stage.canvas.width, stage.canvas.height, 
+						Math.round(Math.random()*stage.canvas.width), 
+						Math.round(Math.random()*stage.canvas.height));
+
+					vehicle.setRender(movingPlatform);
+					vehicle.setSpeed(8);
+					vehicle.setRotation(180);
+
+					var ticker = createjs.Ticker;
+					ticker.useRAF = true;
+					ticker.setFPS(60);
+					ticker.addEventListener("tick", handleTick);
+
+					console.log('vehicle position '+vehicle.x);
+					boxes.push(movingPlatform);
+
 	            }
 
-				world.addChild(cellBitmap);
+				//world.addChild(cellBitmap);
 			}
 		}
+	}
+
+	function handleTick()
+	{
+		vehicle.update();
+
+		stage.update();		
 	}
 
 	function keyup(e)

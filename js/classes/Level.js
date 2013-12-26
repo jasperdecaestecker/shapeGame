@@ -52,6 +52,18 @@ var Level = (function()
 			}
 	}
 
+	Level.prototype.buildMovingPlatforms = function()
+	{
+		var platform = new Platform(0,200,150,10);
+		boxes.push(platform);
+
+		for(var i = 0;i < 10; i++)
+		{	
+			var platform = new Platform(50+(i*90),world.height-50-(i*30),50,20);
+			boxes.push(platform);
+		}
+	}
+
 	return Level;
 
 })();
