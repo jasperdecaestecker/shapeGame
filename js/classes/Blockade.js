@@ -1,12 +1,13 @@
 var Blockade = (function()
 {
-	var shape, blockadeShape;
+	var shape, blockadeShape, blockadeId;
 	var blockadeShapes = ["square","triangle","circle"];
 
 
-	function Blockade(x, y , width, height, blockadeShape)
+	function Blockade(x, y , width, height, blockadeShape, blockadeId)
 	{
 		//console.log(blockadeShape);
+		this.blockadeId = blockadeId;
 		this.blockadeShape = blockadeShape;
 		this.x = x;
 		this.y = y;
@@ -21,7 +22,6 @@ var Blockade = (function()
 
 	Blockade.prototype.draw = function()
 	{
-		console.log(this.blockadeShape);
 		switch(this.blockadeShape)
 		{
 			case "square":
@@ -47,8 +47,8 @@ var Blockade = (function()
 				this.shape.graphics.ef();
 			break;
 		}
+		
 	}
-
 	return Blockade;
 
 })();

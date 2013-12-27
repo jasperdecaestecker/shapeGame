@@ -1178,7 +1178,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="131"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -1217,9 +1217,9 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="131"/>
+   <tile gid="131"/>
+   <tile gid="131"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -1616,11 +1616,8 @@
  </objectgroup>
  <objectgroup name="obstakels" width="40" height="20">
   <object name="obstakel1" type="triangle" x="350" y="69"/>
-  <object name="obstakel2" type="square" x="510" y="329"/>
-  <object name="obstakel2" type="square" x="557" y="69"/>
-  <object name="obstakel2" type="circle" x="169" y="129"/>
-  <object name="obstakel2" type="circle" x="450" y="348"/>
-  <object name="obstakel2" type="square" x="368" y="349"/>
+  <object name="obstakel2" type="triangle" x="168" y="129"/>
+  <object name="obstakel2" type="square" x="269" y="208"/>
  </objectgroup>
  <layer name="testLayer" width="40" height="20">
   <data>

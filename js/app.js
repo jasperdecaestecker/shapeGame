@@ -1,6 +1,6 @@
 (function()
 {
-	var stage, boxes, player, world, width, height, blockades;
+	var stage, boxes, player, world, width, height, blockades, shapeVolgorde, triggerBlockIds;
 	var ticker, keys;
 	var startLocation;
 	var level1;
@@ -14,6 +14,8 @@
 	var mapData;
 	var vehicle;
 
+	var prevPlayerY = 0;
+
 	function init()
 	{
 		stage = new  createjs.Stage("cnvs");
@@ -24,6 +26,10 @@
 
 		boxes = [];		
 		blockades = [];
+		triggerBlockIds = [];
+		//blockadesTriggered = [];
+		//blockades = {};
+		changeShape = false;
 
 		loadMap();
 
@@ -37,9 +43,7 @@
 
 		window.onkeyup = keyup;
 		window.onkeydown = keydown;
-
 	}
-
 
 	function loadMap()
 	{
@@ -100,22 +104,42 @@
 				startLocation.x = layerData.objects[i].x;
 				startLocation.y = layerData.objects[i].y;
 
-				player = new Player(startLocation.x,startLocation.y,20,20,"square");
+				var arrShapes = ["triangle","square","triangle"];
+				shapeVolgorde = new ShapeVolgorde(arrShapes,0);
+
+
+				player = new Player(startLocation.x,startLocation.y,20,20,arrShapes[shapeVolgorde.currentShapeNumber]);
 				player.gravity = world.gravity;
 				player.friction = world.friction;
+				player.grounded = false;
+
+
+				world.addChild(shapeVolgorde.container);
 				world.addChild(player.shape);
 				world.addChild(player.container);
+
+				shapeVolgorde.container.x = 20;
+				shapeVolgorde.container.y = 20;
     		}
 		}
 		if(layerData.name == "obstakels")
 		{
 			for ( var i = 0; i < layerData.objects.length; i++) 
     		{
-    			var blockade = new Blockade(layerData.objects[i].x-10,layerData.objects[i].y-10,20,20,layerData.objects[i].type);
+    			var blockade = new Blockade(layerData.objects[i].x-10,layerData.objects[i].y-10,20,20,layerData.objects[i].type, i);
 				world.addChild(blockade.shape);
 				blockades.push(blockade);
+				//blockades.push(blockade);
+			//	console.log(Object.keys(blockades).length);
+
+				//blockade.shape.addEventListener("click", handleClick);
     		}
 		}
+	}
+
+	function click(event)
+	{
+		console.log("click");
 	}
 
 	function loadRestOfShit()
@@ -142,12 +166,12 @@
 
 	            if(layerData.name == "platforms" && layerData.data[i] != 0)
 	            {
-	            	/*//normal platform
+	            	//normal platform
 					var platform = new Platform(cellBitmap.x, cellBitmap.y,tilewidth,tileheight);
-					boxes.push(platform);*/
+					boxes.push(platform);
 
 					//moving platform
-					var movingPlatform = new Platform(cellBitmap.x, cellBitmap.y,tilewidth,tileheight);
+					/*var movingPlatform = new Platform(cellBitmap.x, cellBitmap.y,tilewidth,tileheight);
 					vehicle = new SteeredVehicle(stage.canvas.width, stage.canvas.height, 
 						Math.round(Math.random()*stage.canvas.width), 
 						Math.round(Math.random()*stage.canvas.height));
@@ -162,11 +186,11 @@
 					ticker.addEventListener("tick", handleTick);
 
 					console.log('vehicle position '+vehicle.x);
-					boxes.push(movingPlatform);
+					boxes.push(movingPlatform);*/
 
 	            }
 
-				//world.addChild(cellBitmap);
+				world.addChild(cellBitmap);
 			}
 		}
 	}
@@ -193,22 +217,33 @@
 	function update()
 	{
 		// 65 A 90 Z 69 E 82 R 
-		//console.logs
-		if(keys[65])
+		/*if(keys[65])
 		{
-			player.nextShape("square");
+			console.log(blockades);
+
+		
 		}
 		if(keys[90])
 		{
 			player.nextShape("triangle");
+			//console.log(blockadesTriggered);
 		}
 		if(keys[69])
 		{
 			player.nextShape("circle");
+				player.nextShape("square");
+		}*/
+
+		if(keys[38])
+		{
+			if(player.grounded && !player.jumping)
+			{
+				player.grounded = false;
+				player.jumping = true;
+				player.velY -= player.speed * 2;
+				//console.log("jump");
+			}
 		}
-
-		//circle
-
 		if(keys[32])
 		{
 			// change shape
@@ -220,6 +255,7 @@
 			{
 				player.velX --;
 			}
+			player.grounded = false;
 		}
 		if(keys[39])
 		{
@@ -227,17 +263,10 @@
 			{
 				player.velX ++;
 			}
+			player.grounded = false;
 		}
-		if(keys[38])
-		{
-			if(player.grounded && !player.jumping)
-			{
-				player.grounded = false;
-				player.jumping = true;
-				player.velY -= player.speed * 2;
-				//console.log("jump");
-			}
-		}
+
+
 
 		/*if(keys[40])
 		{
@@ -251,52 +280,51 @@
 			}
 		}*/
 
-		player.grounded = false;			
+		//player.grounded = false;			
 
 		for(var i = 0; i < boxes.length; i++)
 		{
-				switch(CollisionDetection.checkCollision(player,boxes[i],true))
-				{
-					case "l":
-					case "r":
-						player.velX = 0;
-						break;
-						case "t":
-						//player.velY *= -1;
-						break;
-						case "b":
-							player.grounded = true;
-							player.jumping = false;
-								//console.log("b");
-						break;
-				}
-			
-		}
-
-		for(var j = 0; j < blockades.length; j ++)
-		{
-			switch(CollisionDetection.checkCollision(player,blockades[j]))
+			switch(CollisionDetection.checkCollision(player,boxes[i],true))
 			{
 				case "l":
 				case "r":
-				case "t":
-				case "b":
-					if(blockades[j].blockadeShape == player.currentPlayerShape)
-					{
-						console.log("safe");
-						var achievement = new Achievement();
-
-					}
-					else
-					{
-						console.log("dead");
-						player.x = startLocation.x;
-						player.y = startLocation.y;
-
-					}
+					player.velX = 0;
+					break;
+					case "t":
+					 player.velY *= -1;
+					break;
+					case "b":
+						player.grounded = true;
+						player.jumping = false;
 					break;
 			}
+
+
 		}
+
+		checkBlockadesCollision();
+
+		/*for(var j = 0; j < blockades.length; j ++)
+		{
+			var pt = blockades[j].shape.globalToLocal(player.x, player.y);
+		
+			if(blockades[j].shape.hitTest(pt.x,pt.y))
+			{
+				console.log(blockades[j]);
+			}
+
+			var pt = player.shape.localToLocal(10, 0, blockades[j].shape);
+		
+			if(blockades[j].shape.hitTest(pt.x,pt.y))
+			{
+				console.log(blockades[j]);
+			}
+
+
+		}*/
+
+	
+
 				
 	
 		world.followPlayerX(player,width,0);
@@ -311,10 +339,42 @@
 			player.x = startLocation.x;
 			player.y = startLocation.y;
 		}
-		
+
 
 	}
 
+	function checkBlockadesCollision()
+	{
+		for(var j = 0; j < blockades.length; j ++)
+		{
+			switch(CollisionDetection.checkCollision(player,blockades[j]))
+			{
+				case "l":
+				case "r":
+				case "t":
+				case "b":
+					var triggeredBlockId = blockades[j].blockadeId;
+					if($.inArray(triggeredBlockId, triggerBlockIds) == -1)
+					{
+						if(blockades[j].blockadeShape == player.currentPlayerShape)
+						{
+							triggerBlockIds.push(triggeredBlockId);
+							world.removeChild(blockades[j].shape);
+							console.log(triggerBlockIds);
+							shapeVolgorde.nextShape();
+							player.nextShape(shapeVolgorde.arrShapes[shapeVolgorde.currentShapeNumber]);
+						}
+						else
+						{
+							console.log("dead");
+							player.x = startLocation.x;
+							player.y = startLocation.y;
+						}
+					}
+					break;
+			}
+		}
+	}
 
 	function buildBounds()
 	{
