@@ -148,11 +148,12 @@
 
 					//moving platform
 					var movingPlatform = new Platform(cellBitmap.x, cellBitmap.y,tilewidth,tileheight);
+					world.addChild(movingPlatform.shape);
 					vehicle = new SteeredVehicle(stage.canvas.width, stage.canvas.height, 
 						Math.round(Math.random()*stage.canvas.width), 
 						Math.round(Math.random()*stage.canvas.height));
 
-					vehicle.setRender(movingPlatform);
+					vehicle.setRender(movingPlatform.shape);
 					vehicle.setSpeed(8);
 					vehicle.setRotation(180);
 
@@ -174,6 +175,8 @@
 	function handleTick()
 	{
 		vehicle.update();
+
+		console.log("handletick");
 
 		stage.update();		
 	}
