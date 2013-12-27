@@ -21,6 +21,8 @@ var Platform = (function()
 		this.shape.graphics.f("#000000");
 		this.shape.graphics.dr(0,0,this.width,this.height);
 		this.shape.graphics.ef();
+
+		return this.shape;
 	}
 
 	return Platform;
