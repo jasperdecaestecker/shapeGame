@@ -7,7 +7,7 @@ var CollisionDetection = (function()
 
 	}
 
-	CollisionDetection.checkCollision = function(shapeA,shapeB,clippingmode)
+	CollisionDetection.checkCollision = function(shapeA,shapeB,clippingmode,usingLadder)
 	{
 		var vX = (shapeA.x + (shapeA.width/2)) - (shapeB.x + (shapeB.width/2));
 		var vY = (shapeA.y + (shapeA.height/2)) - (shapeB.y + (shapeB.height/2));
@@ -28,17 +28,21 @@ var CollisionDetection = (function()
 					colDir = "t";
 					if(clippingmode)
 					{
-						shapeA.y += oY;
+						if(!usingLadder)
+						{
+							shapeA.y += oY;
+						}
 					}
-					
-						//console.log("t");
 				}
 				else
 				{
 					colDir = "b";
 					if(clippingmode)
 					{
-						shapeA.y -= oY;
+						if(!usingLadder)
+						{
+							shapeA.y -= oY;
+						}
 					}
 				}
 			}

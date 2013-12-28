@@ -1,6 +1,6 @@
 (function()
 {
-	var stage, boxes, player, world, width, height, blockades, shapeVolgorde, triggerBlockIds;
+	var stage, boxes, player, world, width, height, blockades, ladders, shapeVolgorde, triggerBlockIds, usingLadder;
 	var ticker, keys;
 	var startLocation;
 	var level1;
@@ -27,8 +27,7 @@
 		boxes = [];		
 		blockades = [];
 		triggerBlockIds = [];
-		//blockadesTriggered = [];
-		//blockades = {};
+		ladders = [];
 		changeShape = false;
 
 		loadMap();
@@ -92,7 +91,6 @@
 		}
 
 		loadRestOfShit();
-
 	}
 
 	function makeObject(layerData, tilesetSheet, tilewidth, tileheight)
@@ -107,12 +105,10 @@
 				var arrShapes = ["triangle","square","triangle"];
 				shapeVolgorde = new ShapeVolgorde(arrShapes,0);
 
-
 				player = new Player(startLocation.x,startLocation.y,20,20,arrShapes[shapeVolgorde.currentShapeNumber]);
 				player.gravity = world.gravity;
 				player.friction = world.friction;
 				player.grounded = false;
-
 
 				world.addChild(shapeVolgorde.container);
 				world.addChild(player.shape);
@@ -129,10 +125,6 @@
     			var blockade = new Blockade(layerData.objects[i].x-10,layerData.objects[i].y-10,20,20,layerData.objects[i].type, i);
 				world.addChild(blockade.shape);
 				blockades.push(blockade);
-				//blockades.push(blockade);
-			//	console.log(Object.keys(blockades).length);
-
-				//blockade.shape.addEventListener("click", handleClick);
     		}
 		}
 	}
@@ -149,6 +141,10 @@
 
 		keys = [];
 		buildBounds();
+
+			var ladder = new Ladder(540,60,20,280);
+		world.addChild(ladder.shape);
+		ladders.push(ladder);
 	}
 
 	function initLayer(layerData, tilesetSheet, tilewidth, tileheight) 
@@ -218,30 +214,12 @@
 	{
 		keys[e.keyCode] = true;
 		console.log(e.keyCode);
-		//
 	}
 
 	function update()
 	{
-		// 65 A 90 Z 69 E 82 R 
-		/*if(keys[65])
-		{
-			console.log(blockades);
-
-		
-		}
-		if(keys[90])
-		{
-			player.nextShape("triangle");
-			//console.log(blockadesTriggered);
-		}
-		if(keys[69])
-		{
-			player.nextShape("circle");
-				player.nextShape("square");
-		}*/
-
-		if(keys[38])
+		// jump
+		if(keys[32])
 		{
 			if(player.grounded && !player.jumping)
 			{
@@ -250,11 +228,6 @@
 				player.velY -= player.speed * 2;
 				//console.log("jump");
 			}
-		}
-		if(keys[32])
-		{
-			// change shape
-			keys[32] = false;
 		}
 		if(keys[37])
 		{
@@ -271,69 +244,65 @@
 				player.velX ++;
 			}
 			player.grounded = false;
-		}
-
-
-
-		/*if(keys[40])
-		{
-			if(player.grounded && !player.jumping)
-			{
-				player.velY+=player.speed * 5;
-				player.grounded = false;
-				player.jumping = true;
-				//player.velY -= player.speed * 2;
-				//console.log("jump");
-			}
-		}*/
-
-		//player.grounded = false;			
+		}		
 
 		for(var i = 0; i < boxes.length; i++)
 		{
-			switch(CollisionDetection.checkCollision(player,boxes[i],true))
+			switch(CollisionDetection.checkCollision(player,boxes[i],true,usingLadder))
 			{
 				case "l":
 				case "r":
 					player.velX = 0;
 					break;
 					case "t":
-					 player.velY *= -1;
+						if(!usingLadder)
+						{
+							 player.velY *= -1;
+						}
+					
 					break;
 					case "b":
 						player.grounded = true;
 						player.jumping = false;
 					break;
 			}
+		}
 
-
+		
+		for(var i = 0; i < ladders.length; i++)
+		{
+			var colDir = CollisionDetection.checkCollision(player,ladders[i],false,usingLadder);
+			switch(colDir)
+			{
+				case "l":
+				case "r":
+				case "t":
+				case "b":
+					if(keys[38])
+					{
+						player.y -= 2;
+						usingLadder = true;
+						player.grounded = true;
+					}
+					else if(keys[40])
+					{
+						player.y += 2;
+						usingLadder = true;
+						player.grounded = true;
+					}
+					else
+					{
+						usingLadder = false;
+					}
+					break;
+				default:
+					usingLadder = false;
+					break;	
+			}
 		}
 
 		checkBlockadesCollision();
 
-		/*for(var j = 0; j < blockades.length; j ++)
-		{
-			var pt = blockades[j].shape.globalToLocal(player.x, player.y);
-		
-			if(blockades[j].shape.hitTest(pt.x,pt.y))
-			{
-				console.log(blockades[j]);
-			}
-
-			var pt = player.shape.localToLocal(10, 0, blockades[j].shape);
-		
-			if(blockades[j].shape.hitTest(pt.x,pt.y))
-			{
-				console.log(blockades[j]);
-			}
-
-
-		}*/
-
-	
-
-				
-	
 		world.followPlayerX(player,width,0);
 		world.followPlayerY(player,height,0);
 
@@ -346,15 +315,13 @@
 			player.x = startLocation.x;
 			player.y = startLocation.y;
 		}
-
-
 	}
 
 	function checkBlockadesCollision()
 	{
 		for(var j = 0; j < blockades.length; j ++)
 		{
-			switch(CollisionDetection.checkCollision(player,blockades[j]))
+			switch(CollisionDetection.checkCollision(player,blockades[j],false,false))
 			{
 				case "l":
 				case "r":
