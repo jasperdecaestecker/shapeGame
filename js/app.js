@@ -1,6 +1,6 @@
 (function()
 {
-	var stage, boxes, player, world, width, height, blockades, ladders, shapeVolgorde, triggerBlockIds, usingLadder;
+	var stage, boxes, player, world, width, height, blockades, ladders, shapeVolgorde, arrTriggeredBlockadesIds, usingLadder;
 	var ticker, keys;
 	var startLocation;
 	var level1;
@@ -26,15 +26,16 @@
 
 		boxes = [];		
 		blockades = [];
-		triggerBlockIds = [];
+		arrTriggeredBlockadesIds = [];
 		ladders = [];
 		changeShape = false;
 
-		loadMap();
+		//loadMap();
+		startLevel(1);
 
-		world = new World(800,400);
+		this.world = new World(800,400);
 
-		stage.addChild(world.container);
+		stage.addChild(this.world.container);
 
 		ticker = createjs.Ticker;
 		ticker.setFPS(60);
@@ -44,19 +45,34 @@
 		window.onkeydown = keydown;
 	}
 
-	function loadMap()
+	function restartLevel()
 	{
+		for(var i = 0; i < arrTriggeredBlockadesIds.length; i ++)
+		{
+			this.world.addChild(blockades[arrTriggeredBlockadesIds[i]].shape);
+		}
 
-		var nameMap = "map1";
-		var flickerAPI = "js/maps/"+nameMap+".json";
-		$.getJSON( flickerAPI, 
+		arrTriggeredBlockadesIds = [];
+		shapeVolgorde.reset();
+		player.nextShape(shapeVolgorde.arrShapes[shapeVolgorde.currentShapeNumber]);
+	}
+
+	function startLevel(levelNumber)
+	{
+		loadMap(levelNumber)
+	}
+
+	function loadMap(mapNumber)
+	{
+		var pathToMap = "js/maps/map"+mapNumber+".json";
+		$.getJSON( pathToMap, 
 		{
 			format: "json"
 		}).done(function(data) 
 		{
 			mapData = data;
 			tileset = new Image();
-			tileset.src = "js/maps/tile_"+nameMap+".png";
+			tileset.src = "js/maps/tile_map"+mapNumber+".png";
 			tileset.onLoad = initLayers();
 		});
 	}
@@ -76,7 +92,6 @@
 		};
 		var tilesetSheet = new createjs.SpriteSheet(imageData);
 	
-		
 		for (var i = 0; i < mapData.layers.length; i++) 
 		{
 			var layerData = mapData.layers[i];
@@ -106,13 +121,13 @@
 				shapeVolgorde = new ShapeVolgorde(arrShapes,0);
 
 				player = new Player(startLocation.x,startLocation.y,20,20,arrShapes[shapeVolgorde.currentShapeNumber]);
-				player.gravity = world.gravity;
-				player.friction = world.friction;
+				player.gravity = this.world.gravity;
+				player.friction = this.world.friction;
 				player.grounded = false;
 
-				world.addChild(shapeVolgorde.container);
-				world.addChild(player.shape);
-				world.addChild(player.container);
+				this.world.addChild(shapeVolgorde.container);
+				this.world.addChild(player.shape);
+				this.world.addChild(player.container);
 
 				shapeVolgorde.container.x = 20;
 				shapeVolgorde.container.y = 20;
@@ -123,7 +138,7 @@
 			for ( var i = 0; i < layerData.objects.length; i++) 
     		{
     			var blockade = new Blockade(layerData.objects[i].x-10,layerData.objects[i].y-10,20,20,layerData.objects[i].type, i);
-				world.addChild(blockade.shape);
+				this.world.addChild(blockade.shape);
 				blockades.push(blockade);
     		}
 		}
@@ -136,14 +151,14 @@
 
 	function loadRestOfShit()
 	{
-		world.boundH = -(world.height - height);
-		world.boundW = -(world.width - width);
+		this.world.boundH = -(this.world.height - height);
+		this.world.boundW = -(this.world.width - width);
 
 		keys = [];
 		buildBounds();
 
-			var ladder = new Ladder(540,60,20,280);
-		world.addChild(ladder.shape);
+		var ladder = new Ladder(540,60,20,280);
+		this.world.addChild(ladder.shape);
 		ladders.push(ladder);
 	}
 
@@ -171,7 +186,7 @@
 					/*var movingPlatform = new Platform(cellBitmap.x, cellBitmap.y,tilewidth,tileheight);
 
 					var movingPlatform = new Platform(cellBitmap.x, cellBitmap.y,tilewidth,tileheight);
-					world.addChild(movingPlatform.shape);
+					this.world.addChild(movingPlatform.shape);
 
 					vehicle = new SteeredVehicle(stage.canvas.width, stage.canvas.height, 
 						Math.round(Math.random()*stage.canvas.width), 
@@ -191,7 +206,7 @@
 
 	            }
 
-				world.addChild(cellBitmap);
+				this.world.addChild(cellBitmap);
 			}
 		}
 	}
@@ -303,8 +318,8 @@
 
 		checkBlockadesCollision();
 
-		world.followPlayerX(player,width,0);
-		world.followPlayerY(player,height,0);
+		this.world.followPlayerX(player,width,0);
+		this.world.followPlayerY(player,height,0);
 
 		player.update();
 		stage.update();
@@ -314,6 +329,7 @@
 		{
 			player.x = startLocation.x;
 			player.y = startLocation.y;
+			restartLevel();
 		}
 	}
 
@@ -328,13 +344,14 @@
 				case "t":
 				case "b":
 					var triggeredBlockId = blockades[j].blockadeId;
-					if($.inArray(triggeredBlockId, triggerBlockIds) == -1)
+					if($.inArray(triggeredBlockId, arrTriggeredBlockadesIds) == -1)
 					{
 						if(blockades[j].blockadeShape == player.currentPlayerShape)
 						{
-							triggerBlockIds.push(triggeredBlockId);
-							world.removeChild(blockades[j].shape);
-							console.log(triggerBlockIds);
+							arrTriggeredBlockadesIds.push(triggeredBlockId);
+							this.world.removeChild(blockades[j].shape);
+							console.log(blockades[j].shape);
+							console.log(arrTriggeredBlockadesIds);
 							shapeVolgorde.nextShape();
 							player.nextShape(shapeVolgorde.arrShapes[shapeVolgorde.currentShapeNumber]);
 						}
@@ -343,6 +360,7 @@
 							console.log("dead");
 							player.x = startLocation.x;
 							player.y = startLocation.y;
+							restartLevel();
 						}
 					}
 					break;
@@ -352,10 +370,10 @@
 
 	function buildBounds()
 	{
-		//boxes.push(new Bound(0,world.height-1,world.width,1));
-		boxes.push(new Bound(0,0,world.width,1));
-		boxes.push(new Bound(0,0,1,world.height));
-		boxes.push(new Bound(world.width-1,0,1,world.height));
+		//boxes.push(new Bound(0,this.world.height-1,this.world.width,1));
+		boxes.push(new Bound(0,0,this.world.width,1));
+		boxes.push(new Bound(0,0,1,this.world.height));
+		boxes.push(new Bound(this.world.width-1,0,1,this.world.height));
 	}	
 
 	init();

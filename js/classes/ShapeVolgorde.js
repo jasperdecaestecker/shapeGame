@@ -1,17 +1,15 @@
 var ShapeVolgorde = (function()
 {
-	var container, currentShapeNumber;
+	var container, currentShapeNumber, shapesUsed;
 
 
 	function ShapeVolgorde(arrShapes, currentShapeNumber)
 	{
 		this.arrShapes = arrShapes;
+		this.shapesUsed = 0;
 		this.currentShapeNumber = currentShapeNumber;
 		this.container = new createjs.Container(); 
-
-		console.log("make shapeVolgorde");
 		this.draw();
-
 	}
 
 	ShapeVolgorde.prototype.draw = function()
@@ -53,11 +51,20 @@ var ShapeVolgorde = (function()
 
 	ShapeVolgorde.prototype.nextShape = function()
 	{
-		this.arrShapes.splice(currentShapeNumber,1);
-		//this.currentShapeNumber++;
-		this.container.removeAllChildren();
-		this.draw();
+		console.log(this.currentShapeNumber);
+		this.container.removeChildAt(this.currentShapeNumber - this.shapesUsed);
+		this.shapesUsed++;
+		this.currentShapeNumber++;
+		this.container.x -= 30;
+	}
 
+	ShapeVolgorde.prototype.reset = function()
+	{
+		this.shapesUsed = 0;
+		this.currentShapeNumber = 0;
+		this.container.removeAllChildren();
+		this.container.x = 20;
+		this.draw();
 	}
 
 	return ShapeVolgorde;
