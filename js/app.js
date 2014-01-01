@@ -2,6 +2,7 @@
 {
 	var stage, boxes, player, world, width, height, blockades, ladders, shapeVolgorde, arrTriggeredBlockadesIds, usingLadder;
 	var arrLevers;
+	var currentLevel;
 	var ticker, keys;
 	var startLocation;
 	var level1;
@@ -23,28 +24,10 @@
 		width = stage.canvas.width;
 		height = stage.canvas.height;
 
-		startLocation = {};
+		this.currentLevel = 1;
 
-		boxes = [];		
-		blockades = [];
-		arrTriggeredBlockadesIds = [];
-		ladders = [];
-		arrLevers = [];
-		changeShape = false;
+		startLevel(this.currentLevel);
 
-		//loadMap();
-		startLevel(1);
-
-		this.world = new World(800,400);
-
-		stage.addChild(this.world.container);
-
-		ticker = createjs.Ticker;
-		ticker.setFPS(60);
-		ticker.addEventListener("tick",update);
-
-		window.onkeyup = keyup;
-		window.onkeydown = keydown;
 	}
 
 	function restartLevel()
@@ -68,7 +51,33 @@
 
 	function startLevel(levelNumber)
 	{
-		loadMap(levelNumber)
+		startLocation = {};
+		boxes = [];		
+		blockades = [];
+		arrTriggeredBlockadesIds = [];
+		ladders = [];
+		arrLevers = [];
+		changeShape = false;
+
+		loadMap(levelNumber);
+
+		this.world = new World(800,400);
+		this.world.boundH = -(this.world.height - height);
+		this.world.boundW = -(this.world.width - width);
+		keys = [];
+		buildBounds();
+
+		stage.addChild(this.world.container);
+
+
+
+		ticker = createjs.Ticker;
+		ticker.setFPS(60);
+		ticker.addEventListener("tick",update);
+		//ticker.addEventListener("tick",update);
+
+		window.onkeyup = keyup;
+		window.onkeydown = keydown;
 	}
 
 	function loadMap(mapNumber)
@@ -119,10 +128,7 @@
 
 	function makeObject(layerData, tilesetSheet, tilewidth, tileheight)
 	{
-		var ladder = new Ladder(560,60,20,280);
-		this.world.addChild(ladder.shape);
-		ladders.push(ladder)
-
+		
 
 		if(layerData.name == "player")
 		{
@@ -131,17 +137,30 @@
 				startLocation.x = layerData.objects[i].x;
 				startLocation.y = layerData.objects[i].y;
 
-				var arrShapes = ["triangle","square","triangle"];
-				shapeVolgorde = new ShapeVolgorde(arrShapes,0);
+				switch(this.currentLevel)
+				{
+					case 1:
+						var ladder = new Ladder(560,60,20,280);
+						this.world.addChild(ladder.shape);
+						ladders.push(ladder);
+						shapeVolgorde = new ShapeVolgorde(["circle","square","triangle"],0);
+						break;
+					case 2:	
+						shapeVolgorde = new ShapeVolgorde(["square","square","triangle"],0);
+						break;
+				}
 
-				player = new Player(startLocation.x,startLocation.y,20,20,arrShapes[shapeVolgorde.currentShapeNumber]);
+
+				console.log("make shapeVolgorde");
+
+				player = new Player(startLocation.x,startLocation.y,20,20,shapeVolgorde.arrShapes[shapeVolgorde.currentShapeNumber]);
 				player.gravity = this.world.gravity;
 				player.friction = this.world.friction;
 				player.grounded = false;
 
-				this.world.addChild(shapeVolgorde.container);
 				this.world.addChild(player.shape);
 				this.world.addChild(player.container);
+				this.world.addChild(shapeVolgorde.container);
 
 				shapeVolgorde.container.x = 20;
 				shapeVolgorde.container.y = 20;
@@ -189,12 +208,8 @@
 
 	function loadRestOfShit()
 	{
-		this.world.boundH = -(this.world.height - height);
-		this.world.boundW = -(this.world.width - width);
-
-		keys = [];
-		buildBounds();
-
+		
+		
 	
 	}
 
@@ -256,6 +271,13 @@
 		stage.update();		
 	}
 
+	// aanroepen vooraleer je een nieuw level start
+	function clearLevel()
+	{
+		stage.removeChild(this.world.container);
+		ticker.removeEventListener("tick",update);
+	}
+
 	function keyup(e)
 	{
 		keys[e.keyCode] = false;
@@ -269,10 +291,14 @@
 
 	function update()
 	{
+
 		// E
 		if(keys[69])
 		{	
 			console.log("e");
+			clearLevel();
+				this.currentLevel++;
+				startLevel(this.currentLevel);
 		}
 
 		if(keys[32])
