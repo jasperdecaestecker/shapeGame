@@ -14,10 +14,10 @@ Design
 General
 ------
 - Einde Level / volgend level
-- Restart level
-- controller functionaltieit
+- Controller functionaltieit
 - Level klasse
-- ~~map inladen~~
+- ~~Restart level~~
+- ~~Map inladen~~
 - ~~1 lijntje code schrijven~~
 
 Mechanics

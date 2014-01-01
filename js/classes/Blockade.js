@@ -9,6 +9,8 @@ var Blockade = (function()
 		//console.log(blockadeShape);
 		this.blockadeId = blockadeId;
 		this.blockadeShape = blockadeShape;
+		this.orgX = x;
+		this.orgY = y;
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -18,6 +20,14 @@ var Blockade = (function()
 		this.shape.x = this.x;
 		this.shape.y = this.y;
 		this.draw();
+	}
+
+	Blockade.prototype.changePosition = function(x,y)
+	{
+		this.x = x;
+		this.y = y;
+		this.shape.x = this.x;
+		this.shape.y = this.y;
 	}
 
 	Blockade.prototype.draw = function()
