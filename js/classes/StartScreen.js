@@ -5,7 +5,11 @@ var StartScreen = (function()
 	function StartScreen()
 	{
 		console.log('StartScreen');
-		
+		this.shape = new createjs.Shape();
+		this.shape.x = this.x;
+		this.shape.y = this.y;
+		this.width = 800;
+		this.height = 900;
 
 		this.draw();
 	}
@@ -14,11 +18,12 @@ var StartScreen = (function()
 	{
 		console.log('draw startscreen');
 
-		this.shape = new createjs.Shape();
+
 		this.shape.graphics.c();
 		this.shape.graphics.f("0F0F0F");
-		this.shape.graphics.drawRect(20,20,800,900);
+		this.shape.graphics.drawRect(0,0,this.width,this.height);
 		this.shape.graphics.ef();
+
 		
 		console.log('draw shape '+this.shape.height);
 	}

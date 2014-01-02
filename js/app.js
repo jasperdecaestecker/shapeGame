@@ -72,10 +72,6 @@
 		stage.addChild(this.world.container);
 
 		//startscreen - alle andere code naar startRealLevel()
-		this.startScreen = new StartScreen();
-		this.world.addChild(this.startScreen.shape);
-		this.startScreen.shape.addEventListener("click", startRealLevel);
-
 		ticker = createjs.Ticker;
 		ticker.setFPS(60);
 		ticker.addEventListener("tick",update);
@@ -101,7 +97,15 @@
 			tileset = new Image();
 			tileset.src = "js/maps/tile_map1.png";
 			tileset.onLoad = initLayers();
+			mapLoaded();
 		});
+	}
+
+	function mapLoaded()
+	{
+		this.startScreen = new StartScreen();
+		this.world.addChild(this.startScreen.shape);
+		this.startScreen.shape.addEventListener("click", startRealLevel);
 	}
 
 	function initLayers() 
@@ -184,6 +188,8 @@
 					this.world.addChild(endPosition.container);
 				}
     		}
+
+
 		}
 		if(layerData.name == "obstakels")
 		{
