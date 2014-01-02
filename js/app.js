@@ -26,8 +26,6 @@
 		width = stage.canvas.width;
 		height = stage.canvas.height;
 
-		this.startScreen = new StartScreen();
-
 		this.currentLevel = 1;
 
 		startLevel(this.currentLevel);
@@ -68,10 +66,16 @@
 		this.world = new World(800,400);
 		this.world.boundH = -(this.world.height - height);
 		this.world.boundW = -(this.world.width - width);
+		
 		keys = [];
 		buildBounds();
 
 		stage.addChild(this.world.container);
+
+		//startscreen - alle andere code naar startRealLevel()
+		this.startScreen = new StartScreen();
+		this.world.addChild(this.startScreen.shape);
+		this.startScreen.shape.addEventListener("click", startRealLevel);
 
 		ticker = createjs.Ticker;
 		ticker.setFPS(60);
@@ -79,6 +83,11 @@
 
 		window.onkeyup = keyup;
 		window.onkeydown = keydown;
+	}
+
+	function startRealLevel(event)
+	{
+		console.log("startRealLevel");
 	}
 
 	function loadMap(mapNumber)
