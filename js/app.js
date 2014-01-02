@@ -26,6 +26,8 @@
 		width = stage.canvas.width;
 		height = stage.canvas.height;
 
+		this.startScreen = new StartScreen();
+
 		this.currentLevel = 1;
 
 		startLevel(this.currentLevel);

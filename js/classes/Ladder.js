@@ -4,6 +4,8 @@ var Ladder = (function()
 
 	function Ladder(x, y , width, height)
 	{
+		console.log('Ladder');
+		
 		this.x = x;
 		this.y = y;
 		this.width = width;
