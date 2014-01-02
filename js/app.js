@@ -1,6 +1,6 @@
 (function()
 {
-	var stage, boxes, player, world, width, height, blockades, ladders, shapeVolgorde, arrTriggeredBlockadesIds, usingLadder;
+	var stage, boxes, player, world, width, height, blockades, ladders, shapeVolgorde, arrTriggeredBlockadesIds, usingLadder, endPosition;
 	var arrLevers;
 	var currentLevel;
 	var ticker, keys;
@@ -120,7 +120,6 @@
 			}
 		}
 
-		loadRestOfShit();
 	}
 
 	function makeObject(layerData, tilesetSheet, tilewidth, tileheight)
@@ -148,8 +147,8 @@
 						shapeVolgorde = new ShapeVolgorde(["square","square","triangle"],0);
 						break;
 				}
-					
-					
+
+
 					startLocation.x = layerData.objects[i].x;
 					startLocation.y = layerData.objects[i].y;
 					player = new Player(startLocation.x,startLocation.y,20,20,shapeVolgorde.arrShapes[shapeVolgorde.currentShapeNumber]);
@@ -162,7 +161,7 @@
 				}
 				else if(layerData.objects[i].name == "endPoint")
 				{
-					var endPosition = new EndPosition(layerData.objects[i].x,layerData.objects[i].y,24,64);
+					endPosition = new EndPosition(layerData.objects[i].x,layerData.objects[i].y,24,64);
 					this.world.addChild(endPosition.container);
 
 
@@ -276,6 +275,7 @@
 	// aanroepen vooraleer je een nieuw level start
 	function clearLevel()
 	{
+		//endPosition = null;
 		stage.removeChild(this.world.container);
 		ticker.removeEventListener("tick",update);
 	}
@@ -386,6 +386,7 @@
 		}
 
 		checkBlockadesCollision();
+		checkIfFinished();
 
 		this.world.followPlayerX(player,width,0);
 		this.world.followPlayerY(player,height,0);
@@ -400,6 +401,22 @@
 			player.y = startLocation.y;
 			restartLevel();
 		}
+	}
+
+	function checkIfFinished()
+	{
+		switch(CollisionDetection.checkCollision(player,endPosition,false,false))
+			{
+				case "l":
+				case "r":
+				case "t":
+				case "b":
+					clearLevel();
+					this.currentLevel++;
+					startLevel(this.currentLevel);
+
+					break;
+			}
 	}
 
 	function checkBlockadesCollision()
