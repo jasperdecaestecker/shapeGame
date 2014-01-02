@@ -94,7 +94,7 @@
                     {
 
                     },
-                 "type":"1 2",
+                 "type":"1,2",
                  "visible":true,
                  "width":0,
                  "x":510,
@@ -123,6 +123,19 @@
                  "width":0,
                  "x":470,
                  "y":13
+                }, 
+                {
+                 "height":60,
+                 "name":"endPoint",
+                 "properties":
+                    {
+
+                    },
+                 "type":"",
+                 "visible":true,
+                 "width":23,
+                 "x":758,
+                 "y":219
                 }],
          "opacity":1,
          "type":"objectgroup",

@@ -1612,10 +1612,11 @@
   </data>
  </layer>
  <objectgroup name="obstakels" width="40" height="20">
-  <object name="obstakel1" type="triangle" x="213" y="100"/>
-  <object name="obstakel2" type="square" x="407" y="208"/>
+  <object name="obstakel1" type="triangle" x="372" y="49"/>
+  <object name="obstakel2" type="square" x="228" y="109"/>
  </objectgroup>
  <objectgroup name="player" width="40" height="20">
   <object name="spawnPoint" x="510" y="22"/>
+  <object name="endPoint" x="20" y="279" width="19" height="60"/>
  </objectgroup>
 </map>

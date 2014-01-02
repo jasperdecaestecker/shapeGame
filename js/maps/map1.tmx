@@ -2421,9 +2421,10 @@
   </data>
  </layer>
  <objectgroup name="levers" width="40" height="20">
-  <object name="1" type="1 2" x="510" y="69"/>
+  <object name="1" type="1,2" x="510" y="69"/>
  </objectgroup>
  <objectgroup name="player" width="40" height="20">
   <object name="spawnPoint" x="470" y="13"/>
+  <object name="endPoint" x="758" y="219" width="23" height="60"/>
  </objectgroup>
 </map>
