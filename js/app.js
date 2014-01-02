@@ -87,7 +87,7 @@
 		{
 			mapData = data;
 			tileset = new Image();
-			tileset.src = "js/maps/tile_map"+mapNumber+".png";
+			tileset.src = "js/maps/tile_map1.png";
 			tileset.onLoad = initLayers();
 		});
 	}
@@ -122,6 +122,23 @@
 
 	}
 
+	function setShapeVolgorde()
+	{
+		switch(this.currentLevel)
+		{
+			case 1:
+				/*var ladder = new Ladder(560,60,20,280);
+				this.world.addChild(ladder.shape);
+				ladders.push(ladder);*/
+				shapeVolgorde = new ShapeVolgorde(["triangle","square"],0);
+		
+				break;
+			case 2:	
+				shapeVolgorde = new ShapeVolgorde(["triangle","triangle","square"],0);
+				break;
+		}
+	}
+
 	function makeObject(layerData, tilesetSheet, tilewidth, tileheight)
 	{
 		if(layerData.name == "player")
@@ -133,20 +150,8 @@
 				console.log(layerData.objects[i].name);
 				if(layerData.objects[i].name == "spawnPoint")
 				{
-						switch(this.currentLevel)
-				{
-					case 1:
-						var ladder = new Ladder(560,60,20,280);
-						this.world.addChild(ladder.shape);
-						ladders.push(ladder);
-						shapeVolgorde = new ShapeVolgorde(["triangle","square","triangle"],0);
-						
-
-						break;
-					case 2:	
-						shapeVolgorde = new ShapeVolgorde(["square","square","triangle"],0);
-						break;
-				}
+					setShapeVolgorde()
+								
 
 
 					startLocation.x = layerData.objects[i].x;
@@ -309,7 +314,7 @@
 			{
 				player.grounded = false;
 				player.jumping = true;
-				player.velY -= player.speed * 2;
+				player.velY -= player.speed * 2.2;
 				//console.log("jump");
 			}
 		}

@@ -13,9 +13,9 @@ Design
 
 General
 ------
-- Einde Level / volgend level
 - Controller functionaltieit
 - Level klasse
+- ~~Einde Level / volgend level~~
 - ~~Restart level~~
 - ~~Map inladen~~
 - ~~1 lijntje code schrijven~~
@@ -23,8 +23,8 @@ General
 Mechanics
 ------
 - Traps
-- Levers
 - Bewegende platforms
+- ~~Levers~~
 - ~~ShapeVolgorde~~
 - ~~Ladders~~
 
