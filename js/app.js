@@ -29,7 +29,6 @@
 		this.currentLevel = 1;
 
 		startLevel(this.currentLevel);
-
 	}
 
 	function restartLevel()
@@ -137,19 +136,23 @@
 
 	function setShapeVolgorde()
 	{
+		var arrShapeVolgorde = [];
 		switch(this.currentLevel)
 		{
 			case 1:
 				/*var ladder = new Ladder(560,60,20,280);
 				this.world.addChild(ladder.shape);
 				ladders.push(ladder);*/
-				shapeVolgorde = new ShapeVolgorde(["triangle","square"],0);
-		
+				arrShapeVolgorde = ["triangle","square"];
 				break;
 			case 2:	
-				shapeVolgorde = new ShapeVolgorde(["triangle","triangle","square"],0);
+				arrShapeVolgorde = ["triangle","triangle","square"];
 				break;
 		}
+		shapeVolgorde = new ShapeVolgorde(arrShapeVolgorde,0);
+		shapeVolgorde.container.x = 20;
+		shapeVolgorde.container.y = 20;
+		this.world.addChild(shapeVolgorde.container);
 	}
 
 	function makeObject(layerData, tilesetSheet, tilewidth, tileheight)
@@ -165,8 +168,6 @@
 				{
 					setShapeVolgorde()
 								
-
-
 					startLocation.x = layerData.objects[i].x;
 					startLocation.y = layerData.objects[i].y;
 					player = new Player(startLocation.x,startLocation.y,20,20,shapeVolgorde.arrShapes[shapeVolgorde.currentShapeNumber]);
@@ -181,19 +182,7 @@
 				{
 					endPosition = new EndPosition(layerData.objects[i].x,layerData.objects[i].y,24,64);
 					this.world.addChild(endPosition.container);
-
-
-					console.log(endPosition.x);
 				}
-
-			
-
-				
-				this.world.addChild(shapeVolgorde.container);
-			
-
-				shapeVolgorde.container.x = 20;
-				shapeVolgorde.container.y = 20;
     		}
 		}
 		if(layerData.name == "obstakels")
@@ -292,7 +281,6 @@
 	// aanroepen vooraleer je een nieuw level start
 	function clearLevel()
 	{
-		//endPosition = null;
 		stage.removeChild(this.world.container);
 		ticker.removeEventListener("tick",update);
 	}
@@ -423,17 +411,17 @@
 	function checkIfFinished()
 	{
 		switch(CollisionDetection.checkCollision(player,endPosition,false,false))
-			{
-				case "l":
-				case "r":
-				case "t":
-				case "b":
-					clearLevel();
-					this.currentLevel++;
-					startLevel(this.currentLevel);
+		{
+			case "l":
+			case "r":
+			case "t":
+			case "b":
+				clearLevel();
+				this.currentLevel++;
+				startLevel(this.currentLevel);
 
-					break;
-			}
+				break;
+		}
 	}
 
 	function checkBlockadesCollision()
