@@ -1,6 +1,7 @@
 (function()
 {
 	var stage, boxes, player, world, width, height, blockades, ladders, shapeVolgorde, arrTriggeredBlockadesIds, usingLadder;
+	var arrLevers;
 	var ticker, keys;
 	var startLocation;
 	var level1;
@@ -22,12 +23,13 @@
 		width = stage.canvas.width;
 		height = stage.canvas.height;
 
-		startLocation = {x:0,y: 10};
+		startLocation = {};
 
 		boxes = [];		
 		blockades = [];
 		arrTriggeredBlockadesIds = [];
 		ladders = [];
+		arrLevers = [];
 		changeShape = false;
 
 		//loadMap();
@@ -47,9 +49,16 @@
 
 	function restartLevel()
 	{
+		// zet de vorm van de getriggerde blockades terug op het scherm
 		for(var i = 0; i < arrTriggeredBlockadesIds.length; i ++)
 		{
 			this.world.addChild(blockades[arrTriggeredBlockadesIds[i]].shape);
+		}
+
+		// herpositioneer de blockades op hun originele position
+		for(var i = 0; i < blockades.length; i ++)
+		{
+			blockades[i].changePosition(blockades[i].orgX,blockades[i].orgY);
 		}
 
 		arrTriggeredBlockadesIds = [];
@@ -110,6 +119,11 @@
 
 	function makeObject(layerData, tilesetSheet, tilewidth, tileheight)
 	{
+		var ladder = new Ladder(560,60,20,280);
+		this.world.addChild(ladder.shape);
+		ladders.push(ladder)
+
+
 		if(layerData.name == "player")
 		{
 			for ( var i = 0; i < layerData.objects.length; i++) 
@@ -142,11 +156,35 @@
 				blockades.push(blockade);
     		}
 		}
+
+		if(layerData.name == "levers")
+		{
+			for ( var i = 0; i < layerData.objects.length; i++) 
+    		{
+    			console.log(layerData.objects[i].x);
+    			//var lever = new Lever(350,100,70,45);
+    			var lever = new Lever(layerData.objects[i].x-20,layerData.objects[i].y-34,70,45,layerData.objects[i].type);
+    			this.world.addChild(lever.container);
+    			lever.container.addEventListener("click", handleClick);
+    			arrLevers.push(lever);
+    		}
+		}
 	}
 
-	function click(event)
+	function handleClick(event)
 	{
 		console.log("click");
+		for(var j = 0; j < arrLevers.length; j ++)
+		{
+			console.log("een lever");
+			arrLevers[j].change();
+		}
+
+		var tempX = blockades[0].x;
+		var tempY = blockades[0].y;
+
+		blockades[0].changePosition(blockades[1].x,blockades[1].y);
+		blockades[1].changePosition(tempX,tempY);
 	}
 
 	function loadRestOfShit()
@@ -157,9 +195,7 @@
 		keys = [];
 		buildBounds();
 
-		var ladder = new Ladder(540,60,20,280);
-		this.world.addChild(ladder.shape);
-		ladders.push(ladder);
+	
 	}
 
 	function initLayer(layerData, tilesetSheet, tilewidth, tileheight) 
@@ -232,7 +268,12 @@
 
 	function update()
 	{
-		// jump
+		// E
+		if(keys[69])
+		{	
+			console.log("e");
+		}
+
 		if(keys[32])
 		{
 			if(player.grounded && !player.jumping)
