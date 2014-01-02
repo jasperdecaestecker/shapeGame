@@ -69,12 +69,9 @@
 
 		stage.addChild(this.world.container);
 
-
-
 		ticker = createjs.Ticker;
 		ticker.setFPS(60);
 		ticker.addEventListener("tick",update);
-		//ticker.addEventListener("tick",update);
 
 		window.onkeyup = keyup;
 		window.onkeydown = keydown;
@@ -128,39 +125,55 @@
 
 	function makeObject(layerData, tilesetSheet, tilewidth, tileheight)
 	{
-		
-
 		if(layerData.name == "player")
 		{
 			for ( var i = 0; i < layerData.objects.length; i++) 
     		{
-				startLocation.x = layerData.objects[i].x;
-				startLocation.y = layerData.objects[i].y;
+				
 
-				switch(this.currentLevel)
+				console.log(layerData.objects[i].name);
+				if(layerData.objects[i].name == "spawnPoint")
+				{
+						switch(this.currentLevel)
 				{
 					case 1:
 						var ladder = new Ladder(560,60,20,280);
 						this.world.addChild(ladder.shape);
 						ladders.push(ladder);
-						shapeVolgorde = new ShapeVolgorde(["circle","square","triangle"],0);
+						shapeVolgorde = new ShapeVolgorde(["triangle","square","triangle"],0);
+						
+
 						break;
 					case 2:	
 						shapeVolgorde = new ShapeVolgorde(["square","square","triangle"],0);
 						break;
 				}
+					
+					
+					startLocation.x = layerData.objects[i].x;
+					startLocation.y = layerData.objects[i].y;
+					player = new Player(startLocation.x,startLocation.y,20,20,shapeVolgorde.arrShapes[shapeVolgorde.currentShapeNumber]);
+					player.gravity = this.world.gravity;
+					player.friction = this.world.friction;
+					player.grounded = false;
+
+					this.world.addChild(player.shape);
+					this.world.addChild(player.container);
+				}
+				else if(layerData.objects[i].name == "endPoint")
+				{
+					var endPosition = new EndPosition(layerData.objects[i].x,layerData.objects[i].y,24,64);
+					this.world.addChild(endPosition.container);
 
 
-				console.log("make shapeVolgorde");
+					console.log(endPosition.x);
+				}
 
-				player = new Player(startLocation.x,startLocation.y,20,20,shapeVolgorde.arrShapes[shapeVolgorde.currentShapeNumber]);
-				player.gravity = this.world.gravity;
-				player.friction = this.world.friction;
-				player.grounded = false;
+			
 
-				this.world.addChild(player.shape);
-				this.world.addChild(player.container);
+				
 				this.world.addChild(shapeVolgorde.container);
+			
 
 				shapeVolgorde.container.x = 20;
 				shapeVolgorde.container.y = 20;
@@ -180,8 +193,6 @@
 		{
 			for ( var i = 0; i < layerData.objects.length; i++) 
     		{
-    			console.log(layerData.objects[i].x);
-    			//var lever = new Lever(350,100,70,45);
     			var lever = new Lever(layerData.objects[i].x-20,layerData.objects[i].y-34,70,45,layerData.objects[i].type);
     			this.world.addChild(lever.container);
     			lever.container.addEventListener("click", handleClick);
@@ -192,10 +203,8 @@
 
 	function handleClick(event)
 	{
-		console.log("click");
 		for(var j = 0; j < arrLevers.length; j ++)
 		{
-			console.log("een lever");
 			arrLevers[j].change();
 		}
 
@@ -204,13 +213,6 @@
 
 		blockades[0].changePosition(blockades[1].x,blockades[1].y);
 		blockades[1].changePosition(tempX,tempY);
-	}
-
-	function loadRestOfShit()
-	{
-		
-		
-	
 	}
 
 	function initLayer(layerData, tilesetSheet, tilewidth, tileheight) 

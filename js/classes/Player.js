@@ -22,7 +22,6 @@ var Player = (function()
 		this.width = width;
 		this.height = height;
 		
-
 		this.container = new createjs.Container(); 
 		this.shape = new createjs.Shape();
 
@@ -51,13 +50,13 @@ var Player = (function()
 				this.shape.graphics.f("00FF00");
 				this.shape.graphics.drawCircle(0,0,this.height);
 				this.shape.graphics.ef();
+				this.shape.alpha = 0; // shape niet verwijderen, maar hiden, makkelijker voor te debuggen.
 				var imageData = {images: ["manneke.png"], frames: {width:40, height:48} }; 
 				var tilesetSheet = new createjs.SpriteSheet(imageData);
 				var cellBitmap = new createjs.Sprite(tilesetSheet);
 				cellBitmap.x = -20;
 				cellBitmap.y = - 26;
 				//cellBitmap.gotoAndStop(layerData.data[i] - 1);
-				console.log(cellBitmap);
 				this.container.addChild(cellBitmap);
 			break;
 			case "triangle":
@@ -80,9 +79,6 @@ var Player = (function()
 
 	Player.prototype.update = function()
 	{
-
-		//console.log("x :" + this.x);
-		//console.log("y :" + this.y);
 		if(this.grounded)
 		{
 			this.velY = 0;
@@ -94,7 +90,6 @@ var Player = (function()
 		this.container.y = this.y;
 		this.shape.x = this.x;
 		this.shape.y = this.y;
-		//this.shape.y = this.y;
 		this.velY += this.gravity;
 		this.velX *= this.friction;
 	}

@@ -2425,5 +2425,6 @@
  </objectgroup>
  <objectgroup name="player" width="40" height="20">
   <object name="spawnPoint" x="470" y="13"/>
+  <object name="endPoint" x="758" y="219" width="23" height="60"/>
  </objectgroup>
 </map>
