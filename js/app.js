@@ -182,7 +182,6 @@
 					boxes.push(platform);
 
 					//moving platform
-
 					/*var movingPlatform = new Platform(cellBitmap.x, cellBitmap.y,tilewidth,tileheight);
 
 					var movingPlatform = new Platform(cellBitmap.x, cellBitmap.y,tilewidth,tileheight);
