@@ -17,6 +17,8 @@
 
 	var prevPlayerY = 0;
 
+	var startScreen;
+
 	function init()
 	{
 		stage = new  createjs.Stage("cnvs");
