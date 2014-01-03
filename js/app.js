@@ -82,8 +82,10 @@
 
 	function startRealLevel(event)
 	{
-		startGame(this.currentLevel);
+		//startGame(this.currentLevel);
 		console.log("startRealLevel 2");
+
+		this.world.removeChild(this.startScreen.shape);
 	}
 
 	function startGame(levelNumber)
