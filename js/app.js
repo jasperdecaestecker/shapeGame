@@ -114,7 +114,8 @@
 	{
 		this.startScreen = new StartScreen();
 		//this.world.addChild(this.startScreen.background);
-		this.world.addChild(this.startScreen.shape);
+		//this.world.addChild(this.startScreen.shape);
+		this.world.addChild(this.startScreen.container);
 		this.startScreen.shape.addEventListener("click", startRealLevel);
 	}
 
