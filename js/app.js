@@ -74,6 +74,10 @@
 
 		stage.addChild(this.world.container);
 
+
+		//mapLoaded();
+
+
 	}
 
 	function startRealLevel(event)
@@ -112,10 +116,11 @@
 
 	function mapLoaded()
 	{
-		this.startScreen = new StartScreen();
-		//this.world.addChild(this.startScreen.background);
-		//this.world.addChild(this.startScreen.shape);
-		this.world.addChild(this.startScreen.container);
+		this.startScreen = new StartScreen("background");
+		this.world.addChild(this.startScreen.shape);
+
+		this.startScreen = new StartScreen("shape");
+		this.world.addChild(this.startScreen.shape);
 		this.startScreen.shape.addEventListener("click", startRealLevel);
 	}
 
