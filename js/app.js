@@ -60,8 +60,6 @@
 		arrLevers = [];
 		changeShape = false;
 
-		loadMap(levelNumber);
-
 		this.world = new World(800,400);
 		this.world.boundH = -(this.world.height - height);
 		this.world.boundW = -(this.world.width - width);
@@ -69,20 +67,31 @@
 		keys = [];
 		buildBounds();
 
+		startGame(levelNumber);
+		/*this.startScreen = new StartScreen();
+		this.world.addChild(this.startScreen.shape);
+		this.startScreen.shape.addEventListener("click", startRealLevel);*/
+
 		stage.addChild(this.world.container);
 
-		//startscreen - alle andere code naar startRealLevel()
+	}
+
+	function startRealLevel(event)
+	{
+		startGame(this.currentLevel);
+		console.log("startRealLevel 2");
+	}
+
+	function startGame(levelNumber)
+	{
+		loadMap(levelNumber);
+
 		ticker = createjs.Ticker;
 		ticker.setFPS(60);
 		ticker.addEventListener("tick",update);
 
 		window.onkeyup = keyup;
 		window.onkeydown = keydown;
-	}
-
-	function startRealLevel(event)
-	{
-		console.log("startRealLevel");
 	}
 
 	function loadMap(mapNumber)
@@ -104,6 +113,7 @@
 	function mapLoaded()
 	{
 		this.startScreen = new StartScreen();
+		//this.world.addChild(this.startScreen.background);
 		this.world.addChild(this.startScreen.shape);
 		this.startScreen.shape.addEventListener("click", startRealLevel);
 	}
