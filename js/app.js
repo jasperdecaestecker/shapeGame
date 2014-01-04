@@ -67,12 +67,21 @@
 		keys = [];
 		buildBounds();
 
-		startGame(levelNumber);
 		/*this.startScreen = new StartScreen();
 		this.world.addChild(this.startScreen.shape);
 		this.startScreen.shape.addEventListener("click", startRealLevel);*/
 
 		stage.addChild(this.world.container);
+
+		this.startScreen = new StartScreen("background");
+		this.world.addChild(this.startScreen.shape);
+
+		this.startScreen = new StartScreen("shape");
+		this.world.addChild(this.startScreen.shape);
+		this.startScreen.shape.addEventListener("click", startRealLevel);
+
+
+		startGame(levelNumber);
 
 
 		//mapLoaded();
