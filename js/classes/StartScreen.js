@@ -1,54 +1,33 @@
 var StartScreen = (function()
 {
-	var shape, backgroundC, container;
-	var shapeType;
+	var container, startButton, background;
 
-	function StartScreen(shapeType)
+	function StartScreen(x,y,width,height)
 	{
-		console.log('StartScreen');
-
-
+		this.width = width;
+		this.height = height;
 		this.container = new createjs.Container();
 		this.container.x = this.x;
 		this.container.y = this.y;
 
-		this.shapeType = shapeType;
-
-		this.shape = new createjs.Shape();
-		this.shape.x = this.x;
-		this.shape.y = this.y;
-		this.width = 50;
-		this.height = 50;
 		this.draw();
 	}
 
 	StartScreen.prototype.draw = function()
 	{
-		console.log('draw startscreen');
+		//draw background
+		this.background = new createjs.Shape();
+		this.background.graphics.c();
+		this.background.graphics.f("000000");
+		this.background.graphics.drawRect(0,0,this.width,this.height);
+		this.background.graphics.ef();
+		this.container.addChild(this.background);
 
-		switch (this.shapeType)
-		{
-			case "background":
-			console.log("background");
-				this.shape.graphics.c();
-				this.shape.graphics.f("000000");
-				this.shape.graphics.drawRect(0,0,1000,1000);
-				this.shape.graphics.ef();
-			break;
-
-			case "shape":
-			console.log("shape");
-				this.shape.graphics.c();
-				this.shape.graphics.f("10F3FE");
-				this.shape.graphics.drawRect(0,0,this.width,this.height);
-				this.shape.graphics.ef();
-			break;
-		}
-
-		
-		
-
-
+		// draw startknop
+		this.startButton = new Button(0,0,120,30,"Start Game","#00FF00","#000000");
+		this.startButton.container.x = this.width/2 - this.startButton.width/2;
+		this.startButton.container.y = this.height/2 - this.startButton.height/2;
+		this.container.addChild(this.startButton.container);
 	}
 	return StartScreen;
 

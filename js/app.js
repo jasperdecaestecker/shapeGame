@@ -1,6 +1,6 @@
 (function()
 {
-	var stage, boxes, player, world, width, height, blockades, ladders, shapeVolgorde, arrTriggeredBlockadesIds, usingLadder, endPosition;
+	var stage, boxes, player, world, width, height, blockades, ladders, shapeVolgorde, arrTriggeredBlockadesIds, usingLadder, endPosition, startScreen;
 	var arrLevers;
 	var currentLevel;
 	var ticker, keys;
@@ -18,8 +18,6 @@
 
 	var prevPlayerY = 0;
 
-	var startScreen;
-
 	function init()
 	{
 		stage = new  createjs.Stage("cnvs");
@@ -28,7 +26,17 @@
 
 		this.currentLevel = 1;
 
+		this.startScreen = new StartScreen(0,0,800,400);
+		stage.addChild(this.startScreen.container);
+		this.startScreen.container.addEventListener("click", startButtonClicked);
+
+		stage.update();
+	}
+	function startButtonClicked()
+	{
+		console.log("click");
 		startLevel(this.currentLevel);
+		stage.removeChild(this.startScreen.container);
 	}
 
 	function restartLevel()
@@ -84,6 +92,8 @@
 		startGame(levelNumber);
 
 
+
+
 		//mapLoaded();
 
 
@@ -127,12 +137,14 @@
 
 	function mapLoaded()
 	{
-		this.startScreen = new StartScreen("background");
+		//this.startScreen = new StartScreen(0,0,1000,1000);
+		//this.world.addChild(this.startScreen.container);
+		/*this.startScreen = new StartScreen("background");
 		this.world.addChild(this.startScreen.shape);
 
 		this.startScreen = new StartScreen("shape");
 		this.world.addChild(this.startScreen.shape);
-		this.startScreen.shape.addEventListener("click", startRealLevel);
+		this.startScreen.shape.addEventListener("click", startRealLevel);*/
 	}
 
 	function initLayers() 
