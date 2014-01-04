@@ -2,11 +2,13 @@
 {
 	var stage, boxes, player, world, width, height, blockades, ladders, shapeVolgorde, arrTriggeredBlockadesIds, usingLadder, endPosition, startScreen;
 	var arrLevers;
+	var arrMovingPlatforms;
 	var currentLevel;
 	var ticker, keys;
 	var startLocation;
 	var level1;
 	var possibleShapes;
+	var playerisOnMovingTrajectory;
 
 	var worldHeight = 0;
 	var worldWidth = 0;
@@ -31,6 +33,9 @@
 		this.startScreen.container.addEventListener("click", startButtonClicked);
 
 		stage.update();
+
+		// comment volgende voor startscherm te tonen
+		startButtonClicked();
 	}
 	function startButtonClicked()
 	{
@@ -61,11 +66,13 @@
 	{
 		startLocation = {};
 		boxes = [];		
+		arrMovingPlatforms = [];
 		blockades = [];
 		arrTriggeredBlockadesIds = [];
 		ladders = [];
 		arrLevers = [];
 		changeShape = false;
+		playerisOnMovingTrajectory = false;
 
 		this.world = new World(800,400);
 		this.world.boundH = -(this.world.height - height);
@@ -175,12 +182,11 @@
 		{
 			for ( var i = 0; i < layerData.objects.length; i++) 
     		{
-				
-
 				console.log(layerData.objects[i].name);
 				if(layerData.objects[i].name == "spawnPoint")
 				{
-					setShapeVolgorde()
+					setShapeVolgorde();
+					makeMovingPlatform();
 								
 					startLocation.x = layerData.objects[i].x;
 					startLocation.y = layerData.objects[i].y;
@@ -221,6 +227,14 @@
     			arrLevers.push(lever);
     		}
 		}
+	}
+
+	function makeMovingPlatform()
+	{
+		//arrMovingPlatforms.push()
+		var movingPlatform = new MovingPlatform(100,280,100,20,2,100,300);
+		this.world.addChild(movingPlatform.shape);
+		arrMovingPlatforms.push(movingPlatform);
 	}
 
 	function handleClick(event)
@@ -341,6 +355,7 @@
 				player.velX --;
 			}
 			player.grounded = false;
+			playerisOnMovingTrajectory = false;
 		}
 		if(keys[39])
 		{
@@ -349,6 +364,7 @@
 				player.velX ++;
 			}
 			player.grounded = false;
+			playerisOnMovingTrajectory = false;
 		}		
 
 		for(var i = 0; i < boxes.length; i++)
@@ -406,6 +422,7 @@
 			}
 		}
 
+		checkMovingPlatform();
 		checkBlockadesCollision();
 		checkIfFinished();
 
@@ -421,6 +438,42 @@
 			player.x = startLocation.x;
 			player.y = startLocation.y;
 			restartLevel();
+		}
+	}
+
+	function checkMovingPlatform()
+	{
+
+		for(var i = 0; i < arrMovingPlatforms.length; i++)
+		{
+			arrMovingPlatforms[i].update();
+
+			if(playerisOnMovingTrajectory)
+			{
+				player.x += arrMovingPlatforms[i].speed;
+			}
+
+			var colDir = CollisionDetection.checkCollision(player,arrMovingPlatforms[i],true,usingLadder);
+			switch(colDir)
+			{
+				case "l":
+				case "r":
+					player.velX = 0;
+					break;
+					case "t":
+						if(!usingLadder)
+						{
+							 player.velY *= -1;
+						}
+					
+					break;
+					case "b":
+						player.grounded = true;
+						player.jumping = false;
+						playerisOnMovingTrajectory = true;
+			
+					break;
+			}
 		}
 	}
 

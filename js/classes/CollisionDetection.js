@@ -7,6 +7,8 @@ var CollisionDetection = (function()
 
 	}
 
+	// clippingmode true = je botst op het obstakel, false = je kan doorheen het object
+	// usingladders true = wanneer je een ladder beklimt kan je doorheen de platformen
 	CollisionDetection.checkCollision = function(shapeA,shapeB,clippingmode,usingLadder)
 	{
 		var vX = (shapeA.x + (shapeA.width/2)) - (shapeB.x + (shapeB.width/2));
