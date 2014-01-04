@@ -34,9 +34,8 @@
 	}
 	function startButtonClicked()
 	{
-		console.log("click");
 		startLevel(this.currentLevel);
-		stage.removeChild(this.startScreen.container);
+		//stage.removeChild(this.startScreen.container);
 	}
 
 	function restartLevel()
@@ -75,36 +74,8 @@
 		keys = [];
 		buildBounds();
 
-		/*this.startScreen = new StartScreen();
-		this.world.addChild(this.startScreen.shape);
-		this.startScreen.shape.addEventListener("click", startRealLevel);*/
-
 		stage.addChild(this.world.container);
-
-		this.startScreen = new StartScreen("background");
-		this.world.addChild(this.startScreen.shape);
-
-		this.startScreen = new StartScreen("shape");
-		this.world.addChild(this.startScreen.shape);
-		this.startScreen.shape.addEventListener("click", startRealLevel);
-
-
 		startGame(levelNumber);
-
-
-
-
-		//mapLoaded();
-
-
-	}
-
-	function startRealLevel(event)
-	{
-		//startGame(this.currentLevel);
-		console.log("startRealLevel 2");
-
-		this.world.removeChild(this.startScreen.shape);
 	}
 
 	function startGame(levelNumber)
