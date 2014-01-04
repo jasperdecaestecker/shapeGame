@@ -232,7 +232,7 @@
 	function makeMovingPlatform()
 	{
 		//arrMovingPlatforms.push()
-		var movingPlatform = new MovingPlatform(100,280,100,20,2,100,300);
+		var movingPlatform = new MovingPlatform(100,280,100,20,1,100,300,280,80);
 		this.world.addChild(movingPlatform.shape);
 		arrMovingPlatforms.push(movingPlatform);
 	}
@@ -450,7 +450,8 @@
 
 			if(playerisOnMovingTrajectory)
 			{
-				player.x += arrMovingPlatforms[i].speed;
+				player.x += arrMovingPlatforms[i].speedX;
+				player.y += arrMovingPlatforms[i].speedY;
 			}
 
 			var colDir = CollisionDetection.checkCollision(player,arrMovingPlatforms[i],true,usingLadder);
