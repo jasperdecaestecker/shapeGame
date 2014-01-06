@@ -2,6 +2,7 @@ var Player = (function()
 {
 	var shape, currentPlayerShape;
 	var playerShapes = ["square","triangle","circle"];
+	var circlePositie;
 	//var currentPlayerShape = 0;
 
 	function Player(x,y,width,height,currentPlayerShape)
@@ -51,11 +52,15 @@ var Player = (function()
 				this.shape.graphics.drawCircle(0,0,this.height);
 				this.shape.graphics.ef();
 				this.shape.alpha = 0; // shape niet verwijderen, maar hiden, makkelijker voor te debuggen.
-				var imageData = {images: ["manneke.png"], frames: {width:40, height:48} }; 
+				//var imageData = {images: ["manneke.png"], frames: {width:40, height:48} }; 
+
+				var imageData = {images: ["cirkelke.png"], frames: {width:43, height:48} }; 
 				var tilesetSheet = new createjs.SpriteSheet(imageData);
 				var cellBitmap = new createjs.Sprite(tilesetSheet);
 				cellBitmap.x = -20;
 				cellBitmap.y = - 26;
+
+				this.circlePositie = 0;
 				//cellBitmap.gotoAndStop(layerData.data[i] - 1);
 				this.container.addChild(cellBitmap);
 			break;
@@ -75,6 +80,20 @@ var Player = (function()
 	{
 		this.currentPlayerShape = shape;
 		this.draw(this.currentPlayerShape);
+	}
+
+	Player.prototype.animation = function(shape)
+	{
+		console.log('update');
+		if(this.circlePositie == 0)
+		{
+			this.circlePositie = 1;
+		}
+		else
+		{
+			this.circlePositie = 0;
+		}
+		this.cellBitmap.gotoAndStop(this.circlePositie);
 	}
 
 	Player.prototype.update = function()

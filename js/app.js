@@ -164,7 +164,7 @@
 				/*var ladder = new Ladder(560,60,20,280);
 				this.world.addChild(ladder.shape);
 				ladders.push(ladder);*/
-				arrShapeVolgorde = ["triangle","square"];
+				arrShapeVolgorde = ["circle","square"];
 				break;
 			case 2:	
 				arrShapeVolgorde = ["triangle","triangle","square"];
@@ -302,6 +302,8 @@
 	function handleTick()
 	{
 		vehicle.update();
+
+		player.animation();
 
 		console.log("handletick");
 
