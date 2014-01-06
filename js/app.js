@@ -161,14 +161,21 @@
 		switch(this.currentLevel)
 		{
 			case 1:
-				/*var ladder = new Ladder(560,60,20,280);
-				this.world.addChild(ladder.shape);
-				ladders.push(ladder);*/
 				arrShapeVolgorde = ["circle","square"];
 				break;
 			case 2:	
 				arrShapeVolgorde = ["triangle","triangle","square"];
 				break;
+			case 3:
+				var ladder = new Ladder(160,180,40,140);
+				this.world.addChild(ladder.container);
+				ladders.push(ladder);
+
+				var ladder = new Ladder(600,152,40,108);
+				this.world.addChild(ladder.container);
+				ladders.push(ladder);
+				arrShapeVolgorde = ["triangle","circle","square"];
+				break;	
 		}
 		shapeVolgorde = new ShapeVolgorde(arrShapeVolgorde,0);
 		shapeVolgorde.container.x = 20;
@@ -186,16 +193,14 @@
 				if(layerData.objects[i].name == "spawnPoint")
 				{
 					setShapeVolgorde();
-					makeMovingPlatform();
+					//makeMovingPlatform();
 								
 					startLocation.x = layerData.objects[i].x;
 					startLocation.y = layerData.objects[i].y;
-					player = new Player(startLocation.x,startLocation.y,20,20,shapeVolgorde.arrShapes[shapeVolgorde.currentShapeNumber]);
+					player = new Player(startLocation.x,startLocation.y,40,40,shapeVolgorde.arrShapes[shapeVolgorde.currentShapeNumber]);
 					player.gravity = this.world.gravity;
 					player.friction = this.world.friction;
 					player.grounded = false;
-
-					this.world.addChild(player.shape);
 					this.world.addChild(player.container);
 				}
 				else if(layerData.objects[i].name == "endPoint")
@@ -211,7 +216,7 @@
 		{
 			for ( var i = 0; i < layerData.objects.length; i++) 
     		{
-    			var blockade = new Blockade(layerData.objects[i].x-10,layerData.objects[i].y-10,20,20,layerData.objects[i].type, i);
+    			var blockade = new Blockade(layerData.objects[i].x,layerData.objects[i].y,40,40,layerData.objects[i].type, i);
 				this.world.addChild(blockade.shape);
 				blockades.push(blockade);
     		}
@@ -269,29 +274,7 @@
 	            	//normal platform
 					var platform = new Platform(cellBitmap.x, cellBitmap.y,tilewidth,tileheight);
 					boxes.push(platform);
-
-					//moving platform
-					/*var movingPlatform = new Platform(cellBitmap.x, cellBitmap.y,tilewidth,tileheight);
-
-					var movingPlatform = new Platform(cellBitmap.x, cellBitmap.y,tilewidth,tileheight);
-					this.world.addChild(movingPlatform.shape);
-
-					vehicle = new SteeredVehicle(stage.canvas.width, stage.canvas.height, 
-						Math.round(Math.random()*stage.canvas.width), 
-						Math.round(Math.random()*stage.canvas.height));
-
-					vehicle.setRender(movingPlatform.shape);
-					vehicle.setSpeed(8);
-					vehicle.setRotation(180);
-
-					var ticker = createjs.Ticker;
-					ticker.useRAF = true;
-					ticker.setFPS(60);
-					ticker.addEventListener("tick", handleTick);
-
-					console.log('vehicle position '+vehicle.x);
-					boxes.push(movingPlatform);*/
-
+					console.log("makePlatform");
 	            }
 
 				this.world.addChild(cellBitmap);
@@ -323,7 +306,7 @@
 	function keydown(e)
 	{
 		keys[e.keyCode] = true;
-		console.log(e.keyCode);
+		//console.log(e.keyCode);
 	}
 
 	function update()
@@ -333,10 +316,9 @@
 		// E
 		if(keys[69])
 		{	
-			console.log("e");
 			clearLevel();
-				this.currentLevel++;
-				startLevel(this.currentLevel);
+			this.currentLevel++;
+			startLevel(this.currentLevel);
 		}
 
 		if(keys[32])
@@ -368,61 +350,8 @@
 			playerisOnMovingTrajectory = false;
 		}		
 
-		for(var i = 0; i < boxes.length; i++)
-		{
-			switch(CollisionDetection.checkCollision(player,boxes[i],true,usingLadder))
-			{
-				case "l":
-				case "r":
-					player.velX = 0;
-					break;
-					case "t":
-						if(!usingLadder)
-						{
-							 player.velY *= -1;
-						}
-					
-					break;
-					case "b":
-						player.grounded = true;
-						player.jumping = false;
-					break;
-			}
-		}
-
-		
-		for(var i = 0; i < ladders.length; i++)
-		{
-			var colDir = CollisionDetection.checkCollision(player,ladders[i],false,usingLadder);
-			switch(colDir)
-			{
-				case "l":
-				case "r":
-				case "t":
-				case "b":
-					if(keys[38])
-					{
-						player.y -= 2;
-						usingLadder = true;
-						player.grounded = true;
-					}
-					else if(keys[40])
-					{
-						player.y += 2;
-						usingLadder = true;
-						player.grounded = true;
-					}
-					else
-					{
-						usingLadder = false;
-					}
-					break;
-				default:
-					usingLadder = false;
-					break;	
-			}
-		}
-
+		checkCollisionPlatforms();
+		checkLadders();
 		checkMovingPlatform();
 		checkBlockadesCollision();
 		checkIfFinished();
@@ -440,6 +369,95 @@
 			player.y = startLocation.y;
 			restartLevel();
 		}
+	}
+
+	function checkCollisionPlatforms()
+	{
+		if(!usingLadder)
+		{
+			var breakThisSwitch = false;
+			for(var i = 0; i < boxes.length; i++)
+			{
+				switch(CollisionDetection.checkCollision(player,boxes[i],true,usingLadder))
+				{
+					case "l":
+					case "r":
+						player.velX = 0;
+						breakThisSwitch = true;
+						break;
+						case "t":
+							if(!usingLadder)
+							{
+								 player.velY *= -1;
+							}
+							breakThisSwitch = true;
+						
+						break;
+						case "b":
+							player.grounded = true;
+							player.jumping = false;
+							breakThisSwitch = true;
+						break;
+				}
+
+				if(breakThisSwitch)
+				{
+					return;
+				}
+			}
+		}
+	}
+
+	function checkLadders()
+	{
+		var breakThisSwitch = false;
+
+		for(var i = 0; i < ladders.length; i++)
+		{
+			var colDir = CollisionDetection.checkCollision(player,ladders[i],false,usingLadder);
+			switch(colDir)
+			{
+				case "l":
+				case "r":
+				case "t":
+				case "b":
+					//player.grounded = true;
+					//console.log("usingLadder");
+					if(keys[38])
+					{
+						usingLadder = true;
+						player.x = ladders[i].x;
+						player.y -= 2;
+						
+						//console.log(usingLadder);
+						player.grounded = true;
+					}
+					else if(keys[40])
+					{
+						usingLadder = true;
+						player.grounded = true;
+						player.y += 2;
+						player.x = ladders[i].x;
+						
+					}
+
+					if(player.y + 12 > ladders[i].y + ladders[i].height)
+					{
+						player.y -= 2;
+						player.grounded = true;
+					}
+					breakThisSwitch = true;
+					break;
+				default:
+					usingLadder = false;
+					break;	
+			}
+
+			if(breakThisSwitch)
+			{
+				return;
+			}
+		}	
 	}
 
 	function checkMovingPlatform()

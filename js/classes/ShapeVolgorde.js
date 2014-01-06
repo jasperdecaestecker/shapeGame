@@ -24,26 +24,29 @@ var ShapeVolgorde = (function()
 					shape.graphics.f("FF0000");
 					shape.graphics.drawRect(0,0,20,20);
 					shape.graphics.ef();
+					shape.x = 0 + i*30;
 					//console.log("makeSquare");
 				break;
 				case "circle":
 					shape.graphics.c();
 					shape.graphics.f("FF0000");
-					shape.graphics.drawCircle(0,0,20);
+					shape.graphics.drawCircle(0,0,10);
 					shape.graphics.ef();
+					shape.y = 10;
+					shape.x = 10 + i*30;
 				break;
 				case "triangle":
 					shape.graphics.c();
 					shape.graphics.f("FF0000");
-					shape.graphics.mt(0,0);
+					shape.graphics.mt(0,20);
 					shape.graphics.lt(20,20);
-					shape.graphics.lt(0,20);
-					shape.graphics.lt(0,0);
+					shape.graphics.lt(10,0);
 					shape.graphics.ef();
+					shape.x = 0 + i*30;
 				break;
 			}
-			shape.x = 0 + i*30;
-			shape.y = 0;
+		
+			
 			this.container.addChild(shape);
 
 		}

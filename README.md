@@ -23,15 +23,15 @@ General
 Mechanics
 ------
 - Traps
-- Bewegende platforms
+- ~~Bewegende platforms~~
 - ~~Levers~~
 - ~~ShapeVolgorde~~
 - ~~Ladders~~
 
-Performance
+Performance / bugs
 ------
-- Kijken in de collision detection for lus om de lus meteen te breaken wanneer 1 collision voorkomt.
-- telkens andere collision klasse voor ladders/blockades/bounds ?
+- restart level heeft nog bugs bij herpositioneren van shapes. voornamelijk cirkel
+- ~~Kijken in de collision detection for lus om de lus meteen te breaken wanneer 1 collision voorkomt.~~
 
 Credits
 =========

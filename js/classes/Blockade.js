@@ -44,16 +44,17 @@ var Blockade = (function()
 			case "circle":
 				this.shape.graphics.c();
 				this.shape.graphics.f("FF0000");
-				this.shape.graphics.drawCircle(0,0,this.height);
+				this.shape.graphics.drawCircle(0,0,this.height/2);
 				this.shape.graphics.ef();
+				this.shape.x += this.height/2;
+				this.shape.y += this.height/2;
 			break;
 			case "triangle":
 				this.shape.graphics.c();
 				this.shape.graphics.f("FF0000");
-				this.shape.graphics.mt(0,0);
+				this.shape.graphics.mt(0,this.height);
 				this.shape.graphics.lt(this.width,this.height);
-				this.shape.graphics.lt(0,this.height);
-				this.shape.graphics.lt(0,0);
+				this.shape.graphics.lt(this.width/2,0);
 				this.shape.graphics.ef();
 			break;
 		}
