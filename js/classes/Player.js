@@ -57,7 +57,7 @@ var Player = (function()
 				var imageData = {images: ["cirkelke.png"], frames: {width:43, height:48} }; 
 				var tilesetSheet = new createjs.SpriteSheet(imageData);
 				var cellBitmap = new createjs.Sprite(tilesetSheet);
-				cellBitmap.x = -20;
+				cellBitmap.x = -22;
 				cellBitmap.y = - 26;
 
 				this.circlePositie = 0;

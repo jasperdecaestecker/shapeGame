@@ -161,9 +161,9 @@
 		switch(this.currentLevel)
 		{
 			case 1:
-				/*var ladder = new Ladder(560,60,20,280);
-				this.world.addChild(ladder.shape);
-				ladders.push(ladder);*/
+				var ladder = new Ladder(120,60,50,280);
+				this.world.addChild(ladder.container);
+				ladders.push(ladder);
 				arrShapeVolgorde = ["circle","square"];
 				break;
 			case 2:	
