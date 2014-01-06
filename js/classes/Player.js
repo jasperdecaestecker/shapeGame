@@ -26,6 +26,9 @@ var Player = (function()
 		this.container = new createjs.Container(); 
 		this.shape = new createjs.Shape();
 
+		this.circlePositie = 0;
+
+
 		this.shape.x = this.x;
 		this.shape.y = this.y;
 
@@ -54,15 +57,20 @@ var Player = (function()
 				this.shape.alpha = 0; // shape niet verwijderen, maar hiden, makkelijker voor te debuggen.
 				//var imageData = {images: ["manneke.png"], frames: {width:40, height:48} }; 
 
-				var imageData = {images: ["cirkelke.png"], frames: {width:43, height:48} }; 
+				/*var imageData = {images: ["cirkelke.png"], frames: {width:43, height:48} }; 
+				var tilesetSheet = new createjs.SpriteSheet(imageData);
+				var cellBitmap = new createjs.Sprite(tilesetSheet);*/
+
+				var imageData = {images: ["cirkelke.png"], frames: {width:70, height:45} }; 
 				var tilesetSheet = new createjs.SpriteSheet(imageData);
 				var cellBitmap = new createjs.Sprite(tilesetSheet);
+				this.container.addChild(cellBitmap);
+
 				cellBitmap.x = -20;
 				cellBitmap.y = - 26;
 
-				this.circlePositie = 0;
 				//cellBitmap.gotoAndStop(layerData.data[i] - 1);
-				this.container.addChild(cellBitmap);
+				//this.container.addChild(cellBitmap);
 			break;
 			case "triangle":
 				this.shape.graphics.c();
