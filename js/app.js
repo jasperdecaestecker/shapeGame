@@ -303,8 +303,6 @@
 	{
 		vehicle.update();
 
-		player.animation();
-
 		console.log("handletick");
 
 		stage.update();		
@@ -330,6 +328,7 @@
 
 	function update()
 	{
+		player.animation();
 
 		// E
 		if(keys[69])
