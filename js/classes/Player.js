@@ -53,6 +53,8 @@ var Player = (function()
 				this.shape.graphics.f("00FF00");
 				this.shape.graphics.drawRect(0,0,this.width,this.height);
 				this.shape.graphics.ef();
+					this.shape.x = 0;
+				this.shape.y = 0;
 			break;
 			case "circle":
 				this.shape.graphics.c();
@@ -73,7 +75,7 @@ var Player = (function()
 				cellBitmap.x = -20;
 				cellBitmap.y = - 26;*/
 
-				this.height = 48;
+				//this.height = 48;
 				this.circlePositie = 0;
 
 			break;

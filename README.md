@@ -13,8 +13,10 @@ Design
 
 General
 ------
-- Controller functionaltieit
+- naam van spel?
 - Level klasse
+- continue game = overzicht unlockede levels
+- unlocked levels bihouden in "localstorage".
 - ~~Einde Level / volgend level~~
 - ~~Restart level~~
 - ~~Map inladen~~
@@ -22,7 +24,8 @@ General
 
 Mechanics
 ------
-- Traps
+- Intro mechanic
+- EindBoss mechanic
 - ~~Bewegende platforms~~
 - ~~Levers~~
 - ~~ShapeVolgorde~~

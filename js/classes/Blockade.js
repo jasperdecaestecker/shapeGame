@@ -28,6 +28,12 @@ var Blockade = (function()
 		this.y = y;
 		this.shape.x = this.x;
 		this.shape.y = this.y;
+		if(this.blockadeShape == "circle")
+		{
+			this.shape.x += this.height/2;
+			this.shape.y += this.height/2;
+		}
+
 	}
 
 	Blockade.prototype.draw = function()

@@ -26,7 +26,7 @@
 		width = stage.canvas.width;
 		height = stage.canvas.height;
 
-		this.currentLevel = 1;
+		this.currentLevel = 3;
 
 		this.startScreen = new StartScreen(0,0,800,400);
 		stage.addChild(this.startScreen.container);
