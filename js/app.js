@@ -161,7 +161,7 @@
 		switch(this.currentLevel)
 		{
 			case 1:
-				arrShapeVolgorde = ["circle","square"];
+				arrShapeVolgorde = ["triangle","square"];
 				break;
 			case 2:	
 				arrShapeVolgorde = ["triangle","triangle","square"];
@@ -311,7 +311,7 @@
 
 	function update()
 	{
-		player.animation();
+		//player.animation();
 
 		// E
 		if(keys[69])
