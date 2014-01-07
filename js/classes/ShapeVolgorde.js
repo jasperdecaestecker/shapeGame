@@ -14,9 +14,14 @@ var ShapeVolgorde = (function()
 
 	ShapeVolgorde.prototype.draw = function()
 	{
+		var imageData = {images: ["blockadeSprite.png"], frames: {width:40, height:40} }; 
+		var tilesetSheet = new createjs.SpriteSheet(imageData);
+	
+
 		for (var i = 0; i < this.arrShapes.length; i++) 
     	{
     		var shape = new createjs.Shape();
+    			var cellBitmap = new createjs.Sprite(tilesetSheet);
 			switch(this.arrShapes[i])
 			{
 				case "square":
@@ -25,6 +30,9 @@ var ShapeVolgorde = (function()
 					shape.graphics.drawRect(0,0,20,20);
 					shape.graphics.ef();
 					shape.x = 0 + i*30;
+					cellBitmap.x = 0 + i *30;
+					cellBitmap.gotoAndStop(2);
+
 					//console.log("makeSquare");
 				break;
 				case "circle":
@@ -34,6 +42,8 @@ var ShapeVolgorde = (function()
 					shape.graphics.ef();
 					shape.y = 10;
 					shape.x = 10 + i*30;
+					cellBitmap.x = 0 + i *30;
+						cellBitmap.gotoAndStop(1);
 				break;
 				case "triangle":
 					shape.graphics.c();
@@ -43,11 +53,15 @@ var ShapeVolgorde = (function()
 					shape.graphics.lt(10,0);
 					shape.graphics.ef();
 					shape.x = 0 + i*30;
+					cellBitmap.x = 0 + i *30;
+					cellBitmap.gotoAndStop(0);
 				break;
 			}
 		
+						cellBitmap.scaleX = cellBitmap.scaleY = 0.5;
 			
-			this.container.addChild(shape);
+			//this.container.addChild(shape);
+			this.container.addChild(cellBitmap);
 
 		}
 	}

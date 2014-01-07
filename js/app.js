@@ -217,7 +217,7 @@
 			for ( var i = 0; i < layerData.objects.length; i++) 
     		{
     			var blockade = new Blockade(layerData.objects[i].x,layerData.objects[i].y,40,40,layerData.objects[i].type, i);
-				this.world.addChild(blockade.shape);
+				this.world.addChild(blockade.container);
 				blockades.push(blockade);
     		}
 		}
@@ -529,9 +529,7 @@
 						if(blockades[j].blockadeShape == player.currentPlayerShape)
 						{
 							arrTriggeredBlockadesIds.push(triggeredBlockId);
-							this.world.removeChild(blockades[j].shape);
-							console.log(blockades[j].shape);
-							console.log(arrTriggeredBlockadesIds);
+							this.world.removeChild(blockades[j].container);
 							shapeVolgorde.nextShape();
 							player.nextShape(shapeVolgorde.arrShapes[shapeVolgorde.currentShapeNumber]);
 						}

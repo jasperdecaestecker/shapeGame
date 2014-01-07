@@ -1,6 +1,6 @@
 var Blockade = (function()
 {
-	var shape, blockadeShape, blockadeId;
+	var shape, blockadeShape, blockadeId, container;
 	var blockadeShapes = ["square","triangle","circle"];
 
 
@@ -17,8 +17,14 @@ var Blockade = (function()
 		this.height = height;
 
 		this.shape = new createjs.Shape();
-		this.shape.x = this.x;
-		this.shape.y = this.y;
+		this.container = new createjs.Container(); 
+
+		this.container.x = this.x;
+		this.container.y = this.y;
+
+
+		/*this.shape.x = this.x;
+		this.shape.y = this.y;*/
 		this.draw();
 	}
 
@@ -38,6 +44,11 @@ var Blockade = (function()
 
 	Blockade.prototype.draw = function()
 	{
+
+		var imageData = {images: ["blockadeSprite.png"], frames: {width:40, height:40} }; 
+		var tilesetSheet = new createjs.SpriteSheet(imageData);
+		var cellBitmap = new createjs.Sprite(tilesetSheet);
+	
 		switch(this.blockadeShape)
 		{
 			case "square":
@@ -46,6 +57,7 @@ var Blockade = (function()
 				this.shape.graphics.drawRect(0,0,this.width,this.height);
 				this.shape.graphics.ef();
 				//console.log("makeSquare");
+				cellBitmap.gotoAndStop(2);
 			break;
 			case "circle":
 				this.shape.graphics.c();
@@ -54,6 +66,7 @@ var Blockade = (function()
 				this.shape.graphics.ef();
 				this.shape.x += this.height/2;
 				this.shape.y += this.height/2;
+				cellBitmap.gotoAndStop(1);
 			break;
 			case "triangle":
 				this.shape.graphics.c();
@@ -62,8 +75,12 @@ var Blockade = (function()
 				this.shape.graphics.lt(this.width,this.height);
 				this.shape.graphics.lt(this.width/2,0);
 				this.shape.graphics.ef();
+				cellBitmap.gotoAndStop(0);
 			break;
 		}
+
+		//this.container.addChild(this.shape);
+		this.container.addChild(cellBitmap);
 		
 	}
 	return Blockade;
