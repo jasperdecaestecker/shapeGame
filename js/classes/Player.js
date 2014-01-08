@@ -46,6 +46,10 @@ var Player = (function()
 	Player.prototype.draw = function()
 	{
 		//console.log(playerShapes[playerShapeNumber]);
+		var imageData = {images: ["playerSprite.png"], frames: {width:40, height:48} }; 
+		var tilesetSheet = new createjs.SpriteSheet(imageData);
+		var cellBitmap = new createjs.Sprite(tilesetSheet);
+		this.container.removeChild(cellBitmap);
 		switch(this.currentPlayerShape)
 		{
 			case "square":
@@ -55,6 +59,12 @@ var Player = (function()
 				this.shape.graphics.ef();
 					this.shape.x = 0;
 				this.shape.y = 0;
+				this.shape.alpha=0;
+
+				cellBitmap.x = 0;
+				cellBitmap.y = -9;
+
+				cellBitmap.gotoAndStop(2);
 			break;
 			case "circle":
 				this.shape.graphics.c();
@@ -63,23 +73,20 @@ var Player = (function()
 				this.shape.graphics.ef();
 				this.shape.x = 20;
 				this.shape.y += this.height/2;
-				this.shape.alpha = 1; // shape niet verwijderen, maar hiden, makkelijker voor te debuggen.
+				this.shape.alpha = 0; // shape niet verwijderen, maar hiden, makkelijker voor te debuggen.
 
-				this.container.addChild(this.shape);
-
-				/*var imageData = {images: ["cirkelke.png"], frames: {width:70, height:45} }; 
-				var tilesetSheet = new createjs.SpriteSheet(imageData);
-				var cellBitmap = new createjs.Sprite(tilesetSheet);
-				this.container.addChild(cellBitmap);
-
-				cellBitmap.x = -20;
-				cellBitmap.y = - 26;*/
+				cellBitmap.gotoAndStop(0);
 
 				//this.height = 48;
+
+				cellBitmap.x = 0;
+				cellBitmap.y = -8;
+
 				this.circlePositie = 0;
 
 			break;
 			case "triangle":
+				//this.container.c();
 				this.shape.graphics.c();
 				this.shape.graphics.f("00FF00");
 				this.shape.graphics.mt(0,this.height);
@@ -88,14 +95,24 @@ var Player = (function()
 				this.shape.graphics.ef();
 				this.shape.x = 0;
 				this.shape.y = 0;
+				this.shape.alpha = 0;
 				this.container.addChild(this.shape);
+				cellBitmap.x = 0;
+				cellBitmap.y = -9;
+
+				cellBitmap.gotoAndStop(1);
 			break;
 		}
+
+		this.container.addChild(cellBitmap);
+
+
 
 	}
 
 	Player.prototype.nextShape = function(shape)
 	{
+		//this.container.c();
 		this.currentPlayerShape = shape;
 		this.draw(this.currentPlayerShape);
 	}
