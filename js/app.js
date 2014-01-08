@@ -20,6 +20,11 @@
 
 	var prevPlayerY = 0;
 
+	var delayAnimation ;
+	var delayAnimationCount;
+
+	var delayAnimationB, delayAnimationCountB;
+
 	function init()
 	{
 		stage = new  createjs.Stage("cnvs");
@@ -31,6 +36,12 @@
 		this.startScreen = new StartScreen(0,0,800,400);
 		stage.addChild(this.startScreen.container);
 		this.startScreen.container.addEventListener("click", startButtonClicked);
+
+		this.delayAnimation = 6;
+		this.delayAnimationCount = 1;
+
+		this.delayAnimationB = 20;
+		this.delayAnimationCountB = 1;
 
 		stage.update();
 
@@ -311,13 +322,32 @@
 
 	function update()
 	{
-
+		//UNCOMMENT WANNEER HET ALTIJD MOET BEWEGEN
+		/*if(this.delayAnimationCountB % this.delayAnimationB == 0)
+			{
+				player.animation();
+				this.delayAnimationCountB = 1;
+			}
+			else
+			{
+				this.delayAnimationCountB++;
+			}*/
+		
 		// E
 		if(keys[69])
 		{	
 			clearLevel();
 			this.currentLevel++;
 			startLevel(this.currentLevel);
+			if(this.delayAnimationCount % this.delayAnimation == 0)
+			{
+				player.animation();
+				this.delayAnimationCount = 1;
+			}
+			else
+			{
+				this.delayAnimationCount++;
+			}
 		}
 
 		if(keys[32])
@@ -338,6 +368,17 @@
 			}
 			player.grounded = false;
 			playerisOnMovingTrajectory = false;
+			
+			if(this.delayAnimationCount % this.delayAnimation == 0)
+			{
+				player.animation();
+				this.delayAnimationCount = 1;
+			}
+			else
+			{
+				this.delayAnimationCount++;
+			}
+
 		}
 		if(keys[39])
 		{
@@ -347,6 +388,16 @@
 			}
 			player.grounded = false;
 			playerisOnMovingTrajectory = false;
+			if(this.delayAnimationCount % this.delayAnimation == 0)
+			{
+				player.animation();
+				this.delayAnimationCount = 1;
+			}
+			else
+			{
+				this.delayAnimationCount++;
+			}
+
 		}		
 
 		checkCollisionPlatforms();
@@ -360,7 +411,6 @@
 
 		player.update();
 		stage.update();
-		player.animation();
 
 
 		// gevallen door de grond = mors dood	
