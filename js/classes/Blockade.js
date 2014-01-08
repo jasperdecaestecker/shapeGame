@@ -77,7 +77,7 @@ var Blockade = (function()
 			case "rectangle":
 				this.shape.graphics.c();
 				this.shape.graphics.f("FF0000");
-				this.shape.graphics.drawRect(0,0,this.width,this.height * 2);
+				this.shape.graphics.drawRect(0,0,this.width/2,this.height * 2);
 				this.shape.graphics.ef();
 				cellBitmap.gotoAndStop(3);
 				this.container.addChild(this.shape);

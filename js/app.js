@@ -207,7 +207,7 @@
 				this.playerFollowOffsetY = -100;
 				boss = new Boss(10,680,80,80);
 				this.world.addChild(boss.container);
-				arrShapeVolgorde = ["triangle","triangle","square"];
+				arrShapeVolgorde = ["rectangle","rectangle","square"];
 				break;
 						
 		}

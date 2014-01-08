@@ -1,7 +1,7 @@
 var Player = (function()
 {
 	var shape, currentPlayerShape;
-	var playerShapes = ["square","triangle","circle"];
+	var playerShapes = ["square","triangle","circle","rectangle"];
 	var circlePositie;
 	//var currentPlayerShape = 0;
 	var cellBitmap;
@@ -56,20 +56,7 @@ var Player = (function()
 		this.container.removeChild(this.cellBitmap);
 		switch(this.currentPlayerShape)
 		{
-			case "square":
-				this.shape.graphics.c();
-				this.shape.graphics.f("00FF00");
-				this.shape.graphics.drawRect(0,0,this.width,this.height);
-				this.shape.graphics.ef();
-				this.shape.x = 0;
-				this.shape.y = 0;
-				this.shape.alpha=0;
-
-				this.cellBitmap.x = 0;
-				this.cellBitmap.y = -9;
-
-				this.cellBitmap.gotoAndStop(2);
-			break;
+			
 			case "circle":
 				this.shape.graphics.c();
 				this.shape.graphics.f("00FF00");
@@ -106,12 +93,37 @@ var Player = (function()
 
 				this.cellBitmap.gotoAndStop(1);
 			break;
+			case "square":
+				this.shape.graphics.c();
+				this.shape.graphics.f("00FF00");
+				this.shape.graphics.drawRect(0,0,this.width,this.height);
+				this.shape.graphics.ef();
+				this.shape.x = 0;
+				this.shape.y = 0;
+				this.shape.alpha=0;
+
+				this.cellBitmap.x = 0;
+				this.cellBitmap.y = -9;
+
+				this.cellBitmap.gotoAndStop(2);
+			break;
+			case "rectangle":
+				this.shape.graphics.c();
+				this.shape.graphics.f("00FF00");
+				this.shape.graphics.drawRect(0,0,this.width,this.height);
+				this.shape.graphics.ef();
+				this.shape.x = 0;
+				this.shape.y = 0;
+				this.shape.alpha=0;
+
+				this.cellBitmap.x = 0;
+				this.cellBitmap.y = -9;
+
+				this.cellBitmap.gotoAndStop(3);
+			break;
 		}
 
 		this.container.addChild(this.cellBitmap);
-
-
-
 	}
 
 	Player.prototype.nextShape = function(shape)
@@ -158,6 +170,18 @@ var Player = (function()
 				else if(this.spritePos == 1)
 				{
 					this.cellBitmap.gotoAndStop(5);
+					this.spritePos = 0;
+				}
+			break;
+			case 'rectangle':
+				if(this.spritePos == 0)
+				{
+					this.cellBitmap.gotoAndStop(3);
+					this.spritePos = 1;
+				}
+				else if(this.spritePos == 1)
+				{
+					this.cellBitmap.gotoAndStop(7);
 					this.spritePos = 0;
 				}
 			break;
