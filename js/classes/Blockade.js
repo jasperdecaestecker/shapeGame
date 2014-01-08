@@ -1,7 +1,7 @@
 var Blockade = (function()
 {
 	var shape, blockadeShape, blockadeId, container;
-	var blockadeShapes = ["square","triangle","circle"];
+	//var blockadeShapes = ["square","triangle","circle"];
 
 
 	function Blockade(x, y , width, height, blockadeShape, blockadeId)
@@ -31,12 +31,6 @@ var Blockade = (function()
 		this.y = y;
 		this.container.x = this.x;
 		this.container.y = this.y;
-		/*if(this.blockadeShape == "circle")
-		{
-			this.container.x += this.height/2;
-			this.container.y += this.height/2;
-		}*/
-
 	}
 
 	Blockade.prototype.draw = function()
@@ -80,7 +74,7 @@ var Blockade = (function()
 				this.shape.graphics.drawRect(0,0,this.width/2,this.height * 2);
 				this.shape.graphics.ef();
 				cellBitmap.gotoAndStop(3);
-				this.container.addChild(this.shape);
+				//this.container.addChild(this.shape);
 			break;
 			
 		}

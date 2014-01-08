@@ -3,6 +3,8 @@ var Boss = (function()
 	var bossShapes = ["square","triangle","circle"];
 	var container;
 	var shape;
+	var arrProjectiles;
+	var projectileId;
 
 	function Boss(x,y,width,height)
 	{
@@ -15,11 +17,16 @@ var Boss = (function()
 		this.startX = 0;
 		this.endX = 600;
 		this.lives = 3;
+		this.delayShooting = 60;
+		this.delayShootingCount = 1;
+		this.arrProjectiles = [];
+		this.projectileId = 0;
 
 		this.shape = new createjs.Shape(); 
 		this.container = new createjs.Container(); 
 		this.container.x = this.x;
 		this.container.y = this.y;
+		this.container.addChild(this.shape);
 
 		this.draw();
 	}
@@ -38,9 +45,6 @@ var Boss = (function()
 		this.shape.graphics.drawRect(0,0,this.width,this.height);
 		this.shape.graphics.ef();
 		this.shape.alpha=1;
-
-		this.container.addChild(this.shape);
-
 	}
 
 	Boss.prototype.nextShape = function(shape)
@@ -69,8 +73,27 @@ var Boss = (function()
 		this.x += this.speedX;
 		
 		this.shape.x = this.x;
+
+		/*if(this.delayShootingCount % this.delayShooting == 0)
+		{
+			this.shoot();
+			this.delayShootingCount = 1;
+		}
+		else
+		{
+			this.delayShootingCount++;
+		}*/
 	
 		this.draw();
+	}
+
+	Boss.prototype.shoot = function()
+	{
+		console.log("rest");
+
+
+		this.container.addChild(blockade.container);
+		//this.draw()
 	}
 
 	return Boss;

@@ -12,6 +12,9 @@
 	var playerFollowOffsetY, playerFollowOffsetX;
 	var boss;
 	var actionKeyPressed;
+	var arrProjectiles;
+	var projectileId;
+
 
 
 	var worldHeight = 0;
@@ -24,9 +27,6 @@
 
 	var prevPlayerY = 0;
 
-	var delayAnimation ;
-	var delayAnimationCount;
-
 	var delayAnimationB, delayAnimationCountB;
 
 	function init()
@@ -35,9 +35,11 @@
 		width = stage.canvas.width;
 		height = stage.canvas.height;
 
+		possibleShapes = ["square","circle","triangle","rectangle"];
+
 		this.playerFollowOffsetY = this.playerFollowOffsetX = 0;
 
-		this.currentLevel = 1;
+		this.currentLevel = 20;
 
 		this.startScreen = new StartScreen(0,0,800,400);
 		stage.addChild(this.startScreen.container);
@@ -48,6 +50,9 @@
 
 		this.delayAnimationB = 20;
 		this.delayAnimationCountB = 1;
+
+		this.delayShooting = 60;
+		this.delayShootingCount = 1;
 
 		stage.update();
 
@@ -74,6 +79,7 @@
 			blockades[i].changePosition(blockades[i].orgX,blockades[i].orgY);
 		}
 
+		arrProjectiles = [];
 		arrTriggeredBlockadesIds = [];
 		shapeVolgorde.reset();
 		player.nextShape(shapeVolgorde.arrShapes[shapeVolgorde.currentShapeNumber]);
@@ -91,6 +97,9 @@
 		changeShape = false;
 		playerisOnMovingTrajectory = false;
 		actionKeyPressed = false;
+		this.arrProjectiles = [];
+		this.projectileId = 0;
+
 
 
 		if(this.currentLevel == 20)
@@ -305,10 +314,8 @@
 
 	            if(layerData.name == "platforms" && layerData.data[i] != 0)
 	            {
-	            	//normal platform
 					var platform = new Platform(cellBitmap.x, cellBitmap.y,tilewidth,tileheight);
 					boxes.push(platform);
-					console.log("makePlatform");
 	            }
 
 				this.world.addChild(cellBitmap);
@@ -326,7 +333,7 @@
 	function keyup(e)
 	{
 		keys[e.keyCode] = false;
-		if(e.keyCode == 69)
+		if(e.keyCode == 69) // 69 hihi
 		{
 			actionKeyPressed = false;
 		}
@@ -360,20 +367,6 @@
 
 					blockades[blockade1Id].changePosition(blockades[blockade2Id].x,blockades[blockade2Id].y);
 					blockades[blockade2Id].changePosition(tempX,tempY);
-
-
-				
-
-					/*blockades[blockade1Id - 1].changePosition(blockades[blockade2Id - 1].x,blockades[blockade1Id - 2].y);
-					blockades[blockade1Id - 2].changePosition(tempX,tempY);*/
-
-
-					/*var tempX = blockades[arrLevers[i].arr].x;
-					var tempY = blockades[0].y;
-
-					blockades[0].changePosition(blockades[1].x,blockades[1].y);
-					blockades[1].changePosition(tempX,tempY);*/
-
 				break;
 			}
 		}
@@ -381,8 +374,9 @@
 
 	function update()
 	{
-		//UNCOMMENT WANNEER HET ALTIJD MOET BEWEGEN
-		/*if(this.delayAnimationCountB % this.delayAnimationB == 0)
+		if(keys[39] || keys[37])
+		{
+			if(this.delayAnimationCountB % this.delayAnimationB == 0)
 			{
 				player.animation();
 				this.delayAnimationCountB = 1;
@@ -390,38 +384,15 @@
 			else
 			{
 				this.delayAnimationCountB++;
-			}*/
-		
-		// E
-
-		if(keys[69] && actionKeyPressed == false)
-		{	
-
-
-			actionKeyPressed = true;
-			checkLeverActivated();
-			
-				//clearLevel();
-				//this.currentLevel++;
-				//startLevel(this.currentLevel);
-
-			//clearLevel();
-			//this.currentLevel++;
-			//startLevel(this.currentLevel);
-			if(this.delayAnimationCount % this.delayAnimation == 0)
-			{
-				player.animation();
-				this.delayAnimationCount = 1;
 			}
-			else
-			{
-				this.delayAnimationCount++;
-			}
-
 		}
 		
+		if(keys[69] && actionKeyPressed == false)
+		{	
+			actionKeyPressed = true;
+			checkLeverActivated();
+		}
 		
-
 		if(keys[32])
 		{
 			if(player.grounded && !player.jumping)
@@ -440,17 +411,6 @@
 			}
 			player.grounded = false;
 			playerisOnMovingTrajectory = false;
-			
-			if(this.delayAnimationCount % this.delayAnimation == 0)
-			{
-				player.animation();
-				this.delayAnimationCount = 1;
-			}
-			else
-			{
-				this.delayAnimationCount++;
-			}
-
 		}
 		if(keys[39])
 		{
@@ -460,16 +420,6 @@
 			}
 			player.grounded = false;
 			playerisOnMovingTrajectory = false;
-			if(this.delayAnimationCount % this.delayAnimation == 0)
-			{
-				player.animation();
-				this.delayAnimationCount = 1;
-			}
-			else
-			{
-				this.delayAnimationCount++;
-			}
-
 		}		
 
 		checkCollisionPlatforms();
@@ -481,8 +431,23 @@
 		this.world.followPlayerX(player,width,this.playerFollowOffsetX);
 		this.world.followPlayerY(player,height,this.playerFollowOffsetY);
 
+		// bossLevel
 		if(this.currentLevel == 20)
 		{
+			if(this.delayShootingCount % this.delayShooting == 0)
+			{
+
+				var blockade = new Blockade(boss.x+40,boss.y,40,40,possibleShapes[Math.floor(Math.random() * possibleShapes.length)], projectileId);
+				this.world.addChild(blockade.container);
+				this.arrProjectiles.push(blockade);
+				this.projectileId++;
+				this.delayShootingCount = 1;
+			}
+			else
+			{
+				this.delayShootingCount++;
+			}
+			checkCollisionPlayerWithProjectiles();
 			boss.update();
 		}
 		player.update();
@@ -495,6 +460,35 @@
 			player.x = startLocation.x;
 			player.y = startLocation.y;
 			restartLevel();
+		}
+	}
+
+	function checkCollisionPlayerWithProjectiles()
+	{
+		for(var i = 0; i < this.arrProjectiles.length; i++)
+		{
+			this.arrProjectiles[i].y-= 3;
+			this.arrProjectiles[i].container.y-= 3;
+			switch(CollisionDetection.checkCollision(player,this.arrProjectiles[i],false,usingLadder))
+			{
+				case "l":
+				case "r":
+				case "t":
+				case "b":
+					if(this.arrProjectiles[i].blockadeShape == player.currentPlayerShape)
+					{
+						this.world.removeChild(this.arrProjectiles[i].container);
+						this.arrProjectiles.splice(i, 1);
+						player.nextShape(possibleShapes[Math.floor(Math.random() * possibleShapes.length)]);
+					}
+					else
+					{
+						clearLevel();
+						restartLevel();
+						startLevel(this.currentLevel);
+					}
+					break;
+			}
 		}
 	}
 
@@ -663,6 +657,7 @@
 						else
 						{
 							console.log("dead");
+
 							player.x = startLocation.x;
 							player.y = startLocation.y;
 							restartLevel();

@@ -1,7 +1,7 @@
 var Player = (function()
 {
 	var shape, currentPlayerShape;
-	var playerShapes = ["square","triangle","circle","rectangle"];
+	//var playerShapes = ["square","triangle","circle","rectangle"];
 	var circlePositie;
 	//var currentPlayerShape = 0;
 	var cellBitmap;
