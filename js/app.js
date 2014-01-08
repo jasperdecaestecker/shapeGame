@@ -311,7 +311,6 @@
 
 	function update()
 	{
-		//player.animation();
 
 		// E
 		if(keys[69])
@@ -361,6 +360,8 @@
 
 		player.update();
 		stage.update();
+		player.animation();
+
 
 		// gevallen door de grond = mors dood	
 		if(player.y > height)

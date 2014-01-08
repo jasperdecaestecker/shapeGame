@@ -4,6 +4,8 @@ var Player = (function()
 	var playerShapes = ["square","triangle","circle"];
 	var circlePositie;
 	//var currentPlayerShape = 0;
+	var cellBitmap;
+	var spritePos;
 
 	function Player(x,y,width,height,currentPlayerShape)
 	{
@@ -41,15 +43,17 @@ var Player = (function()
 		this.container.y = this.y;
 
 		this.draw();
+
+		this.spritePos = 0;
 	}
 
 	Player.prototype.draw = function()
 	{
 		//console.log(playerShapes[playerShapeNumber]);
-		var imageData = {images: ["playerSprite.png"], frames: {width:40, height:48} }; 
+		var imageData = {images: ["playerSprite2.png"], frames: {width:40, height:48} }; 
 		var tilesetSheet = new createjs.SpriteSheet(imageData);
-		var cellBitmap = new createjs.Sprite(tilesetSheet);
-		this.container.removeChild(cellBitmap);
+		this.cellBitmap = new createjs.Sprite(tilesetSheet);
+		this.container.removeChild(this.cellBitmap);
 		switch(this.currentPlayerShape)
 		{
 			case "square":
@@ -61,10 +65,10 @@ var Player = (function()
 				this.shape.y = 0;
 				this.shape.alpha=0;
 
-				cellBitmap.x = 0;
-				cellBitmap.y = -9;
+				this.cellBitmap.x = 0;
+				this.cellBitmap.y = -9;
 
-				cellBitmap.gotoAndStop(2);
+				this.cellBitmap.gotoAndStop(2);
 			break;
 			case "circle":
 				this.shape.graphics.c();
@@ -75,12 +79,12 @@ var Player = (function()
 				this.shape.y += this.height/2;
 				this.shape.alpha = 0; // shape niet verwijderen, maar hiden, makkelijker voor te debuggen.
 
-				cellBitmap.gotoAndStop(0);
+				this.cellBitmap.gotoAndStop(0);
 
 				//this.height = 48;
 
-				cellBitmap.x = 0;
-				cellBitmap.y = -8;
+				this.cellBitmap.x = 0;
+				this.cellBitmap.y = -8;
 
 				this.circlePositie = 0;
 
@@ -97,14 +101,14 @@ var Player = (function()
 				this.shape.y = 0;
 				this.shape.alpha = 0;
 				this.container.addChild(this.shape);
-				cellBitmap.x = 0;
-				cellBitmap.y = -9;
+				this.cellBitmap.x = 0;
+				this.cellBitmap.y = -9;
 
-				cellBitmap.gotoAndStop(1);
+				this.cellBitmap.gotoAndStop(1);
 			break;
 		}
 
-		this.container.addChild(cellBitmap);
+		this.container.addChild(this.cellBitmap);
 
 
 
@@ -117,18 +121,51 @@ var Player = (function()
 		this.draw(this.currentPlayerShape);
 	}
 
-	Player.prototype.animation = function(shape)
+	Player.prototype.animation = function()
 	{
 		console.log('update');
-		if(this.circlePositie == 0)
+		switch(this.currentPlayerShape)
 		{
-			this.circlePositie = 1;
+			case 'circle':
+				if(this.spritePos == 0)
+				{
+					this.cellBitmap.gotoAndStop(0);
+					this.spritePos = 1;
+				}
+				else if(this.spritePos == 1)
+				{
+					this.cellBitmap.gotoAndStop(4);
+					this.spritePos = 0;
+				}
+				console.log("spritePos is "+this.spritePos);
+			break;
+			case 'square':
+				if(this.spritePos == 0)
+				{
+					this.cellBitmap.gotoAndStop(2);
+					this.spritePos = 1;
+				}
+				else if(this.spritePos == 1)
+				{
+					this.cellBitmap.gotoAndStop(6);
+					this.spritePos = 0;
+				}
+				console.log("spritePos is "+this.spritePos);
+			break;
+			case 'triangle':
+				if(this.spritePos == 0)
+				{
+					this.cellBitmap.gotoAndStop(1);
+					this.spritePos = 1;
+				}
+				else if(this.spritePos == 1)
+				{
+					this.cellBitmap.gotoAndStop(5);
+					this.spritePos = 0;
+				}
+				console.log("spritePos is "+this.spritePos);
+			break;
 		}
-		else
-		{
-			this.circlePositie = 0;
-		}
-		this.cellBitmap.gotoAndStop(this.circlePositie);
 	}
 
 	Player.prototype.update = function()
