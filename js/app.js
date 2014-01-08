@@ -565,7 +565,6 @@
 						player.grounded = true;
 						player.y += 2;
 						player.x = ladders[i].x;
-						
 					}
 
 					if(player.y + 12 > ladders[i].y + ladders[i].height)
@@ -612,7 +611,6 @@
 						{
 							 player.velY *= -1;
 						}
-					
 					break;
 					case "b":
 						player.grounded = true;
@@ -635,7 +633,6 @@
 				clearLevel();
 				this.currentLevel++;
 				startLevel(this.currentLevel);
-
 				break;
 		}
 	}
@@ -658,12 +655,10 @@
 							arrTriggeredBlockadesIds.push(triggeredBlockId);
 							this.world.removeChild(blockades[j].container);
 							shapeVolgorde.nextShape();
-							console.log(shapeVolgorde.arrShapes[shapeVolgorde.currentShapeNumber]);
 							if(shapeVolgorde.arrShapes[shapeVolgorde.currentShapeNumber] != null)
 							{
 								player.nextShape(shapeVolgorde.arrShapes[shapeVolgorde.currentShapeNumber]);
 							}
-						
 						}
 						else
 						{

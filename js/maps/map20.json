@@ -88,6 +88,19 @@
                  "width":80,
                  "x":382,
                  "y":534
+                }, 
+                {
+                 "height":45,
+                 "name":"lever2",
+                 "properties":
+                    {
+
+                    },
+                 "type":"1,2",
+                 "visible":true,
+                 "width":80,
+                 "x":208,
+                 "y":473
                 }],
          "opacity":1,
          "type":"objectgroup",
