@@ -658,7 +658,12 @@
 							arrTriggeredBlockadesIds.push(triggeredBlockId);
 							this.world.removeChild(blockades[j].container);
 							shapeVolgorde.nextShape();
-							player.nextShape(shapeVolgorde.arrShapes[shapeVolgorde.currentShapeNumber]);
+							console.log(shapeVolgorde.arrShapes[shapeVolgorde.currentShapeNumber]);
+							if(shapeVolgorde.arrShapes[shapeVolgorde.currentShapeNumber] != null)
+							{
+								player.nextShape(shapeVolgorde.arrShapes[shapeVolgorde.currentShapeNumber]);
+							}
+						
 						}
 						else
 						{

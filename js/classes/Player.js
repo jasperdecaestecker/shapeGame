@@ -123,7 +123,6 @@ var Player = (function()
 
 	Player.prototype.animation = function()
 	{
-		console.log('update');
 		switch(this.currentPlayerShape)
 		{
 			case 'circle':
@@ -137,7 +136,6 @@ var Player = (function()
 					this.cellBitmap.gotoAndStop(4);
 					this.spritePos = 0;
 				}
-				console.log("spritePos is "+this.spritePos);
 			break;
 			case 'square':
 				if(this.spritePos == 0)
@@ -150,7 +148,6 @@ var Player = (function()
 					this.cellBitmap.gotoAndStop(6);
 					this.spritePos = 0;
 				}
-				console.log("spritePos is "+this.spritePos);
 			break;
 			case 'triangle':
 				if(this.spritePos == 0)
@@ -163,7 +160,6 @@ var Player = (function()
 					this.cellBitmap.gotoAndStop(5);
 					this.spritePos = 0;
 				}
-				console.log("spritePos is "+this.spritePos);
 			break;
 		}
 	}
