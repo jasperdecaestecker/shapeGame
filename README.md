@@ -9,6 +9,7 @@ Design
 ------
 - UI
 - Verhaal
+- ~~Character animaties~~
 
 General
 ------
