@@ -57,7 +57,7 @@ var Player = (function()
 				this.shape.graphics.f("00FF00");
 				this.shape.graphics.drawRect(0,0,this.width,this.height);
 				this.shape.graphics.ef();
-					this.shape.x = 0;
+				this.shape.x = 0;
 				this.shape.y = 0;
 				this.shape.alpha=0;
 

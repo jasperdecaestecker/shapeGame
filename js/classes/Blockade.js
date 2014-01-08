@@ -22,9 +22,6 @@ var Blockade = (function()
 		this.container.x = this.x;
 		this.container.y = this.y;
 
-
-		/*this.shape.x = this.x;
-		this.shape.y = this.y;*/
 		this.draw();
 	}
 
@@ -32,13 +29,13 @@ var Blockade = (function()
 	{
 		this.x = x;
 		this.y = y;
-		this.shape.x = this.x;
-		this.shape.y = this.y;
-		if(this.blockadeShape == "circle")
+		this.container.x = this.x;
+		this.container.y = this.y;
+		/*if(this.blockadeShape == "circle")
 		{
-			this.shape.x += this.height/2;
-			this.shape.y += this.height/2;
-		}
+			this.container.x += this.height/2;
+			this.container.y += this.height/2;
+		}*/
 
 	}
 
