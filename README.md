@@ -9,7 +9,6 @@ Design
 ------
 - UI
 - Verhaal
-- Charachter animaties
 
 General
 ------
