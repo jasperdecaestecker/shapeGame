@@ -112,7 +112,7 @@ var Player = (function()
 
 	Player.prototype.nextShape = function(shape)
 	{
-		//this.container.c();
+		this.container.removeAllChildren();
 		this.currentPlayerShape = shape;
 		this.draw(this.currentPlayerShape);
 	}
