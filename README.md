@@ -9,6 +9,7 @@ Design
 ------
 - UI
 - Verhaal
+- Tiles maken
 
 General
 ------
