@@ -22,9 +22,6 @@ var Blockade = (function()
 		this.container.x = this.x;
 		this.container.y = this.y;
 
-
-		/*this.shape.x = this.x;
-		this.shape.y = this.y;*/
 		this.draw();
 	}
 
@@ -32,13 +29,13 @@ var Blockade = (function()
 	{
 		this.x = x;
 		this.y = y;
-		this.shape.x = this.x;
-		this.shape.y = this.y;
-		if(this.blockadeShape == "circle")
+		this.container.x = this.x;
+		this.container.y = this.y;
+		/*if(this.blockadeShape == "circle")
 		{
-			this.shape.x += this.height/2;
-			this.shape.y += this.height/2;
-		}
+			this.container.x += this.height/2;
+			this.container.y += this.height/2;
+		}*/
 
 	}
 
@@ -51,13 +48,14 @@ var Blockade = (function()
 	
 		switch(this.blockadeShape)
 		{
-			case "square":
+			case "triangle":
 				this.shape.graphics.c();
 				this.shape.graphics.f("FF0000");
-				this.shape.graphics.drawRect(0,0,this.width,this.height);
+				this.shape.graphics.mt(0,this.height);
+				this.shape.graphics.lt(this.width,this.height);
+				this.shape.graphics.lt(this.width/2,0);
 				this.shape.graphics.ef();
-				//console.log("makeSquare");
-				cellBitmap.gotoAndStop(2);
+				cellBitmap.gotoAndStop(0);
 			break;
 			case "circle":
 				this.shape.graphics.c();
@@ -68,15 +66,23 @@ var Blockade = (function()
 				this.shape.y += this.height/2;
 				cellBitmap.gotoAndStop(1);
 			break;
-			case "triangle":
+			case "square":
 				this.shape.graphics.c();
 				this.shape.graphics.f("FF0000");
-				this.shape.graphics.mt(0,this.height);
-				this.shape.graphics.lt(this.width,this.height);
-				this.shape.graphics.lt(this.width/2,0);
+				this.shape.graphics.drawRect(0,0,this.width,this.height);
 				this.shape.graphics.ef();
-				cellBitmap.gotoAndStop(0);
+				//console.log("makeSquare");
+				cellBitmap.gotoAndStop(2);
 			break;
+			case "rectangle":
+				this.shape.graphics.c();
+				this.shape.graphics.f("FF0000");
+				this.shape.graphics.drawRect(0,0,this.width/2,this.height * 2);
+				this.shape.graphics.ef();
+				cellBitmap.gotoAndStop(3);
+				this.container.addChild(this.shape);
+			break;
+			
 		}
 
 		//this.container.addChild(this.shape);

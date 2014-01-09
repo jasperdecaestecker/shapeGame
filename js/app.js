@@ -9,6 +9,10 @@
 	var level1;
 	var possibleShapes;
 	var playerisOnMovingTrajectory;
+	var playerFollowOffsetY, playerFollowOffsetX;
+	var boss;
+	var actionKeyPressed;
+
 
 	var worldHeight = 0;
 	var worldWidth = 0;
@@ -31,7 +35,9 @@
 		width = stage.canvas.width;
 		height = stage.canvas.height;
 
-		this.currentLevel = 3;
+		this.playerFollowOffsetY = this.playerFollowOffsetX = 0;
+
+		this.currentLevel = 1;
 
 		this.startScreen = new StartScreen(0,0,800,400);
 		stage.addChild(this.startScreen.container);
@@ -84,8 +90,18 @@
 		arrLevers = [];
 		changeShape = false;
 		playerisOnMovingTrajectory = false;
+		actionKeyPressed = false;
 
-		this.world = new World(800,400);
+
+		if(this.currentLevel == 20)
+		{
+			this.world = new World(800,800);
+		}
+		else
+		{
+			this.world = new World(800,400);
+		}
+		
 		this.world.boundH = -(this.world.height - height);
 		this.world.boundW = -(this.world.width - width);
 		
@@ -187,6 +203,13 @@
 				ladders.push(ladder);
 				arrShapeVolgorde = ["triangle","circle","square"];
 				break;	
+			case 20:
+				this.playerFollowOffsetY = -100;
+				boss = new Boss(10,680,80,80);
+				this.world.addChild(boss.container);
+				arrShapeVolgorde = ["rectangle","rectangle","square"];
+				break;
+						
 		}
 		shapeVolgorde = new ShapeVolgorde(arrShapeVolgorde,0);
 		shapeVolgorde.container.x = 20;
@@ -237,9 +260,9 @@
 		{
 			for ( var i = 0; i < layerData.objects.length; i++) 
     		{
-    			var lever = new Lever(layerData.objects[i].x-20,layerData.objects[i].y-34,70,45,layerData.objects[i].type);
+    			var lever = new Lever(layerData.objects[i].x,layerData.objects[i].y,70,45,layerData.objects[i].type);
     			this.world.addChild(lever.container);
-    			lever.container.addEventListener("click", handleClick);
+    			//lever.container.addEventListener("click", handleClick);
     			arrLevers.push(lever);
     		}
 		}
@@ -293,15 +316,6 @@
 		}
 	}
 
-	function handleTick()
-	{
-		vehicle.update();
-
-		console.log("handletick");
-
-		stage.update();		
-	}
-
 	// aanroepen vooraleer je een nieuw level start
 	function clearLevel()
 	{
@@ -312,12 +326,57 @@
 	function keyup(e)
 	{
 		keys[e.keyCode] = false;
+		if(e.keyCode == 69)
+		{
+			actionKeyPressed = false;
+		}
 	}
 
 	function keydown(e)
 	{
 		keys[e.keyCode] = true;
 		//console.log(e.keyCode);
+	}
+
+	function checkLeverActivated()
+	{
+		for(var i = 0; i < arrLevers.length; i++)
+		{
+			var colDir = CollisionDetection.checkCollision(player,arrLevers[i],false,usingLadder);
+			switch(colDir)
+			{
+				case "l":
+				case "r":
+				case "t":
+				case "b":
+					console.log("toggle lever" + i);
+					arrLevers[i].change();
+
+					var blockade1Id = arrLevers[i].arrChangeBlockades[0] - 1;
+					var blockade2Id = arrLevers[i].arrChangeBlockades[1] - 1;
+
+					var tempX = blockades[blockade1Id].x;
+					var tempY =  blockades[blockade1Id].y;
+
+					blockades[blockade1Id].changePosition(blockades[blockade2Id].x,blockades[blockade2Id].y);
+					blockades[blockade2Id].changePosition(tempX,tempY);
+
+
+				
+
+					/*blockades[blockade1Id - 1].changePosition(blockades[blockade2Id - 1].x,blockades[blockade1Id - 2].y);
+					blockades[blockade1Id - 2].changePosition(tempX,tempY);*/
+
+
+					/*var tempX = blockades[arrLevers[i].arr].x;
+					var tempY = blockades[0].y;
+
+					blockades[0].changePosition(blockades[1].x,blockades[1].y);
+					blockades[1].changePosition(tempX,tempY);*/
+
+				break;
+			}
+		}
 	}
 
 	function update()
@@ -334,11 +393,21 @@
 			}*/
 		
 		// E
-		if(keys[69])
+
+		if(keys[69] && actionKeyPressed == false)
 		{	
-			clearLevel();
-			this.currentLevel++;
-			startLevel(this.currentLevel);
+
+
+			actionKeyPressed = true;
+			checkLeverActivated();
+			
+				//clearLevel();
+				//this.currentLevel++;
+				//startLevel(this.currentLevel);
+
+			//clearLevel();
+			//this.currentLevel++;
+			//startLevel(this.currentLevel);
 			if(this.delayAnimationCount % this.delayAnimation == 0)
 			{
 				player.animation();
@@ -348,7 +417,10 @@
 			{
 				this.delayAnimationCount++;
 			}
+
 		}
+		
+		
 
 		if(keys[32])
 		{
@@ -406,15 +478,19 @@
 		checkBlockadesCollision();
 		checkIfFinished();
 
-		this.world.followPlayerX(player,width,0);
-		this.world.followPlayerY(player,height,0);
+		this.world.followPlayerX(player,width,this.playerFollowOffsetX);
+		this.world.followPlayerY(player,height,this.playerFollowOffsetY);
 
+		if(this.currentLevel == 20)
+		{
+			boss.update();
+		}
 		player.update();
 		stage.update();
 
 
 		// gevallen door de grond = mors dood	
-		if(player.y > height)
+		if(player.y > this.world.height)
 		{
 			player.x = startLocation.x;
 			player.y = startLocation.y;
@@ -489,7 +565,6 @@
 						player.grounded = true;
 						player.y += 2;
 						player.x = ladders[i].x;
-						
 					}
 
 					if(player.y + 12 > ladders[i].y + ladders[i].height)
@@ -536,7 +611,6 @@
 						{
 							 player.velY *= -1;
 						}
-					
 					break;
 					case "b":
 						player.grounded = true;
@@ -559,7 +633,6 @@
 				clearLevel();
 				this.currentLevel++;
 				startLevel(this.currentLevel);
-
 				break;
 		}
 	}
@@ -582,7 +655,10 @@
 							arrTriggeredBlockadesIds.push(triggeredBlockId);
 							this.world.removeChild(blockades[j].container);
 							shapeVolgorde.nextShape();
-							player.nextShape(shapeVolgorde.arrShapes[shapeVolgorde.currentShapeNumber]);
+							if(shapeVolgorde.arrShapes[shapeVolgorde.currentShapeNumber] != null)
+							{
+								player.nextShape(shapeVolgorde.arrShapes[shapeVolgorde.currentShapeNumber]);
+							}
 						}
 						else
 						{

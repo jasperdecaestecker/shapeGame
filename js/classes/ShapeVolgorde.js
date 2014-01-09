@@ -24,27 +24,6 @@ var ShapeVolgorde = (function()
     			var cellBitmap = new createjs.Sprite(tilesetSheet);
 			switch(this.arrShapes[i])
 			{
-				case "square":
-					shape.graphics.c();
-					shape.graphics.f("FF0000");
-					shape.graphics.drawRect(0,0,20,20);
-					shape.graphics.ef();
-					shape.x = 0 + i*30;
-					cellBitmap.x = 0 + i *30;
-					cellBitmap.gotoAndStop(2);
-
-					//console.log("makeSquare");
-				break;
-				case "circle":
-					shape.graphics.c();
-					shape.graphics.f("FF0000");
-					shape.graphics.drawCircle(0,0,10);
-					shape.graphics.ef();
-					shape.y = 10;
-					shape.x = 10 + i*30;
-					cellBitmap.x = 0 + i *30;
-						cellBitmap.gotoAndStop(1);
-				break;
 				case "triangle":
 					shape.graphics.c();
 					shape.graphics.f("FF0000");
@@ -56,11 +35,39 @@ var ShapeVolgorde = (function()
 					cellBitmap.x = 0 + i *30;
 					cellBitmap.gotoAndStop(0);
 				break;
+				case "circle":
+					shape.graphics.c();
+					shape.graphics.f("FF0000");
+					shape.graphics.drawCircle(0,0,10);
+					shape.graphics.ef();
+					shape.y = 10;
+					shape.x = 10 + i*30;
+					cellBitmap.x = 0 + i *30;
+					cellBitmap.gotoAndStop(1);
+				break;
+				case "square":
+					shape.graphics.c();
+					shape.graphics.f("FF0000");
+					shape.graphics.drawRect(0,0,20,20);
+					shape.graphics.ef();
+					shape.x = 0 + i*30;
+					cellBitmap.x = 0 + i *30;
+					cellBitmap.gotoAndStop(2);
+				break;
+				case "rectangle":
+					shape.graphics.c();
+					shape.graphics.f("FF0000");
+					shape.graphics.drawRect(0,0,20,20);
+					shape.graphics.ef();
+					shape.x = 0 + i*30;
+					cellBitmap.x = 0 + i *30;
+					cellBitmap.gotoAndStop(3);
+					
+				break;
 			}
 		
-						cellBitmap.scaleX = cellBitmap.scaleY = 0.5;
+			cellBitmap.scaleX = cellBitmap.scaleY = 0.5;
 			
-			//this.container.addChild(shape);
 			this.container.addChild(cellBitmap);
 
 		}
