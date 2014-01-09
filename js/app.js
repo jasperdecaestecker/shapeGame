@@ -32,6 +32,7 @@
 
 	function init()
 	{
+		//chape
 		stage = new  createjs.Stage("cnvs");
 		width = stage.canvas.width;
 		height = stage.canvas.height;
@@ -40,7 +41,7 @@
 
 		this.playerFollowOffsetY = this.playerFollowOffsetX = 0;
 
-		this.currentLevel = 1;
+		this.currentLevel = 5;
 
 		this.startScreen = new StartScreen(0,0,800,400);
 		stage.addChild(this.startScreen.container);
@@ -247,19 +248,21 @@
 				arrShapeVolgorde = ["square","square","triangle"];
 				break;
 			case 3:
-				/*var ladder = new Ladder(160,180,40,140);
-				this.world.addChild(ladder.container);
-				ladders.push(ladder);
-
-				var ladder = new Ladder(600,152,40,108);
-				this.world.addChild(ladder.container);
-				ladders.push(ladder);*/
 				arrShapeVolgorde = ["triangle","square","circle"];
 				break;	
-
 			case 4:
 				arrShapeVolgorde = ["circle","square","square","rectangle","triangle"];	
 				break;
+			case 5:
+				var ladder = new Ladder(360,637,40,300);
+				this.world.addChild(ladder.container);
+				ladders.push(ladder);
+
+				var ladder = new Ladder(220,383,40,280);
+				this.world.addChild(ladder.container);
+				ladders.push(ladder);
+				arrShapeVolgorde = ["triangle","rectangle","circle","triangle"];
+				break;	
 			case 20:
 				var blockade = new Blockade(200,520,20,20,possibleShapes[Math.floor(Math.random() * possibleShapes.length)],0);
 				this.world.addChild(blockade.container);
@@ -732,6 +735,8 @@
 					usingLadder = false;
 					break;	
 			}
+
+			console.log(usingLadder);
 
 			if(breakThisSwitch)
 			{
