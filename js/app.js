@@ -41,7 +41,7 @@
 
 		this.playerFollowOffsetY = this.playerFollowOffsetX = 0;
 
-		this.currentLevel = 5;
+		this.currentLevel = 7;
 
 		this.startScreen = new StartScreen(0,0,800,400);
 		stage.addChild(this.startScreen.container);
@@ -262,7 +262,20 @@
 				this.world.addChild(ladder.container);
 				ladders.push(ladder);
 				arrShapeVolgorde = ["triangle","rectangle","circle","triangle"];
+				break;
+			case 6:
+				var ladder = new Ladder(40,90,40,250);
+				this.world.addChild(ladder.container);
+				ladders.push(ladder);
+				arrShapeVolgorde = ["triangle","circle","square"];
 				break;	
+			case 7:
+				arrShapeVolgorde = ["square","rectangle"];
+
+				var movingPlatform = new MovingPlatform(100,300,320,120,60,20,1,"red");
+				this.world.addChild(movingPlatform.container);
+				arrMovingPlatforms.push(movingPlatform);
+				break;		
 			case 20:
 				var blockade = new Blockade(200,520,20,20,possibleShapes[Math.floor(Math.random() * possibleShapes.length)],0);
 				this.world.addChild(blockade.container);
@@ -343,9 +356,7 @@
 	function makeMovingPlatform()
 	{
 		//arrMovingPlatforms.push()
-		var movingPlatform = new MovingPlatform(100,280,100,20,1,100,300,280,80);
-		this.world.addChild(movingPlatform.shape);
-		arrMovingPlatforms.push(movingPlatform);
+	
 	}
 
 	function initLayer(layerData, tilesetSheet, tilewidth, tileheight) 

@@ -2,34 +2,58 @@ var MovingPlatform = (function()
 {
 	var shape;
 
-	function MovingPlatform(x, y , width, height,speed, startX, endX, startY, endY)
+	function MovingPlatform(startX, endX, startY, endY, width,height,speed,color)
 	{
-		this.x = x;
-		this.y = y;
 		this.width = width;
 		this.height = height;
 		this.speed = speed;
 		this.speedX = speed;
 		this.speedY = speed;
-		this.startX = startX;
+		this.startX = this.x = startX;
 		this.endX = endX;
-		this.startY = startY;
+		this.startY = this.y = startY;
 		this.endY = endY;
-
-		this.shape = new createjs.Shape();
-		this.shape.x = this.x;
-		this.shape.y = this.y;
+		this.color = color;
+		this.container = new createjs.Container();
+		this.container.x = this.x;
+		this.container.y = this.y;
 		this.draw();
 	}
 
 	MovingPlatform.prototype.draw = function()
 	{
-		this.shape.graphics.c();
-		this.shape.graphics.f("#000000");
-		this.shape.graphics.dr(0,0,this.width,this.height);
-		this.shape.graphics.ef();
+		var imageData = {images: ["movingPlatformSprite.png"], frames: {width:20, height:20} }; 
+		var tilesetSheet = new createjs.SpriteSheet(imageData);
+		
+		// left of platform
+		var offset = 0;
+		if(this.color == "red")
+		{
+			offset = 3
+		}
 
-		return this.shape;
+		var cellBitmap = new createjs.Sprite(tilesetSheet);
+		cellBitmap.gotoAndStop(0+offset);
+		cellBitmap.x = 0;
+		cellBitmap.y = 0;
+		this.container.addChild(cellBitmap);
+
+		// fill center with with bitmap
+		for(var i = 20; i < this.width; i += 20)
+		{
+			var cellBitmap = new createjs.Sprite(tilesetSheet);
+			cellBitmap.gotoAndStop(1+offset);
+			cellBitmap.x = i;
+			cellBitmap.y = 0;
+			this.container.addChild(cellBitmap);
+		}
+
+		// right of platform
+		var cellBitmap = new createjs.Sprite(tilesetSheet);
+		cellBitmap.gotoAndStop(2+offset);
+		cellBitmap.x = this.width-20;
+		cellBitmap.y = 0;
+		this.container.addChild(cellBitmap);
 	}
 
 	MovingPlatform.prototype.update = function()
@@ -45,20 +69,12 @@ var MovingPlatform = (function()
 				this.speedY *= -1;
 			}
 			this.y += this.speedY;
-				this.shape.y = this.y;
+			this.container.y = this.y;
 		}
-		
-
-
-
 		this.x += this.speedX;
-		
-		this.shape.x = this.x;
-	
-		this.draw();
+		this.container.x = this.x;
+		//this.draw();
 	}
-
-
 	return MovingPlatform;
 
 })();
