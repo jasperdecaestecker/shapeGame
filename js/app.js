@@ -39,7 +39,7 @@
 
 		this.playerFollowOffsetY = this.playerFollowOffsetX = 0;
 
-		this.currentLevel = 20;
+		this.currentLevel = 1;
 
 		this.startScreen = new StartScreen(0,0,800,400);
 		stage.addChild(this.startScreen.container);
@@ -76,8 +76,9 @@
 	function startButtonClicked()
 	{
 		startLevel(this.currentLevel);
+		//this.startScreen.container.alpha =
 
-		//stage.removeChild(this.startScreen.container);
+		stage.removeChild(this.startScreen.container);
 	}
 
 	function restartLevel()
@@ -356,7 +357,8 @@
 	function clearLevel()
 	{
 		stage.removeChild(this.world.container);
-		ticker.removeEventListener("tick",update);
+		
+		//ticker.removeEventListener("tick",update);
 	}
 
 	function keyup(e)
@@ -417,7 +419,7 @@
 
 	function update()
 	{
-		//console.log(ticker.getPaused());
+		console.log(ticker.getPaused());
 
 
 		if(ticker.getPaused())
