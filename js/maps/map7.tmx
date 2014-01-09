@@ -905,17 +905,17 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="49"/>
-   <tile gid="49"/>
-   <tile gid="49"/>
-   <tile gid="49"/>
-   <tile gid="49"/>
-   <tile gid="49"/>
-   <tile gid="49"/>
-   <tile gid="49"/>
-   <tile gid="49"/>
-   <tile gid="49"/>
-   <tile gid="49"/>
+   <tile gid="102"/>
+   <tile gid="102"/>
+   <tile gid="102"/>
+   <tile gid="102"/>
+   <tile gid="102"/>
+   <tile gid="102"/>
+   <tile gid="102"/>
+   <tile gid="102"/>
+   <tile gid="102"/>
+   <tile gid="102"/>
+   <tile gid="115"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -935,6 +935,26 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="63"/>
+   <tile gid="102"/>
+   <tile gid="102"/>
+   <tile gid="102"/>
+   <tile gid="102"/>
+   <tile gid="102"/>
+   <tile gid="102"/>
+   <tile gid="102"/>
+   <tile gid="102"/>
+   <tile gid="102"/>
+   <tile gid="102"/>
+   <tile gid="102"/>
+   <tile gid="102"/>
    <tile gid="49"/>
    <tile gid="49"/>
    <tile gid="49"/>
@@ -945,27 +965,7 @@
    <tile gid="49"/>
    <tile gid="49"/>
    <tile gid="49"/>
-   <tile gid="49"/>
-   <tile gid="49"/>
-   <tile gid="49"/>
-   <tile gid="49"/>
-   <tile gid="49"/>
-   <tile gid="49"/>
-   <tile gid="49"/>
-   <tile gid="49"/>
-   <tile gid="49"/>
-   <tile gid="49"/>
-   <tile gid="49"/>
-   <tile gid="49"/>
-   <tile gid="49"/>
-   <tile gid="49"/>
-   <tile gid="49"/>
-   <tile gid="49"/>
-   <tile gid="49"/>
-   <tile gid="49"/>
-   <tile gid="49"/>
-   <tile gid="49"/>
-   <tile gid="49"/>
+   <tile gid="141"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -985,14 +985,14 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="49"/>
-   <tile gid="49"/>
-   <tile gid="49"/>
-   <tile gid="49"/>
-   <tile gid="49"/>
-   <tile gid="49"/>
-   <tile gid="49"/>
-   <tile gid="49"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="153"/>
    <tile gid="49"/>
    <tile gid="49"/>
    <tile gid="49"/>
@@ -1009,11 +1009,10 @@
  </layer>
  <objectgroup name="obstakels" width="50" height="20">
   <object name="1" type="square" x="289" y="350" width="40" height="40"/>
-  <object name="2" type="triangle" x="378" y="352" width="40" height="40"/>
-  <object name="3" type="circle" x="470" y="356" width="40" height="40"/>
+  <object name="2" type="rectangle" x="462" y="352" width="40" height="40"/>
  </objectgroup>
  <objectgroup name="player" width="50" height="20">
-  <object name="endPoint" x="901" y="259" width="20" height="60"/>
+  <object name="endPoint" x="939" y="300" width="20" height="60"/>
   <object name="spawnPoint" x="111" y="296"/>
  </objectgroup>
 </map>

@@ -278,10 +278,7 @@
 				var movingPlatform = new MovingPlatform(700,500,320,120,60,20,1,"red");
 				this.world.addChild(movingPlatform.container);
 				arrMovingPlatforms.push(movingPlatform);
-
-				
-
-
+				movingPlatform.attach(1);
 				break;		
 			case 20:
 				var blockade = new Blockade(200,520,20,20,possibleShapes[Math.floor(Math.random() * possibleShapes.length)],0);
