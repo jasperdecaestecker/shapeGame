@@ -42,7 +42,7 @@
 
 		this.startScreen = new StartScreen(0,0,800,400);
 		stage.addChild(this.startScreen.container);
-		this.startScreen.container.addEventListener("click", startButtonClicked);
+		
 
 		this.delayAnimation = 6;
 		this.delayAnimationCount = 1;
@@ -55,8 +55,10 @@
 
 		stage.update();
 
+		this.startScreen.container.addEventListener("click", startButtonClicked);
+
 		// comment volgende voor startscherm te tonen
-		startButtonClicked();
+		//startButtonClicked();
 	}
 	function startButtonClicked()
 	{

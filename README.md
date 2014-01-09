@@ -9,7 +9,11 @@ Design
 ------
 - UI
 - Verhaal
+<<<<<<< HEAD
 - Tiles maken
+=======
+- ~~Character animaties~~
+>>>>>>> 2dda4d54b8234b04d62526baa48d00c094fb7c27
 
 General
 ------
