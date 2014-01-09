@@ -40,10 +40,9 @@
 
 		this.currentLevel = 1;
 
-		/*this.startScreen = new StartScreen(0,0,800,400);
+		this.startScreen = new StartScreen(0,0,800,400);
 		stage.addChild(this.startScreen.container);
-		this.startScreen.container.addEventListener("click", startButtonClicked);*/
-
+		this.startScreen.container.addEventListener("click", startButtonClicked);
 
 		this.delayAnimation = 6;
 		this.delayAnimationCount = 1;
@@ -101,25 +100,15 @@
 		actionKeyPressed = false;
 		this.arrProjectiles = [];
 		arrDropShapes = [];
+		keys = [];
+	
 
 		if(this.currentLevel == 20)
 		{
-			this.world = new World(800,800);
 			dropShape1 = false;
-			dropShape2 = false;
+				dropShape2 = false;
 		}
-		else
-		{
-			this.world = new World(800,400);
-		}
-		
-		this.world.boundH = -(this.world.height - height);
-		this.world.boundW = -(this.world.width - width);
-		
-		keys = [];
-		buildBounds();
 
-		stage.addChild(this.world.container);
 		startGame(levelNumber);
 	}
 
@@ -137,12 +126,6 @@
 
 	function loadMap(mapNumber)
 	{
-		var imageData = {images: ["images/lucht3.png"], frames: {width:800, height:400} }; 
-		var tilesetSheet = new createjs.SpriteSheet(imageData);
-		var cellBitmap = new createjs.Sprite(tilesetSheet);
-		this.world.addChild(cellBitmap);
-
-
 		var pathToMap = "js/maps/map"+mapNumber+".json";
 		$.getJSON( pathToMap, 
 		{
@@ -173,6 +156,19 @@
 	{
 		var w = mapData.tilesets[0].tilewidth;
 		var h = mapData.tilesets[0].tileheight;
+
+		this.world = new World(mapData.width * w,mapData.height * h);
+		this.world.boundH = -(this.world.height - height);
+		this.world.boundW = -(this.world.width - width);
+		stage.addChild(this.world.container);
+
+		var imageData = {images: ["images/lucht3.png"], frames: {width:800, height:400} }; 
+		var tilesetSheet = new createjs.SpriteSheet(imageData);
+		var cellBitmap = new createjs.Sprite(tilesetSheet);
+		this.world.addChild(cellBitmap);
+
+		buildBounds();
+
 	    var imageData = 
 	    {
 			images : [ tileset ],
