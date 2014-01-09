@@ -16,7 +16,6 @@ var Blockade = (function()
 		this.width = width;
 		this.height = height;
 
-		this.shape = new createjs.Shape();
 		this.container = new createjs.Container(); 
 
 		this.container.x = this.x;
@@ -44,36 +43,19 @@ var Blockade = (function()
 		switch(this.blockadeShape)
 		{
 			case "triangle":
-				this.shape.graphics.c();
-				this.shape.graphics.f("FF0000");
-				this.shape.graphics.mt(0,this.height);
-				this.shape.graphics.lt(this.width,this.height);
-				this.shape.graphics.lt(this.width/2,0);
-				this.shape.graphics.ef();
+
 				cellBitmap.gotoAndStop(0);
 			break;
 			case "circle":
-				this.shape.graphics.c();
-				this.shape.graphics.f("FF0000");
-				this.shape.graphics.drawCircle(0,0,this.height/2);
-				this.shape.graphics.ef();
-				this.shape.x += this.height/2;
-				this.shape.y += this.height/2;
+
 				cellBitmap.gotoAndStop(1);
 			break;
 			case "square":
-				this.shape.graphics.c();
-				this.shape.graphics.f("FF0000");
-				this.shape.graphics.drawRect(0,0,this.width,this.height);
-				this.shape.graphics.ef();
-				//console.log("makeSquare");
+
 				cellBitmap.gotoAndStop(2);
 			break;
 			case "rectangle":
-				this.shape.graphics.c();
-				this.shape.graphics.f("FF0000");
-				this.shape.graphics.drawRect(0,0,this.width/2,this.height * 2);
-				this.shape.graphics.ef();
+
 				cellBitmap.gotoAndStop(3);
 				//this.container.addChild(this.shape);
 			break;

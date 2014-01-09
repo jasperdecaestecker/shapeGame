@@ -33,11 +33,11 @@
                     {
 
                     },
-                 "type":"square",
+                 "type":"triangle",
                  "visible":true,
                  "width":40,
-                 "x":520,
-                 "y":160
+                 "x":219,
+                 "y":301
                 }, 
                 {
                  "height":40,
@@ -46,11 +46,11 @@
                     {
 
                     },
-                 "type":"triangle",
+                 "type":"square",
                  "visible":true,
                  "width":40,
-                 "x":220,
-                 "y":300
+                 "x":523,
+                 "y":161
                 }],
          "opacity":1,
          "type":"objectgroup",

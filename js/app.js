@@ -68,9 +68,11 @@
 	function restartLevel()
 	{
 		// zet de vorm van de getriggerde blockades terug op het scherm
+		console.log(arrTriggeredBlockadesIds);
 		for(var i = 0; i < arrTriggeredBlockadesIds.length; i ++)
 		{
-			this.world.addChild(blockades[arrTriggeredBlockadesIds[i]].shape);
+			//console.log(blockades[arrTriggeredBlockadesIds[i]]);
+			this.world.addChild(blockades[arrTriggeredBlockadesIds[i]].container);
 		}
 
 		// herpositioneer de blockades op hun originele position
@@ -135,10 +137,10 @@
 
 	function loadMap(mapNumber)
 	{
-	/*var imageData = {images: ["images/lucht3.png"], frames: {width:800, height:400} }; 
+		var imageData = {images: ["images/lucht3.png"], frames: {width:800, height:400} }; 
 		var tilesetSheet = new createjs.SpriteSheet(imageData);
 		var cellBitmap = new createjs.Sprite(tilesetSheet);
-		this.world.addChild(cellBitmap);*/
+		this.world.addChild(cellBitmap);
 
 
 		var pathToMap = "js/maps/map"+mapNumber+".json";
@@ -747,11 +749,15 @@
 				case "r":
 				case "t":
 				case "b":
+
 					var triggeredBlockId = blockades[j].blockadeId;
+
 					if($.inArray(triggeredBlockId, arrTriggeredBlockadesIds) == -1)
 					{
+
 						if(blockades[j].blockadeShape == player.currentPlayerShape)
 						{
+							console.log(blockades[j]);
 							arrTriggeredBlockadesIds.push(triggeredBlockId);
 							this.world.removeChild(blockades[j].container);
 							shapeVolgorde.nextShape();
