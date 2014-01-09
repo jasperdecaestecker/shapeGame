@@ -1613,7 +1613,7 @@
  <objectgroup name="obstakels" width="40" height="40">
   <object name="1" type="triangle" x="20" y="380" width="40" height="40"/>
   <object name="2" type="square" x="680" y="534" width="40" height="40"/>
-  <object name="3" type="triangle" x="378" y="197" width="40" height="40"/>
+  <object name="3" type="triangle" x="378" y="200" width="40" height="40"/>
  </objectgroup>
  <objectgroup name="player" width="40" height="40">
   <object name="spawnPoint" x="48" y="589"/>

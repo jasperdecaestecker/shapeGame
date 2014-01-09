@@ -1,6 +1,6 @@
 var Button = (function()
 {
-	var buttonBg, buttonText, container;
+	var buttonBg, buttonText;
 
 	function Button(x, y , width, height, text, bgColor, textColor)
 	{
@@ -25,7 +25,11 @@ var Button = (function()
 		this.buttonBg.graphics.f(this.bgColor);
 		this.buttonBg.graphics.drawRect(0,0,this.width,this.height);
 		this.buttonBg.graphics.ef();
+		this.buttonBg.x = 0;
+		this.buttonBg.y = 0;
 		this.container.addChild(this.buttonBg);
+
+		//this.container.addEventListener("click", function(event) { alert("clicked"); })
 
 		this.buttonText = new createjs.Text(this.text, "18px Arial", this.textColor); 
 		var boundsText = this.buttonText.getBounds();
@@ -33,6 +37,8 @@ var Button = (function()
 		this.buttonText.y = this.height/2 - boundsText.height/2;
 		this.container.addChild(this.buttonText);
 	}
+
+
 	return Button;
 
 })();

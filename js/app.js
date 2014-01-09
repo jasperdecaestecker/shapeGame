@@ -25,6 +25,7 @@
 	var vehicle;
 
 	var prevPlayerY = 0;
+	var startButton;
 
 	var delayAnimationB, delayAnimationCountB;
 
@@ -38,11 +39,20 @@
 
 		this.playerFollowOffsetY = this.playerFollowOffsetX = 0;
 
-		this.currentLevel = 2;
+		this.currentLevel = 20;
 
 		this.startScreen = new StartScreen(0,0,800,400);
 		stage.addChild(this.startScreen.container);
-		
+
+		var startKnop = new createjs.Shape();
+		startKnop.graphics.f("00FF00");
+		startKnop.graphics.drawCircle(0,0,20);
+		startKnop.graphics.ef();
+		startKnop.x = 400;
+		startKnop.y = 200;
+
+		stage.addChild(startKnop);
+		startKnop.addEventListener("click",startButtonClicked);
 
 		this.delayAnimation = 6;
 		this.delayAnimationCount = 1;
@@ -53,9 +63,12 @@
 		this.delayShooting = 60;
 		this.delayShootingCount = 1;
 
-		stage.update();
+		//
 
-		this.startScreen.container.addEventListener("click", startButtonClicked);
+		ticker = createjs.Ticker;
+		ticker.setFPS(60);
+		ticker.setPaused(false);
+		ticker.addEventListener("tick",update);
 
 		// comment volgende voor startscherm te tonen
 		//startButtonClicked();
@@ -63,13 +76,13 @@
 	function startButtonClicked()
 	{
 		startLevel(this.currentLevel);
+
 		//stage.removeChild(this.startScreen.container);
 	}
 
 	function restartLevel()
 	{
 		// zet de vorm van de getriggerde blockades terug op het scherm
-		console.log(arrTriggeredBlockadesIds);
 		for(var i = 0; i < arrTriggeredBlockadesIds.length; i ++)
 		{
 			//console.log(blockades[arrTriggeredBlockadesIds[i]]);
@@ -108,7 +121,7 @@
 		if(this.currentLevel == 20)
 		{
 			dropShape1 = false;
-				dropShape2 = false;
+			dropShape2 = false;
 		}
 
 		startGame(levelNumber);
@@ -118,9 +131,9 @@
 	{
 		loadMap(levelNumber);
 
-		ticker = createjs.Ticker;
+		/*ticker = createjs.Ticker;
 		ticker.setFPS(60);
-		ticker.addEventListener("tick",update);
+		ticker.addEventListener("tick",update);*/
 
 		window.onkeyup = keyup;
 		window.onkeydown = keydown;
@@ -144,14 +157,18 @@
 
 	function mapLoaded()
 	{
-		//this.startScreen = new StartScreen(0,0,1000,1000);
-		//this.world.addChild(this.startScreen.container);
+		ticker.setPaused(true);
 		/*this.startScreen = new StartScreen("background");
 		this.world.addChild(this.startScreen.shape);
 
 		this.startScreen = new StartScreen("shape");
 		this.world.addChild(this.startScreen.shape);
 		this.startScreen.shape.addEventListener("click", startRealLevel);*/
+	}
+
+	function test()
+	{
+		console.log("click");
 	}
 
 	function initLayers() 
@@ -248,6 +265,8 @@
 		shapeVolgorde.container.x = 20;
 		shapeVolgorde.container.y = 20;
 		stage.addChild(shapeVolgorde.container);
+
+
 	}
 
 	function makeObject(layerData, tilesetSheet, tilewidth, tileheight)
@@ -294,6 +313,7 @@
     		{
     			var lever = new Lever(layerData.objects[i].x,layerData.objects[i].y,70,45,layerData.objects[i].type);
     			this.world.addChild(lever.container);
+    			lever.container.addEventListener("click", test);
     			arrLevers.push(lever);
     		}
 		}
@@ -329,7 +349,7 @@
 	            }
 				this.world.addChild(cellBitmap);
 			}
-		}	
+		}
 	}
 
 	// aanroepen vooraleer je een nieuw level start
@@ -397,85 +417,94 @@
 
 	function update()
 	{
-		if(keys[39] || keys[37])
+		//console.log(ticker.getPaused());
+
+
+		if(ticker.getPaused())
 		{
-			if(this.delayAnimationCountB % this.delayAnimationB == 0)
+			if(keys[39] || keys[37])
 			{
-				player.animation();
-				this.delayAnimationCountB = 1;
+				if(this.delayAnimationCountB % this.delayAnimationB == 0)
+				{
+					player.animation();
+					this.delayAnimationCountB = 1;
+				}
+				else
+				{
+					this.delayAnimationCountB++;
+				}
 			}
-			else
-			{
-				this.delayAnimationCountB++;
+			
+			if(keys[69] && actionKeyPressed == false)
+			{	
+				actionKeyPressed = true;
+				checkLeverActivated();
 			}
-		}
-		
-		if(keys[69] && actionKeyPressed == false)
-		{	
-			actionKeyPressed = true;
-			checkLeverActivated();
-		}
-		
-		if(keys[32])
-		{
-			if(player.grounded && !player.jumping)
+			
+			if(keys[32])
 			{
+				if(player.grounded && !player.jumping)
+				{
+					player.grounded = false;
+					player.jumping = true;
+					player.velY -= player.speed * 2.2;
+				}
+			}
+			if(keys[37])
+			{
+				if(player.velX >- player.speed)
+				{
+					player.velX --;
+				}
 				player.grounded = false;
-				player.jumping = true;
-				player.velY -= player.speed * 2.2;
+				playerisOnMovingTrajectory = false;
+			}
+			if(keys[39])
+			{
+				if(player.velX < player.speed)
+				{
+					player.velX ++;
+				}
+				player.grounded = false;
+				playerisOnMovingTrajectory = false;
+			}		
+
+			checkCollisionPlatforms();
+			checkLadders();
+			checkMovingPlatform();
+			checkBlockadesCollision();
+			checkIfFinished();
+			checkIfBossLevel();
+
+			this.world.followPlayerX(player,width,this.playerFollowOffsetX);
+			this.world.followPlayerY(player,height,this.playerFollowOffsetY);
+
+			player.update();
+			
+
+
+			// gevallen door de grond = mors dood	
+			if(player.y > this.world.height)
+			{
+				player.x = startLocation.x;
+				player.y = startLocation.y;
+				restartLevel();
+				/*if(this.currentLevel == 20)
+				{
+					
+					clearLevel();
+					restartLevel();
+					startLevel(this.currentLevel);
+				}
+				else
+				{
+					restartLevel();
+				}*/
 			}
 		}
-		if(keys[37])
-		{
-			if(player.velX >- player.speed)
-			{
-				player.velX --;
-			}
-			player.grounded = false;
-			playerisOnMovingTrajectory = false;
-		}
-		if(keys[39])
-		{
-			if(player.velX < player.speed)
-			{
-				player.velX ++;
-			}
-			player.grounded = false;
-			playerisOnMovingTrajectory = false;
-		}		
 
-		checkCollisionPlatforms();
-		checkLadders();
-		checkMovingPlatform();
-		checkBlockadesCollision();
-		checkIfFinished();
-		checkIfBossLevel();
-
-		this.world.followPlayerX(player,width,this.playerFollowOffsetX);
-		this.world.followPlayerY(player,height,this.playerFollowOffsetY);
-
-		player.update();
 		stage.update();
-
-
-		// gevallen door de grond = mors dood	
-		if(player.y > this.world.height)
-		{
-			player.x = startLocation.x;
-			player.y = startLocation.y;
-			restartLevel();
-			/*if(this.currentLevel == 20)
-			{
-				
-				clearLevel();
-				restartLevel();
-				startLevel(this.currentLevel);
-			}
-			else
-			{
-				restartLevel();
-			}*/
-		}
+		
 	}
 
 	function checkIfBossLevel()
