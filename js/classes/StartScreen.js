@@ -23,6 +23,7 @@ var StartScreen = (function()
 		this.background.graphics.drawRect(0,0,this.width,this.height);
 		this.background.graphics.ef();*/
 
+		//bg toevoegen
 		var imageData = {images: ["bgmall.png"], frames: {width:800, height:400} }; 
 		var tilesetSheet = new createjs.SpriteSheet(imageData);
 		var cellBitmap = new createjs.Sprite(tilesetSheet);
