@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="40" height="20" tilewidth="20" tileheight="20">
  <tileset firstgid="1" name="tiles" tilewidth="20" tileheight="20">
-  <image source="tiles.png" width="260" height="240"/>
+  <image source="tiles.png" width="260" height="320"/>
  </tileset>
  <imagelayer name="bg" width="40" height="20">
   <image source="../../images/lucht3.png"/>
@@ -253,7 +253,7 @@
    <tile gid="48"/>
    <tile gid="49"/>
    <tile gid="49"/>
-   <tile gid="49"/>
+   <tile gid="192"/>
    <tile gid="88"/>
    <tile gid="75"/>
    <tile gid="0"/>
@@ -291,7 +291,7 @@
    <tile gid="48"/>
    <tile gid="49"/>
    <tile gid="49"/>
-   <tile gid="49"/>
+   <tile gid="192"/>
    <tile gid="88"/>
    <tile gid="75"/>
    <tile gid="0"/>
@@ -329,7 +329,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="49"/>
-   <tile gid="49"/>
+   <tile gid="192"/>
    <tile gid="88"/>
    <tile gid="75"/>
    <tile gid="0"/>
@@ -368,7 +368,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="49"/>
+   <tile gid="192"/>
    <tile gid="75"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -640,7 +640,7 @@
    <tile gid="102"/>
    <tile gid="102"/>
    <tile gid="102"/>
-   <tile gid="49"/>
+   <tile gid="166"/>
    <tile gid="49"/>
    <tile gid="49"/>
    <tile gid="49"/>
@@ -713,7 +713,7 @@
    <tile gid="102"/>
    <tile gid="102"/>
    <tile gid="102"/>
-   <tile gid="49"/>
+   <tile gid="166"/>
    <tile gid="49"/>
    <tile gid="49"/>
    <tile gid="49"/>

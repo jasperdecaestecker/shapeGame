@@ -19,6 +19,7 @@
 	var worldHeight = 0;
 	var worldWidth = 0;
 	var arrMap;
+	var arrTooltips;
 
 	var tileset;
 	var mapData;
@@ -71,7 +72,7 @@
 		ticker.addEventListener("tick",update);
 
 		// comment volgende voor startscherm te tonen
-		//startButtonClicked();
+		startButtonClicked();
 	}
 	function startButtonClicked()
 	{
@@ -84,6 +85,7 @@
 	function restartLevel()
 	{
 		// zet de vorm van de getriggerde blockades terug op het scherm
+		console.log(blockades);
 		for(var i = 0; i < arrTriggeredBlockadesIds.length; i ++)
 		{
 			//console.log(blockades[arrTriggeredBlockadesIds[i]]);
@@ -104,6 +106,7 @@
 
 	function startLevel(levelNumber)
 	{
+
 		startLocation = {};
 		boxes = [];		
 		arrMovingPlatforms = [];
@@ -117,6 +120,7 @@
 		this.arrProjectiles = [];
 		arrDropShapes = [];
 		keys = [];
+		arrTooltips = [];
 	
 
 		if(this.currentLevel == 20)
@@ -188,10 +192,13 @@
 
 		for(var i = 0; i < this.world.height; i += 400)
 		{
-			var cellBitmap = new createjs.Sprite(tilesetSheet);
-			cellBitmap.y = i;
-			console.log("drawbg");
-			this.world.addChild(cellBitmap);
+			for(var j = 0; j < this.world.width; j += 800)
+			{
+				var cellBitmap = new createjs.Sprite(tilesetSheet);
+				cellBitmap.x = j;
+				cellBitmap.y = i;
+				this.world.addChild(cellBitmap);
+			}
 		}
 
 
@@ -231,6 +238,10 @@
 		{
 			case 1:
 				arrShapeVolgorde = ["triangle","square"];
+				var tooltip = new Tooltip(0, 0, 100,100,"press space to jump",1);
+				//tooltip.pop();
+				this.world.addChild(tooltip.container);
+				arrTooltips.push(tooltip);
 				break;
 			case 2:	
 				arrShapeVolgorde = ["square","square","triangle"];
@@ -245,6 +256,10 @@
 				ladders.push(ladder);*/
 				arrShapeVolgorde = ["triangle","square","circle"];
 				break;	
+
+			case 4:
+				arrShapeVolgorde = ["circle","square","square","rectangle","triangle"];	
+				break;
 			case 20:
 				var blockade = new Blockade(200,520,20,20,possibleShapes[Math.floor(Math.random() * possibleShapes.length)],0);
 				this.world.addChild(blockade.container);
@@ -356,8 +371,10 @@
 	// aanroepen vooraleer je een nieuw level start
 	function clearLevel()
 	{
+		this.world.container.removeAllChildren();
 		stage.removeChild(this.world.container);
-		
+
+
 		//ticker.removeEventListener("tick",update);
 	}
 
@@ -419,9 +436,6 @@
 
 	function update()
 	{
-		console.log(ticker.getPaused());
-
-
 		if(ticker.getPaused())
 		{
 			if(keys[39] || keys[37])
@@ -482,6 +496,17 @@
 			this.world.followPlayerY(player,height,this.playerFollowOffsetY);
 
 			player.update();
+
+
+			/*if(arrTooltips.length != 0)
+			{
+				if(player.x > 200)
+				{
+					arrTooltips[0].container.x = player.x;
+					arrTooltips[0].container.y = player.y;
+					arrTooltips[0].pop();
+				}
+			}*/
 			
 
 
