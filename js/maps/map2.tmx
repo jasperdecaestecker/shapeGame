@@ -891,9 +891,9 @@
   </data>
  </layer>
  <objectgroup name="obstakels" width="40" height="22">
-  <object name="1" type="triangle" x="279" y="279" width="40" height="40"/>
-  <object name="2" type="square" x="680" y="199" width="40" height="40"/>
-  <object name="3" type="triangle" x="279" y="59" width="40" height="40"/>
+  <object name="1" type="square" x="279" y="280" width="40" height="40"/>
+  <object name="2" type="square" x="262" y="60" width="40" height="40"/>
+  <object name="3" type="triangle" x="685" y="200" width="40" height="40"/>
  </objectgroup>
  <objectgroup name="player" width="40" height="22">
   <object name="spawnPoint" x="30" y="349"/>

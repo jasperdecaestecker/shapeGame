@@ -38,7 +38,7 @@
 
 		this.playerFollowOffsetY = this.playerFollowOffsetX = 0;
 
-		this.currentLevel = 1;
+		this.currentLevel = 2;
 
 		this.startScreen = new StartScreen(0,0,800,400);
 		stage.addChild(this.startScreen.container);
@@ -166,8 +166,18 @@
 
 		var imageData = {images: ["images/lucht3.png"], frames: {width:800, height:400} }; 
 		var tilesetSheet = new createjs.SpriteSheet(imageData);
-		var cellBitmap = new createjs.Sprite(tilesetSheet);
-		this.world.addChild(cellBitmap);
+		
+
+		for(var i = 0; i < this.world.height; i += 400)
+		{
+			var cellBitmap = new createjs.Sprite(tilesetSheet);
+			cellBitmap.y = i;
+			console.log("drawbg");
+			this.world.addChild(cellBitmap);
+		}
+
+
+		
 
 		buildBounds();
 
@@ -205,17 +215,17 @@
 				arrShapeVolgorde = ["triangle","square"];
 				break;
 			case 2:	
-				arrShapeVolgorde = ["triangle","triangle","square"];
+				arrShapeVolgorde = ["square","square","triangle"];
 				break;
 			case 3:
-				var ladder = new Ladder(160,180,40,140);
+				/*var ladder = new Ladder(160,180,40,140);
 				this.world.addChild(ladder.container);
 				ladders.push(ladder);
 
 				var ladder = new Ladder(600,152,40,108);
 				this.world.addChild(ladder.container);
-				ladders.push(ladder);
-				arrShapeVolgorde = ["triangle","circle","square"];
+				ladders.push(ladder);*/
+				arrShapeVolgorde = ["triangle","square","circle"];
 				break;	
 			case 20:
 				var blockade = new Blockade(200,520,20,20,possibleShapes[Math.floor(Math.random() * possibleShapes.length)],0);
@@ -238,9 +248,6 @@
 		shapeVolgorde.container.x = 20;
 		shapeVolgorde.container.y = 20;
 		stage.addChild(shapeVolgorde.container);
-
-		
-
 	}
 
 	function makeObject(layerData, tilesetSheet, tilewidth, tileheight)
