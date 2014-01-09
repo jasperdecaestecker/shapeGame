@@ -116,13 +116,12 @@
 		ladders = [];
 		arrLevers = [];
 		changeShape = false;
-		playerisOnMovingTrajectory = false;
+		playerisOnMovingTrajectory = [false];
 		actionKeyPressed = false;
 		this.arrProjectiles = [];
 		arrDropShapes = [];
 		keys = [];
 		arrTooltips = [];
-	
 
 		if(this.currentLevel == 20)
 		{
@@ -271,10 +270,18 @@
 				break;	
 			case 7:
 				arrShapeVolgorde = ["square","rectangle"];
-
-				var movingPlatform = new MovingPlatform(100,300,320,120,60,20,1,"red");
+				var movingPlatform = new MovingPlatform(200,400,320,120,60,20,1,"red");
 				this.world.addChild(movingPlatform.container);
 				arrMovingPlatforms.push(movingPlatform);
+				movingPlatform.attach(0);
+
+				var movingPlatform = new MovingPlatform(700,500,320,120,60,20,1,"red");
+				this.world.addChild(movingPlatform.container);
+				arrMovingPlatforms.push(movingPlatform);
+
+				
+
+
 				break;		
 			case 20:
 				var blockade = new Blockade(200,520,20,20,possibleShapes[Math.floor(Math.random() * possibleShapes.length)],0);
@@ -289,16 +296,13 @@
 				boss = new Boss(10,680,80,80);
 				this.world.addChild(boss.container);
 				arrShapeVolgorde = ["rectangle","rectangle","square"];
-				break;
-						
+				break;	
 		}
 
 		shapeVolgorde = new ShapeVolgorde(arrShapeVolgorde,0);
 		shapeVolgorde.container.x = 20;
 		shapeVolgorde.container.y = 20;
 		stage.addChild(shapeVolgorde.container);
-
-
 	}
 
 	function makeObject(layerData, tilesetSheet, tilewidth, tileheight)
@@ -487,7 +491,7 @@
 					player.velX --;
 				}
 				player.grounded = false;
-				playerisOnMovingTrajectory = false;
+				playerisOnMovingTrajectory = [false];
 			}
 			if(keys[39])
 			{
@@ -496,7 +500,7 @@
 					player.velX ++;
 				}
 				player.grounded = false;
-				playerisOnMovingTrajectory = false;
+				playerisOnMovingTrajectory = [false];
 			}		
 
 			checkCollisionPlatforms();
@@ -763,7 +767,12 @@
 		{
 			arrMovingPlatforms[i].update();
 
-			if(playerisOnMovingTrajectory)
+			if(arrMovingPlatforms[i].attachId != null)
+			{
+				blockades[arrMovingPlatforms[i].attachId].changePosition(arrMovingPlatforms[i].x+(arrMovingPlatforms[i].width/2 - 20),arrMovingPlatforms[i].y-40);
+			}
+
+			if(playerisOnMovingTrajectory[i])
 			{
 				player.x += arrMovingPlatforms[i].speedX;
 				player.y += arrMovingPlatforms[i].speedY;
@@ -785,7 +794,8 @@
 					case "b":
 						player.grounded = true;
 						player.jumping = false;
-						playerisOnMovingTrajectory = true;
+						playerisOnMovingTrajectory[i] = true;
+						console.log(i);
 			
 					break;
 			}

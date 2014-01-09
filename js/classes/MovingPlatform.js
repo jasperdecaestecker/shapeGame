@@ -17,7 +17,28 @@ var MovingPlatform = (function()
 		this.container = new createjs.Container();
 		this.container.x = this.x;
 		this.container.y = this.y;
+		this.attachId = null;
+
+		if(this.startX > this.endX)
+		{
+			var temp = this.endX;
+			this.endX = this.startX;
+			this.startX = temp;
+		}
+
+		/*if(this.startY < this.endY)
+		{
+			var temp = this.endY;
+			this.endY = this.startY;
+			this.startY = temp;
+		}*/
+
 		this.draw();
+	}
+
+	MovingPlatform.prototype.attach = function(blockadeId)
+	{
+		this.attachId = blockadeId;
 	}
 
 	MovingPlatform.prototype.draw = function()
