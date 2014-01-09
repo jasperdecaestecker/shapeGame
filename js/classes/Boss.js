@@ -1,10 +1,10 @@
 var Boss = (function()
 {
-	var bossShapes = ["square","triangle","circle"];
 	var container;
 	var shape;
 	var arrProjectiles;
 	var projectileId;
+	var bossShapes = ["square","circle","triangle"];
 
 	function Boss(x,y,width,height)
 	{
@@ -15,43 +15,66 @@ var Boss = (function()
 		this.speedX = 2;
 		this.speedY = 1;
 		this.startX = 0;
-		this.endX = 600;
-		this.lives = 3;
+		this.endX = 700;
+		this.hits = 0;
 		this.delayShooting = 60;
 		this.delayShootingCount = 1;
 		this.arrProjectiles = [];
 		this.projectileId = 0;
+		this.currentShape = bossShapes[this.hits];
 
 		this.shape = new createjs.Shape(); 
 		this.container = new createjs.Container(); 
 		this.container.x = this.x;
 		this.container.y = this.y;
-		this.container.addChild(this.shape);
-
+		
+	
 		this.draw();
 	}
 
 	Boss.prototype.draw = function()
 	{
 		this.shape.graphics.c();
-		switch(this.lives)
+		switch(this.currentShape)
 		{
-			case 3:
+			case "square":
 				this.shape.graphics.f("00FF00");
+				this.shape.graphics.drawRect(0,0,this.width,this.height);
+				this.shape.graphics.ef();
+				this.container.addChild(this.shape);
+				this.shape.x = 0;
+				this.shape.y = 0;
 				break;
+			case "triangle":
+				this.shape.graphics.f("00FF00");
+				this.shape.graphics.mt(0,this.height);
+				this.shape.graphics.lt(this.width,this.height);
+				this.shape.graphics.lt(this.width/2,0);
+				this.shape.graphics.ef();
+				this.shape.x = 0;
+				this.shape.y = 0;
+				this.container.addChild(this.shape);
+				break;	
+			case "circle":
+				this.shape.graphics.f("00FF00");
+				this.shape.graphics.drawCircle(0,0,this.height/2);
+				this.shape.graphics.ef();
+				this.shape.x = 40;
+				this.shape.y = 40;
+				this.container.addChild(this.shape);
 
+			
+			break;
 		}
-		
-		this.shape.graphics.drawRect(0,0,this.width,this.height);
-		this.shape.graphics.ef();
-		this.shape.alpha=1;
+
+	
 	}
 
 	Boss.prototype.nextShape = function(shape)
 	{
-		this.container.removeAllChildren();
-		this.currentPlayerShape = shape;
-		this.draw(this.currentPlayerShape);
+		//this.container.removeAllChildren();
+		this.currentShape = shape;
+		this.draw();
 	}
 
 	Boss.prototype.update = function()
@@ -72,28 +95,21 @@ var Boss = (function()
 	
 		this.x += this.speedX;
 		
+		//if(this.currentShape == circle)
+			
 		this.shape.x = this.x;
-
-		/*if(this.delayShootingCount % this.delayShooting == 0)
-		{
-			this.shoot();
-			this.delayShootingCount = 1;
-		}
-		else
-		{
-			this.delayShootingCount++;
-		}*/
 	
-		this.draw();
+		//this.draw();
 	}
 
-	Boss.prototype.shoot = function()
+	Boss.prototype.hit = function()
 	{
-		console.log("rest");
-
-
-		this.container.addChild(blockade.container);
-		//this.draw()
+		this.hits++;
+		console.log(this.hits);
+		this.delayShooting -= 10;
+	
+		this.speedX *=1.5;
+		this.nextShape(bossShapes[this.hits]);
 	}
 
 	return Boss;

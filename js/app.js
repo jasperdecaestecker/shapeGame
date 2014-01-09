@@ -13,7 +13,9 @@
 	var boss;
 	var actionKeyPressed;
 	var arrProjectiles;
-	var projectileId;
+	var arrDropShapes;
+	var dropShape1;
+	var dropShape2;
 
 
 
@@ -98,13 +100,13 @@
 		playerisOnMovingTrajectory = false;
 		actionKeyPressed = false;
 		this.arrProjectiles = [];
-		this.projectileId = 0;
-
-
+		arrDropShapes = [];
 
 		if(this.currentLevel == 20)
 		{
 			this.world = new World(800,800);
+			dropShape1 = false;
+			dropShape2 = false;
 		}
 		else
 		{
@@ -213,6 +215,14 @@
 				arrShapeVolgorde = ["triangle","circle","square"];
 				break;	
 			case 20:
+				var blockade = new Blockade(200,520,20,20,possibleShapes[Math.floor(Math.random() * possibleShapes.length)],0);
+				this.world.addChild(blockade.container);
+				arrDropShapes.push(blockade);
+
+				var blockade = new Blockade(560,520,20,20,possibleShapes[Math.floor(Math.random() * possibleShapes.length)],0);
+				this.world.addChild(blockade.container);
+				arrDropShapes.push(blockade);
+
 				this.playerFollowOffsetY = -100;
 				boss = new Boss(10,680,80,80);
 				this.world.addChild(boss.container);
@@ -285,20 +295,6 @@
 		arrMovingPlatforms.push(movingPlatform);
 	}
 
-	function handleClick(event)
-	{
-		for(var j = 0; j < arrLevers.length; j ++)
-		{
-			arrLevers[j].change();
-		}
-
-		var tempX = blockades[0].x;
-		var tempY = blockades[0].y;
-
-		blockades[0].changePosition(blockades[1].x,blockades[1].y);
-		blockades[1].changePosition(tempX,tempY);
-	}
-
 	function initLayer(layerData, tilesetSheet, tilewidth, tileheight) 
 	{
 		for ( var y = 0; y < layerData.height; y++) 
@@ -359,14 +355,30 @@
 					console.log("toggle lever" + i);
 					arrLevers[i].change();
 
-					var blockade1Id = arrLevers[i].arrChangeBlockades[0] - 1;
-					var blockade2Id = arrLevers[i].arrChangeBlockades[1] - 1;
+					if(this.currentLevel == 20)
+					{
+						if(i == 0)
+						{
+							dropShape1 = true;	
+							/*arrDropShapes[i].blockadeShape = "rectangle";
+							arrDropShapes[i].draw();*/
+						}
+						else
+						{
+							dropShape2 = true;
+						}
+					}
+					else
+					{
+						var blockade1Id = arrLevers[i].arrChangeBlockades[0] - 1;
+						var blockade2Id = arrLevers[i].arrChangeBlockades[1] - 1;
 
-					var tempX = blockades[blockade1Id].x;
-					var tempY =  blockades[blockade1Id].y;
+						var tempX = blockades[blockade1Id].x;
+						var tempY =  blockades[blockade1Id].y;
 
-					blockades[blockade1Id].changePosition(blockades[blockade2Id].x,blockades[blockade2Id].y);
-					blockades[blockade2Id].changePosition(tempX,tempY);
+						blockades[blockade1Id].changePosition(blockades[blockade2Id].x,blockades[blockade2Id].y);
+						blockades[blockade2Id].changePosition(tempX,tempY);
+					}
 				break;
 			}
 		}
@@ -400,12 +412,11 @@
 				player.grounded = false;
 				player.jumping = true;
 				player.velY -= player.speed * 2.2;
-				//console.log("jump");
 			}
 		}
 		if(keys[37])
 		{
-			if(player.velX > - player.speed)
+			if(player.velX >- player.speed)
 			{
 				player.velX --;
 			}
@@ -434,22 +445,88 @@
 		// bossLevel
 		if(this.currentLevel == 20)
 		{
-			if(this.delayShootingCount % this.delayShooting == 0)
+			if(dropShape1)
 			{
+				arrDropShapes[0].y+=3;
+				arrDropShapes[0].container.y+=3;
+				if(arrDropShapes[0].container.y > this.world.height)
+				{
+					dropShape1 = false;
+				}
+			}
+			if(dropShape2)
+			{
+				arrDropShapes[1].y+=3;
+				arrDropShapes[1].container.y+=3;
+				if(arrDropShapes[1].container.y > this.world.height)
+				{
+					dropShape2 = false;
+				}
+			}
 
-				var blockade = new Blockade(boss.x+40,boss.y,40,40,possibleShapes[Math.floor(Math.random() * possibleShapes.length)], projectileId);
+			if(dropShape1 || dropShape2)
+			{
+				for(var i = 0; i < arrDropShapes.length;i++)
+				{
+					switch(CollisionDetection.checkCollision(boss,arrDropShapes[i],false,usingLadder))
+					{
+						case "l":
+						case "r":
+						case "t":
+						case "b":
+							if(arrDropShapes[i].blockadeShape == boss.currentShape)
+							{
+								boss.hit();
+								arrDropShapes[i].blockadeShape = possibleShapes[Math.floor(Math.random() * possibleShapes.length)];
+								arrDropShapes[i].draw();
+								arrDropShapes[i].changePosition(arrDropShapes[i].orgX,arrDropShapes[i].orgY);
+								if(i == 0)
+								{
+									dropShape1 = false;
+								}
+								else if(i == 1)
+								{
+									dropShape2 = false;
+								}
+
+								if(boss.hits == 3)
+								{
+									console.log("won");
+									clearLevel();
+									this.currentLevel++;
+									startLevel(this.currentLevel);
+								}
+							}
+						break;
+					}
+					
+						
+					
+				}
+			
+			}
+			
+			if(boss.delayShootingCount % boss.delayShooting == 0)
+			{
+				var shape = possibleShapes[Math.floor(Math.random() * possibleShapes.length)];
+				var blockade = new Blockade(boss.x+40,boss.y,40,40,shape, boss.projectileId);
 				this.world.addChild(blockade.container);
 				this.arrProjectiles.push(blockade);
-				this.projectileId++;
-				this.delayShootingCount = 1;
+				boss.projectileId++;
+				boss.delayShootingCount = 1;
+				//boss.nextShape(shape);
 			}
 			else
 			{
-				this.delayShootingCount++;
+				boss.delayShootingCount++;
 			}
 			checkCollisionPlayerWithProjectiles();
 			boss.update();
+
+
+
 		}
+
 		player.update();
 		stage.update();
 
@@ -459,7 +536,17 @@
 		{
 			player.x = startLocation.x;
 			player.y = startLocation.y;
-			restartLevel();
+			if(this.currentLevel == 20)
+			{
+				
+				clearLevel();
+				restartLevel();
+				startLevel(this.currentLevel);
+			}
+			else
+			{
+				restartLevel();
+			}
 		}
 	}
 
@@ -469,6 +556,11 @@
 		{
 			this.arrProjectiles[i].y-= 3;
 			this.arrProjectiles[i].container.y-= 3;
+			if(this.arrProjectiles[i].y < 0)
+			{
+				this.arrProjectiles.splice(i, 1);
+			}
+
 			switch(CollisionDetection.checkCollision(player,this.arrProjectiles[i],false,usingLadder))
 			{
 				case "l":
@@ -480,6 +572,14 @@
 						this.world.removeChild(this.arrProjectiles[i].container);
 						this.arrProjectiles.splice(i, 1);
 						player.nextShape(possibleShapes[Math.floor(Math.random() * possibleShapes.length)]);
+
+						arrDropShapes[0].blockadeShape = possibleShapes[Math.floor(Math.random() * possibleShapes.length)];
+						arrDropShapes[0].draw();
+						arrDropShapes[0].changePosition(arrDropShapes[0].orgX,arrDropShapes[0].orgY);
+
+						arrDropShapes[1].blockadeShape = possibleShapes[Math.floor(Math.random() * possibleShapes.length)];
+						arrDropShapes[1].draw();
+						arrDropShapes[1].changePosition(arrDropShapes[1].orgX,arrDropShapes[1].orgY);
 					}
 					else
 					{
@@ -542,15 +642,11 @@
 				case "r":
 				case "t":
 				case "b":
-					//player.grounded = true;
-					//console.log("usingLadder");
 					if(keys[38])
 					{
 						usingLadder = true;
 						player.x = ladders[i].x;
 						player.y -= 2;
-						
-						//console.log(usingLadder);
 						player.grounded = true;
 					}
 					else if(keys[40])
@@ -656,8 +752,6 @@
 						}
 						else
 						{
-							console.log("dead");
-
 							player.x = startLocation.x;
 							player.y = startLocation.y;
 							restartLevel();

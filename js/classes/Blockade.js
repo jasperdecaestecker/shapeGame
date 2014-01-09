@@ -35,6 +35,7 @@ var Blockade = (function()
 
 	Blockade.prototype.draw = function()
 	{
+		this.container.removeAllChildren();
 
 		var imageData = {images: ["blockadeSprite.png"], frames: {width:40, height:40} }; 
 		var tilesetSheet = new createjs.SpriteSheet(imageData);
@@ -76,13 +77,9 @@ var Blockade = (function()
 				cellBitmap.gotoAndStop(3);
 				//this.container.addChild(this.shape);
 			break;
-			
 		}
-
 		//this.container.addChild(this.shape);
 		this.container.addChild(cellBitmap);
-		
 	}
 	return Blockade;
-
 })();
