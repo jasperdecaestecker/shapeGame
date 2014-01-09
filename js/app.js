@@ -16,9 +16,6 @@
 	var arrDropShapes;
 	var dropShape1;
 	var dropShape2;
-
-
-
 	var worldHeight = 0;
 	var worldWidth = 0;
 	var arrMap;
@@ -41,11 +38,12 @@
 
 		this.playerFollowOffsetY = this.playerFollowOffsetX = 0;
 
-		this.currentLevel = 20;
+		this.currentLevel = 1;
 
-		this.startScreen = new StartScreen(0,0,800,400);
+		/*this.startScreen = new StartScreen(0,0,800,400);
 		stage.addChild(this.startScreen.container);
-		this.startScreen.container.addEventListener("click", startButtonClicked);
+		this.startScreen.container.addEventListener("click", startButtonClicked);*/
+
 
 		this.delayAnimation = 6;
 		this.delayAnimationCount = 1;
@@ -59,7 +57,7 @@
 		stage.update();
 
 		// comment volgende voor startscherm te tonen
-		//startButtonClicked();
+		startButtonClicked();
 	}
 	function startButtonClicked()
 	{
@@ -137,6 +135,12 @@
 
 	function loadMap(mapNumber)
 	{
+	/*var imageData = {images: ["images/lucht3.png"], frames: {width:800, height:400} }; 
+		var tilesetSheet = new createjs.SpriteSheet(imageData);
+		var cellBitmap = new createjs.Sprite(tilesetSheet);
+		this.world.addChild(cellBitmap);*/
+
+
 		var pathToMap = "js/maps/map"+mapNumber+".json";
 		$.getJSON( pathToMap, 
 		{
@@ -145,7 +149,7 @@
 		{
 			mapData = data;
 			tileset = new Image();
-			tileset.src = "js/maps/tile_map1.png";
+			tileset.src = "js/maps/tiles.png";
 			tileset.onLoad = initLayers();
 			mapLoaded();
 		});
@@ -191,6 +195,8 @@
 			}
 		}
 
+
+
 	}
 
 	function setShapeVolgorde()
@@ -234,6 +240,9 @@
 		shapeVolgorde.container.x = 20;
 		shapeVolgorde.container.y = 20;
 		this.world.addChild(shapeVolgorde.container);
+
+		
+
 	}
 
 	function makeObject(layerData, tilesetSheet, tilewidth, tileheight)
@@ -285,6 +294,8 @@
     			arrLevers.push(lever);
     		}
 		}
+
+
 	}
 
 	function makeMovingPlatform()
@@ -313,10 +324,12 @@
 					var platform = new Platform(cellBitmap.x, cellBitmap.y,tilewidth,tileheight);
 					boxes.push(platform);
 	            }
-
 				this.world.addChild(cellBitmap);
 			}
 		}
+
+		console.log("initLayer");
+	
 	}
 
 	// aanroepen vooraleer je een nieuw level start
@@ -438,11 +451,37 @@
 		checkMovingPlatform();
 		checkBlockadesCollision();
 		checkIfFinished();
+		checkIfBossLevel();
 
 		this.world.followPlayerX(player,width,this.playerFollowOffsetX);
 		this.world.followPlayerY(player,height,this.playerFollowOffsetY);
 
-		// bossLevel
+		player.update();
+		stage.update();
+
+
+		// gevallen door de grond = mors dood	
+		if(player.y > this.world.height)
+		{
+			player.x = startLocation.x;
+			player.y = startLocation.y;
+			restartLevel();
+			/*if(this.currentLevel == 20)
+			{
+				
+				clearLevel();
+				restartLevel();
+				startLevel(this.currentLevel);
+			}
+			else
+			{
+				restartLevel();
+			}*/
+		}
+	}
+
+	function checkIfBossLevel()
+	{
 		if(this.currentLevel == 20)
 		{
 			if(dropShape1)
@@ -499,11 +538,7 @@
 							}
 						break;
 					}
-					
-						
-					
 				}
-			
 			}
 			
 			if(boss.delayShootingCount % boss.delayShooting == 0)
@@ -522,31 +557,6 @@
 			}
 			checkCollisionPlayerWithProjectiles();
 			boss.update();
-
-
-
-		}
-
-		player.update();
-		stage.update();
-
-
-		// gevallen door de grond = mors dood	
-		if(player.y > this.world.height)
-		{
-			player.x = startLocation.x;
-			player.y = startLocation.y;
-			if(this.currentLevel == 20)
-			{
-				
-				clearLevel();
-				restartLevel();
-				startLevel(this.currentLevel);
-			}
-			else
-			{
-				restartLevel();
-			}
 		}
 	}
 

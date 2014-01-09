@@ -20,46 +20,22 @@ var ShapeVolgorde = (function()
 
 		for (var i = 0; i < this.arrShapes.length; i++) 
     	{
-    		var shape = new createjs.Shape();
-    			var cellBitmap = new createjs.Sprite(tilesetSheet);
+    		var cellBitmap = new createjs.Sprite(tilesetSheet);
 			switch(this.arrShapes[i])
 			{
 				case "triangle":
-					shape.graphics.c();
-					shape.graphics.f("FF0000");
-					shape.graphics.mt(0,20);
-					shape.graphics.lt(20,20);
-					shape.graphics.lt(10,0);
-					shape.graphics.ef();
-					shape.x = 0 + i*30;
 					cellBitmap.x = 0 + i *30;
 					cellBitmap.gotoAndStop(0);
 				break;
 				case "circle":
-					shape.graphics.c();
-					shape.graphics.f("FF0000");
-					shape.graphics.drawCircle(0,0,10);
-					shape.graphics.ef();
-					shape.y = 10;
-					shape.x = 10 + i*30;
 					cellBitmap.x = 0 + i *30;
 					cellBitmap.gotoAndStop(1);
 				break;
 				case "square":
-					shape.graphics.c();
-					shape.graphics.f("FF0000");
-					shape.graphics.drawRect(0,0,20,20);
-					shape.graphics.ef();
-					shape.x = 0 + i*30;
 					cellBitmap.x = 0 + i *30;
 					cellBitmap.gotoAndStop(2);
 				break;
 				case "rectangle":
-					shape.graphics.c();
-					shape.graphics.f("FF0000");
-					shape.graphics.drawRect(0,0,20,20);
-					shape.graphics.ef();
-					shape.x = 0 + i*30;
 					cellBitmap.x = 0 + i *30;
 					cellBitmap.gotoAndStop(3);
 					
