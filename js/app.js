@@ -46,7 +46,7 @@
 		stage.update();
 
 		// comment volgende voor startscherm te tonen
-		startButtonClicked();
+		//startButtonClicked();
 	}
 	function startButtonClicked()
 	{

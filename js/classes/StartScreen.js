@@ -1,6 +1,7 @@
 var StartScreen = (function()
 {
 	var container, startButton, background;
+	var cellBitmap;
 
 	function StartScreen(x,y,width,height)
 	{
@@ -16,12 +17,23 @@ var StartScreen = (function()
 	StartScreen.prototype.draw = function()
 	{
 		//draw background
-		this.background = new createjs.Shape();
+		/*this.background = new createjs.Shape();
 		this.background.graphics.c();
 		this.background.graphics.f("000000");
 		this.background.graphics.drawRect(0,0,this.width,this.height);
-		this.background.graphics.ef();
-		this.container.addChild(this.background);
+		this.background.graphics.ef();*/
+
+		var imageData = {images: ["bgmall.png"], frames: {width:800, height:400} }; 
+		var tilesetSheet = new createjs.SpriteSheet(imageData);
+		var cellBitmap = new createjs.Sprite(tilesetSheet);
+		cellBitmap.gotoAndStop(0);
+		cellBitmap.x = 0;
+		cellBitmap.y = 0;
+		this.container.addChild(cellBitmap);
+
+		console.log('image data '+imageData);
+
+		//this.container.addChild(this.background);
 
 		// draw startknop
 		this.startButton = new Button(0,0,120,30,"Start Game","#00FF00","#000000");
