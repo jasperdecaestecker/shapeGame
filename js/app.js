@@ -20,6 +20,7 @@
 	var worldWidth = 0;
 	var arrMap;
 	var arrTooltips;
+	var menu;
 
 
 	var tileset;
@@ -46,18 +47,8 @@
 		checkCookie();
 		console.log("maxLevelReached= " + this.maxLevelReached);
 
-		this.startScreen = new StartScreen(0,0,800,400);
-		stage.addChild(this.startScreen.container);
 
-		var startKnop = new createjs.Shape();
-		startKnop.graphics.f("00FF00");
-		startKnop.graphics.drawCircle(0,0,20);
-		startKnop.graphics.ef();
-		startKnop.x = 400;
-		startKnop.y = 200;
-
-		stage.addChild(startKnop);
-		startKnop.addEventListener("click",startButtonClicked);
+		makeMenu();
 
 		this.delayAnimation = 6;
 		this.delayAnimationCount = 1;
@@ -76,14 +67,70 @@
 		ticker.addEventListener("tick",update);
 
 		// comment volgende voor startscherm te tonen
-		startButtonClicked();
+		//startButtonClicked();
 	}
+
+	function makeMenu()
+	{
+		this.menu = new createjs.Container();
+
+		// BG
+		var imageData = {images: ["bgmall.png"], frames: {width:800, height:400} }; 
+		var tilesetSheet = new createjs.SpriteSheet(imageData);
+		var cellBitmap = new createjs.Sprite(tilesetSheet);
+		cellBitmap.gotoAndStop(0);
+		cellBitmap.x = 0;
+		cellBitmap.y = 0;
+		this.menu.addChild(cellBitmap);
+
+		var imageData = {images: ["images/spriteButtons.png"], frames: {width:499, height:81} }; 
+		var tilesetSheet = new createjs.SpriteSheet(imageData);
+
+		// STARTKNOP
+		var cellBitmap = new createjs.Sprite(tilesetSheet);
+		cellBitmap.x = width/2 - 250;
+		cellBitmap.y = 100;
+		console.log(cellBitmap.x);
+		cellBitmap.gotoAndStop(0);
+		cellBitmap.addEventListener("click",startButtonClicked);
+		this.menu.addChild(cellBitmap);
+
+		// CHOOSE LEVEL KNOP
+		var cellBitmap = new createjs.Sprite(tilesetSheet);
+		cellBitmap.gotoAndStop(1);
+		cellBitmap.x = width/2 - 250;
+		cellBitmap.y = 200;
+		cellBitmap.addEventListener("click",chooseLevelClicked);
+		this.menu.addChild(cellBitmap);
+
+
+
+
+		
+
+		//this.menu.addChild(startKnop);
+
+		stage.addChild(this.menu);
+
+
+		//this.startScreen = new StartScreen(0,0,800,400);
+		//stage.addChild(this.startScreen.container);
+
+		
+	}
+
+	function chooseLevelClicked()
+	
+	{
+		console.log(this.maxLevelReached);
+	}
+
 	function startButtonClicked()
 	{
 		startLevel(this.currentLevel);
 		//this.startScreen.container.alpha =
 
-		stage.removeChild(this.startScreen.container);
+		stage.removeChild(this.menu);
 	}
 
 	function restartLevel()

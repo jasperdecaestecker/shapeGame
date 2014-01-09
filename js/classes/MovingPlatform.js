@@ -24,7 +24,6 @@ var MovingPlatform = (function()
 			this.speedX = 0;
 		}
 
-
 		if(this.startY == this.endY)
 		{
 			this.speedY = 0;
