@@ -9,19 +9,42 @@ var ShapeVolgorde = (function()
 		this.shapesUsed = 0;
 		this.currentShapeNumber = currentShapeNumber;
 		this.container = new createjs.Container(); 
+		this.containerShapes = new createjs.Container(); 
+
+
+		this.imageData = {images: ["blockadeSprite.png"], frames: {width:40, height:40} }; 
+		this.tilesetSheet = new createjs.SpriteSheet(this.imageData);
+		this.bgShape = new createjs.Shape();
+		this.bgShape.graphics.c();
+		this.bgShape.graphics.setStrokeStyle(2,"round").beginStroke("#31302f");
+		this.bgShape.graphics.drawRoundRect(0,0,100,30,5);
+		this.bgShape.graphics.es();
+		this.bgShape.x -= 10;
+		this.bgShape.y -= 5;
+
+		this.container.addChild(this.containerShapes);
+		this.container.addChild(this.bgShape);
+
 		this.draw();
+
 	}
 
 	ShapeVolgorde.prototype.draw = function()
 	{
-		var imageData = {images: ["blockadeSprite.png"], frames: {width:40, height:40} }; 
-		var tilesetSheet = new createjs.SpriteSheet(imageData);
-	
+		var count = 0;
+		if(this.arrShapes.length - this.currentShapeNumber > 3)
+		{
+			count = 3;
+		}
+		else
+		{
+			count = this.arrShapes.length - this.currentShapeNumber;
+		}
 
-		for (var i = 0; i < this.arrShapes.length; i++) 
+		for (var i = 0; i < count; i++) 
     	{
-    		var cellBitmap = new createjs.Sprite(tilesetSheet);
-			switch(this.arrShapes[i])
+    		var cellBitmap = new createjs.Sprite(this.tilesetSheet);
+			switch(this.arrShapes[i + this.currentShapeNumber])
 			{
 				case "triangle":
 					cellBitmap.x = 0 + i *30;
@@ -43,27 +66,23 @@ var ShapeVolgorde = (function()
 			}
 		
 			cellBitmap.scaleX = cellBitmap.scaleY = 0.5;
-			
-			this.container.addChild(cellBitmap);
-
+			this.containerShapes.addChild(cellBitmap);
 		}
+			
 	}
 
 	ShapeVolgorde.prototype.nextShape = function()
 	{
-		console.log(this.currentShapeNumber);
-		this.container.removeChildAt(this.currentShapeNumber - this.shapesUsed);
-		this.shapesUsed++;
+		this.containerShapes.removeAllChildren();
 		this.currentShapeNumber++;
-		this.container.x -= 30;
+		this.draw();
 	}
 
 	ShapeVolgorde.prototype.reset = function()
 	{
-		this.shapesUsed = 0;
 		this.currentShapeNumber = 0;
-		this.container.removeAllChildren();
-		this.container.x = 20;
+		this.containerShapes.removeAllChildren();
+		this.containerShapes.x = 0;
 		this.draw();
 	}
 

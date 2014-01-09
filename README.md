@@ -9,7 +9,7 @@ Design
 ------
 - UI
 - Verhaal
-- Tiles maken
+- ~~Tiles maken~~
 
 General
 ------
@@ -25,7 +25,7 @@ General
 Mechanics
 ------
 - Intro mechanic
-- EindBoss mechanic
+- ~~EindBoss mechanic~~
 - ~~Bewegende platforms~~
 - ~~Levers~~
 - ~~ShapeVolgorde~~
@@ -33,7 +33,7 @@ Mechanics
 
 Performance / bugs
 ------
-- restart level heeft nog bugs bij herpositioneren van shapes. voornamelijk cirkel
+- ~~restart level heeft nog bugs bij herpositioneren van shapes. voornamelijk cirkel~~
 - ~~Kijken in de collision detection for lus om de lus meteen te breaken wanneer 1 collision voorkomt.~~
 
 Credits

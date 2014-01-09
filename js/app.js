@@ -192,9 +192,6 @@
 				makeObject(layerData, tilesetSheet, mapData.tilewidth, mapData.tileheight);
 			}
 		}
-
-
-
 	}
 
 	function setShapeVolgorde()
@@ -234,10 +231,11 @@
 				break;
 						
 		}
+
 		shapeVolgorde = new ShapeVolgorde(arrShapeVolgorde,0);
 		shapeVolgorde.container.x = 20;
 		shapeVolgorde.container.y = 20;
-		this.world.addChild(shapeVolgorde.container);
+		stage.addChild(shapeVolgorde.container);
 
 		
 
@@ -249,7 +247,6 @@
 		{
 			for ( var i = 0; i < layerData.objects.length; i++) 
     		{
-				console.log(layerData.objects[i].name);
 				if(layerData.objects[i].name == "spawnPoint")
 				{
 					setShapeVolgorde();
@@ -288,7 +285,6 @@
     		{
     			var lever = new Lever(layerData.objects[i].x,layerData.objects[i].y,70,45,layerData.objects[i].type);
     			this.world.addChild(lever.container);
-    			//lever.container.addEventListener("click", handleClick);
     			arrLevers.push(lever);
     		}
 		}
@@ -324,10 +320,7 @@
 	            }
 				this.world.addChild(cellBitmap);
 			}
-		}
-
-		console.log("initLayer");
-	
+		}	
 	}
 
 	// aanroepen vooraleer je een nieuw level start
@@ -363,9 +356,7 @@
 				case "r":
 				case "t":
 				case "b":
-					console.log("toggle lever" + i);
 					arrLevers[i].change();
-
 					if(this.currentLevel == 20)
 					{
 						if(i == 0)
@@ -750,10 +741,8 @@
 
 					if($.inArray(triggeredBlockId, arrTriggeredBlockadesIds) == -1)
 					{
-
 						if(blockades[j].blockadeShape == player.currentPlayerShape)
 						{
-							console.log(blockades[j]);
 							arrTriggeredBlockadesIds.push(triggeredBlockId);
 							this.world.removeChild(blockades[j].container);
 							shapeVolgorde.nextShape();
