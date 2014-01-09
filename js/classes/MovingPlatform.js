@@ -19,6 +19,17 @@ var MovingPlatform = (function()
 		this.container.y = this.y;
 		this.attachId = null;
 
+		if(this.startX == this.endX)
+		{
+			this.speedX = 0;
+		}
+
+
+		if(this.startY == this.endY)
+		{
+			this.speedY = 0;
+		}
+
 		if(this.startX > this.endX)
 		{
 			var temp = this.endX;
@@ -26,12 +37,12 @@ var MovingPlatform = (function()
 			this.startX = temp;
 		}
 
-		/*if(this.startY < this.endY)
+		if(this.startY < this.endY)
 		{
 			var temp = this.endY;
 			this.endY = this.startY;
 			this.startY = temp;
-		}*/
+		}
 
 		this.draw();
 	}
@@ -79,9 +90,14 @@ var MovingPlatform = (function()
 
 	MovingPlatform.prototype.update = function()
 	{
-		if(this.x > this.endX || this.x < this.startX)
+		if(this.startX != this.endX)
 		{
-			this.speedX *= -1;
+			if(this.x > this.endX || this.x < this.startX)
+			{
+				this.speedX *= -1;
+			}
+			this.x += this.speedX;
+			this.container.x = this.x;
 		}
 		if(this.startY != this.endY)
 		{
@@ -92,8 +108,7 @@ var MovingPlatform = (function()
 			this.y += this.speedY;
 			this.container.y = this.y;
 		}
-		this.x += this.speedX;
-		this.container.x = this.x;
+		
 		//this.draw();
 	}
 	return MovingPlatform;

@@ -21,6 +21,7 @@
 	var arrMap;
 	var arrTooltips;
 
+
 	var tileset;
 	var mapData;
 	var vehicle;
@@ -41,7 +42,9 @@
 
 		this.playerFollowOffsetY = this.playerFollowOffsetX = 0;
 
-		this.currentLevel = 7;
+		this.currentLevel = 1;
+		checkCookie();
+		console.log("maxLevelReached= " + this.maxLevelReached);
 
 		this.startScreen = new StartScreen(0,0,800,400);
 		stage.addChild(this.startScreen.container);
@@ -275,10 +278,20 @@
 				arrMovingPlatforms.push(movingPlatform);
 				movingPlatform.attach(0);
 
-				var movingPlatform = new MovingPlatform(700,500,320,120,60,20,1,"red");
+				var movingPlatform = new MovingPlatform(700,500,320,120,60,20,1,"yellow");
 				this.world.addChild(movingPlatform.container);
 				arrMovingPlatforms.push(movingPlatform);
 				movingPlatform.attach(1);
+				break;	
+			case 8:
+				var movingPlatform = new MovingPlatform(240,240,280,750,60,20,3,"red");
+				this.world.addChild(movingPlatform.container);
+				arrMovingPlatforms.push(movingPlatform);
+
+				var movingPlatform = new MovingPlatform(480,480,280,750,60,20,2,"yellow");
+				this.world.addChild(movingPlatform.container);
+				arrMovingPlatforms.push(movingPlatform);
+				arrShapeVolgorde = ["rectangle","circle","square"];
 				break;		
 			case 20:
 				var blockade = new Blockade(200,520,20,20,possibleShapes[Math.floor(Math.random() * possibleShapes.length)],0);
@@ -807,11 +820,56 @@
 			case "r":
 			case "t":
 			case "b":
+				if(this.currentLevel <= this.maxLevelReached)
+				{
+
+					setCookie("maxLevelReached",this.currentLevel+1,365);
+				}
+
 				clearLevel();
 				this.currentLevel++;
 				startLevel(this.currentLevel);
+
+			
+			
+				
+
+
 				break;
 		}
+	}
+
+	function checkCookie()
+	{
+		var maxLevelReached=getCookie("maxLevelReached");
+		if(maxLevelReached!="")
+	  	{
+	  		this.maxLevelReached = maxLevelReached;
+	  	}
+	  	else
+	  	{
+	  		this.maxLevelReached = 1;
+	  	}
+	}
+
+	function setCookie(cname,cvalue,exdays)
+	{
+		var d = new Date();
+		d.setTime(d.getTime()+(exdays*24*60*60*1000));
+		var expires = "expires="+d.toGMTString();
+		document.cookie = cname + "=" + cvalue + "; " + expires;
+	}
+
+	function getCookie(cname)
+	{
+		var name = cname + "=";
+		var ca = document.cookie.split(';');
+		for(var i=0; i<ca.length; i++) 
+		  {
+		  var c = ca[i].trim();
+		  if (c.indexOf(name)==0) return c.substring(name.length,c.length);
+		  }
+		return "";
 	}
 
 	function checkBlockadesCollision()
