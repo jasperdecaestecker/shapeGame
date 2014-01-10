@@ -186,9 +186,6 @@
 
 	function chooseLevelClicked()
 	{
-
-
-
 		console.log(this.maxLevelReached);
 		stage.removeChild(this.menu);
 
@@ -723,7 +720,7 @@
 	function keyup(e)
 	{
 		keys[e.keyCode] = false;
-		if(e.keyCode == 69) // 69 hihi
+		if(e.keyCode == 69) // 69 hihi //<- vuil! dat komt van Jasper :-)
 		{
 			actionKeyPressed = false;
 		}
