@@ -21,20 +21,14 @@
 	var arrMap;
 	var tooltip;
 	var menu, chooseLevels;
-
 	var shape;
-
 	var tileset;
 	var mapData;
 	var vehicle;
-
 	var prevPlayerY = 0;
 	var startButton;
-
 	var delayAnimationB, delayAnimationCountB;
-
 	var musicPlaying;
-
 	var cellBitmapPlay, cellBitmapEnd;
 
 	var won;
@@ -66,7 +60,6 @@
 		this.delayShootingCount = 1;
 
 		this.playedBossLevelOnce = false;
-		//
 
 		ticker = createjs.Ticker;
 		ticker.setFPS(60);
@@ -92,17 +85,30 @@
         preload.addEventListener("complete", doneLoadingSound);
         preload.loadManifest(this.arrSounds);
 
+        this.containerMusic = new createjs.Container();
+        bgFill = new createjs.Shape();
+		bgFill.graphics.c();
+		bgFill.graphics.beginFill("#31302f");
+		bgFill.graphics.drawRoundRect(0,0,31,31,5);
+		bgFill.graphics.endFill();
+		bgFill.alpha = 0.5;
+		bgFill.x -= 3;
+		bgFill.y -= 3;
+		this.containerMusic.addChild(bgFill);
+
     	var imageData = {images: ["images/playpauze.png"], frames: {width:24, height:25} }; 
 		var tilesetSheet = new createjs.SpriteSheet(imageData);
 		this.cellBitmapPlay = new createjs.Sprite(tilesetSheet);
-		this.cellBitmapPlay.x = 750;
-		this.cellBitmapPlay.y = 25;
 		this.cellBitmapPlay.gotoAndStop(0);
-    	stage.addChild(this.cellBitmapPlay);
 
-    	this.cellBitmapPlay.addEventListener('click',switchSounds);
+		this.containerMusic.x = 750;
+		this.containerMusic.y = 25;
+		stage.addChild(this.containerMusic);
+    	this.containerMusic.addChild(this.cellBitmapPlay);
+    	this.containerMusic.addEventListener('click',switchSounds);
 
 		this.musicPlaying = "play";
+		stage.setChildIndex(this.containerMusic, stage.getNumChildren() - 1);
 	}
 
     function switchSounds(e)
@@ -112,14 +118,12 @@
 			this.cellBitmapPlay.gotoAndStop(1);
 			this.musicPlaying= "pause";
 			 createjs.Sound.setMute(true);
-			//muteSound();
     	}
     	else if(this.musicPlaying == "pause")
     	{
     		this.cellBitmapPlay.gotoAndStop(0);
     		this.musicPlaying = "play";
     		createjs.Sound.setMute(false);
-    		//playSound();
     	}
     }
 
@@ -167,6 +171,8 @@
 		//this.menu.addChild(startKnop);
 
 		stage.addChild(this.menu);
+
+
 
 
 		//this.startScreen = new StartScreen(0,0,800,400);
@@ -292,6 +298,7 @@
 
 
 		stage.addChild(this.chooseLevels);
+		stage.setChildIndex(this.containerMusic, stage.getNumChildren() - 1);
 	}
 
 	function backClicked(e)
@@ -395,12 +402,7 @@
 	function mapLoaded()
 	{
 		ticker.setPaused(true);
-		/*this.startScreen = new StartScreen("background");
-		this.world.addChild(this.startScreen.shape);
-
-		this.startScreen = new StartScreen("shape");
-		this.world.addChild(this.startScreen.shape);
-		this.startScreen.shape.addEventListener("click", startRealLevel);*/
+		stage.setChildIndex(this.containerMusic, stage.getNumChildren() - 1);
 	}
 
 	function test()
