@@ -49,8 +49,7 @@ var Player = (function()
 
 	Player.prototype.draw = function()
 	{
-		//console.log(playerShapes[playerShapeNumber]);
-		var imageData = {images: ["playerSprite2.png"], frames: {width:40, height:48} }; 
+		var imageData = {images: ["images/playerSprite.png"], frames: {width:40, height:48} }; 
 		var tilesetSheet = new createjs.SpriteSheet(imageData);
 		this.cellBitmap = new createjs.Sprite(tilesetSheet);
 		this.container.removeChild(this.cellBitmap);
@@ -65,19 +64,12 @@ var Player = (function()
 				this.shape.x = 20;
 				this.shape.y += this.height/2;
 				this.shape.alpha = 0; // shape niet verwijderen, maar hiden, makkelijker voor te debuggen.
-
 				this.cellBitmap.gotoAndStop(0);
-
-				//this.height = 48;
-
 				this.cellBitmap.x = 0;
 				this.cellBitmap.y = -8;
-
 				this.circlePositie = 0;
-
 			break;
 			case "triangle":
-				//this.container.c();
 				this.shape.graphics.c();
 				this.shape.graphics.f("00FF00");
 				this.shape.graphics.mt(0,this.height);
@@ -90,7 +82,6 @@ var Player = (function()
 				this.container.addChild(this.shape);
 				this.cellBitmap.x = 0;
 				this.cellBitmap.y = -9;
-
 				this.cellBitmap.gotoAndStop(1);
 			break;
 			case "square":
@@ -101,10 +92,8 @@ var Player = (function()
 				this.shape.x = 0;
 				this.shape.y = 0;
 				this.shape.alpha=0;
-
 				this.cellBitmap.x = 0;
 				this.cellBitmap.y = -9;
-
 				this.cellBitmap.gotoAndStop(2);
 			break;
 			case "rectangle":
@@ -115,10 +104,8 @@ var Player = (function()
 				this.shape.x = 0;
 				this.shape.y = 0;
 				this.shape.alpha=0;
-
 				this.cellBitmap.x = 0;
 				this.cellBitmap.y = -9;
-
 				this.cellBitmap.gotoAndStop(3);
 			break;
 		}

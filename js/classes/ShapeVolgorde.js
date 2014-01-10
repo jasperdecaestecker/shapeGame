@@ -11,7 +11,7 @@ var ShapeVolgorde = (function()
 		this.container = new createjs.Container(); 
 		this.containerShapes = new createjs.Container(); 
 
-		this.imageData = {images: ["blockadeSprite.png"], frames: {width:40, height:40} }; 
+		this.imageData = {images: ["images/blockadeSprite.png"], frames: {width:40, height:40} }; 
 		this.tilesetSheet = new createjs.SpriteSheet(this.imageData);
 		this.bgShape = new createjs.Shape();
 		this.bgShape.graphics.c();

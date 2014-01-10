@@ -7,26 +7,13 @@ TODO-LIST
 
 Design
 ------
-- UI
-- Verhaal
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-- Tiles maken
-=======
-- ~~Character animaties~~
->>>>>>> 2dda4d54b8234b04d62526baa48d00c094fb7c27
-=======
-- ~~Tiles maken~~
->>>>>>> 7468d6cbac7cf36145c5d8dfe79409d07c35cb3d
-=======
+- ~~UI~~
+- ~~Verhaal~~
 - ~~Tiles maken~~
 - ~~Character animaties~~
->>>>>>> 93d874b92bd2571cc2870add0e7924bb33116ea5
 
 General
 ------
-- naam van spel
 - Level klasse
 - continue game = overzicht unlockede levels
 - ~~unlocked levels bihouden in "localstorage".~~
@@ -37,7 +24,6 @@ General
 
 Mechanics
 ------
-- Intro mechanic
 - ~~EindBoss mechanic~~
 - ~~Bewegende platforms~~
 - ~~Levers~~

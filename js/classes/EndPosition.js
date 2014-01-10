@@ -17,7 +17,7 @@ var EndPosition = (function()
 
 	EndPosition.prototype.draw = function()
 	{
-		var imageData = {images: ["vlag.png"], frames: {width:24, height:64}}; 
+		var imageData = {images: ["images/vlag.png"], frames: {width:24, height:64}}; 
 		var tilesetSheet = new createjs.SpriteSheet(imageData);
 		var cellBitmap = new createjs.Sprite(tilesetSheet);
 		this.container.addChild(cellBitmap);

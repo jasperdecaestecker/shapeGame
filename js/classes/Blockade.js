@@ -36,7 +36,7 @@ var Blockade = (function()
 	{
 		this.container.removeAllChildren();
 
-		var imageData = {images: ["blockadeSprite.png"], frames: {width:40, height:40} }; 
+		var imageData = {images: ["images/blockadeSprite.png"], frames: {width:40, height:40} }; 
 		var tilesetSheet = new createjs.SpriteSheet(imageData);
 		var cellBitmap = new createjs.Sprite(tilesetSheet);
 	

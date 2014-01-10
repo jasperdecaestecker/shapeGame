@@ -154,7 +154,6 @@
 		var cellBitmap = new createjs.Sprite(tilesetSheet);
 		cellBitmap.x = width/2 - 250;
 		cellBitmap.y = 100;
-		console.log(cellBitmap.x);
 		cellBitmap.gotoAndStop(0);
 		cellBitmap.addEventListener("click",startButtonClicked);
 		this.menu.addChild(cellBitmap);
@@ -183,7 +182,6 @@
 
 	function chooseLevelClicked()
 	{
-		console.log(this.maxLevelReached);
 		if(this.menu)
 		{
 			stage.removeChild(this.menu);
@@ -211,11 +209,8 @@
 		var countClick = 0;
 		for(var i=0;i<3;i++)
 		{
-			console.log('for 1');
 			for (var j=0;j<4;j++)
 			{
-				console.log('for 2');
-
 				this.shape = new createjs.Shape();
 				this.shape.graphics.c();
 				this.shape.graphics.f("252323");
@@ -309,28 +304,22 @@
 
 	function lvlButtonClicked(e)
 	{
-		console.log('clicked '+e.currentTarget.name);
 		var lvlClicked = e.currentTarget.name + 1;
 		this.currentLevel = lvlClicked;
-		startLevel(this.currentLevel);
-		
+		startLevel(this.currentLevel);	
 	}
 
 	function startButtonClicked()
 	{
 		startLevel(this.currentLevel);
-		//this.startScreen.container.alpha =
-
 		stage.removeChild(this.menu);
 	}
 
 	function restartLevel()
 	{
 		// zet de vorm van de getriggerde blockades terug op het scherm
-		console.log(blockades);
 		for(var i = 0; i < arrTriggeredBlockadesIds.length; i ++)
 		{
-			//console.log(blockades[arrTriggeredBlockadesIds[i]]);
 			this.world.addChild(blockades[arrTriggeredBlockadesIds[i]].container);
 		}
 
@@ -403,11 +392,6 @@
 	{
 		ticker.setPaused(true);
 		stage.setChildIndex(this.containerMusic, stage.getNumChildren() - 1);
-	}
-
-	function test()
-	{
-		console.log("click");
 	}
 
 	function initLayers() 
@@ -729,7 +713,6 @@
 	function keydown(e)
 	{
 		keys[e.keyCode] = true;
-		console.log(e.keyCode);
 	}
 
 	function checkLeverActivated()
@@ -944,38 +927,39 @@
 
 	function checkTooltip()
 	{
-		if(this.currentLevel == 1 && player.x > 150 && this.tooltip.popped == false)
+		if(this.tooltip != null)
 		{
-			this.tooltip.pop();
-		}
-
-		if(this.currentLevel == 4 && player.x > 280 && this.tooltip.popped == false)
-		{
-			this.tooltip.pop();
-		}
-
-		if(this.currentLevel == 5 && player.x > 300 && this.tooltip.popped == false)
-		{
-			this.tooltip.pop();
-		}
-
-		if(this.currentLevel == 1 || this.currentLevel == 4 || this.currentLevel == 5)
-		{
-			if(this.tooltip.popped && this.tooltip.stopped == false)
+			if(this.currentLevel == 1 && player.x > 150 && this.tooltip.popped == false)
 			{
-				this.tooltip.container.x = 20 + player.x - this.tooltip.container.getBounds().width/2;
-				this.tooltip.container.y = player.y - 40;
-				this.tooltip.timeDelayCount++;
-				if(this.tooltip.timeDelayCount > this.tooltip.timeDelay)
+				this.tooltip.pop();
+			}
+
+			if(this.currentLevel == 4 && player.x > 280 && this.tooltip.popped == false)
+			{
+				this.tooltip.pop();
+			}
+
+			if(this.currentLevel == 5 && player.x > 300 && this.tooltip.popped == false)
+			{
+				this.tooltip.pop();
+			}
+
+			if(this.currentLevel == 1 || this.currentLevel == 4 || this.currentLevel == 5)
+			{
+				if(this.tooltip.popped && this.tooltip.stopped == false)
 				{
-					this.tooltip.stopped = true;
-					this.tooltip.container.alpha = 0;
-					this.world.addChild(this.tooltip.container);	
+					this.tooltip.container.x = 20 + player.x - this.tooltip.container.getBounds().width/2;
+					this.tooltip.container.y = player.y - 40;
+					this.tooltip.timeDelayCount++;
+					if(this.tooltip.timeDelayCount > this.tooltip.timeDelay)
+					{
+						this.tooltip.stopped = true;
+						this.tooltip.container.alpha = 0;
+						this.world.addChild(this.tooltip.container);	
+					}
 				}
 			}
-		}
-
-		
+		}	
 	}
 
 	function checkIfBossLevel()
@@ -1249,7 +1233,6 @@
 					case "b":
 						if(this.elevatorDown == false && this.startBoss == false)
 						{
-							console.log(this.elevatorDown);
 							this.elevatorDown = true;
 						}
 						player.grounded = true;
