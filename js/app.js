@@ -147,9 +147,11 @@
 				this.shape.y = 90*i+100;
 				this.shape.name = countClick;
 
-				this.shape.addEventListener('click', lvlButtonClicked);
-
-
+				if(countClick<maxLevelReached)
+				{
+					this.shape.addEventListener('click', lvlButtonClicked);
+				}
+				
 				this.chooseLevels.addChild(this.shape);
 
 				this.shape = new createjs.Shape();
@@ -161,22 +163,34 @@
 				this.shape.y = 90*i+100;
 				this.shape.name = countClick;
 
-				this.shape.addEventListener('click', lvlButtonClicked);
-
+				if(countClick<maxLevelReached)
+				{
+					this.shape.addEventListener('click', lvlButtonClicked);
+				}
 
 				this.chooseLevels.addChild(this.shape);
 
 				this.shape = new createjs.Shape();
 				this.shape.graphics.c();
-				this.shape.graphics.f("66bf9d");
+				if(countClick<maxLevelReached)
+				{
+					this.shape.graphics.f("66bf9d");
+				}
+				else
+				{
+					this.shape.graphics.f("a7a7a7");
+				}
+				
 				this.shape.graphics.drawCircle(0,0,25);
 				this.shape.graphics.ef();
 				this.shape.x = 90*j+270; 
 				this.shape.y = 90*i+100;
 				this.shape.name = countClick;
 
-				this.shape.addEventListener('click', lvlButtonClicked);
-				//this.shape.click(lvlButtonClicked(countClick))
+				if(countClick<maxLevelReached)
+				{
+					this.shape.addEventListener('click', lvlButtonClicked);
+				}
 
 				this.chooseLevels.addChild(this.shape);
 
