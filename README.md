@@ -11,6 +11,7 @@ Design
 - Verhaal
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 - Tiles maken
 =======
 - ~~Character animaties~~
@@ -18,13 +19,17 @@ Design
 =======
 - ~~Tiles maken~~
 >>>>>>> 7468d6cbac7cf36145c5d8dfe79409d07c35cb3d
+=======
+- ~~Tiles maken~~
+- ~~Character animaties~~
+>>>>>>> 93d874b92bd2571cc2870add0e7924bb33116ea5
 
 General
 ------
-- naam van spel?
+- naam van spel
 - Level klasse
 - continue game = overzicht unlockede levels
-- unlocked levels bihouden in "localstorage".
+- ~~unlocked levels bihouden in "localstorage".~~
 - ~~Einde Level / volgend level~~
 - ~~Restart level~~
 - ~~Map inladen~~

@@ -20,7 +20,9 @@
 	var worldWidth = 0;
 	var arrMap;
 	var arrTooltips;
-	var menu;
+	var menu, chooseLevels;
+
+	var shape;
 
 
 	var tileset;
@@ -43,7 +45,7 @@
 
 		this.playerFollowOffsetY = this.playerFollowOffsetX = 0;
 
-		this.currentLevel = 9;
+		this.currentLevel = 1;
 		checkCookie();
 		console.log("maxLevelReached= " + this.maxLevelReached);
 
@@ -67,7 +69,7 @@
 		ticker.addEventListener("tick",update);
 
 		// comment volgende voor startscherm te tonen
-		startButtonClicked();
+		//startButtonClicked();
 	}
 
 	function makeMenu()
@@ -103,11 +105,6 @@
 		cellBitmap.addEventListener("click",chooseLevelClicked);
 		this.menu.addChild(cellBitmap);
 
-
-
-
-		
-
 		//this.menu.addChild(startKnop);
 
 		stage.addChild(this.menu);
@@ -123,6 +120,59 @@
 	
 	{
 		console.log(this.maxLevelReached);
+		stage.removeChild(this.menu);
+
+		this.chooseLevels = new createjs.Container();
+		var imageData = {images: ["bgmall.png"], frames: {width:800, height:400} }; 
+		var tilesetSheet = new createjs.SpriteSheet(imageData);
+		var cellBitmap = new createjs.Sprite(tilesetSheet);
+		cellBitmap.gotoAndStop(0);
+		cellBitmap.x = 0;
+		cellBitmap.y = 0;
+		this.chooseLevels.addChild(cellBitmap);
+
+		for(var i=0;i<3;i++)
+		{
+			console.log('for 1');
+			for (var j=0;j<4;j++)
+			{
+				console.log('for 2');
+
+				this.shape = new createjs.Shape();
+				this.shape.graphics.c();
+				this.shape.graphics.f("252323");
+				this.shape.graphics.drawCircle(0,0,32);
+				this.shape.graphics.ef();
+				this.shape.x = 90*j+270; 
+				this.shape.y = 90*i+100;
+
+				this.chooseLevels.addChild(this.shape);
+
+				this.shape = new createjs.Shape();
+				this.shape.graphics.c();
+				this.shape.graphics.f("dfdae1");
+				this.shape.graphics.drawCircle(0,0,29);
+				this.shape.graphics.ef();
+				this.shape.x = 90*j+270; 
+				this.shape.y = 90*i+100;
+
+				this.chooseLevels.addChild(this.shape);
+
+				this.shape = new createjs.Shape();
+				this.shape.graphics.c();
+				this.shape.graphics.f("66bf9d");
+				this.shape.graphics.drawCircle(0,0,25);
+				this.shape.graphics.ef();
+				this.shape.x = 90*j+270; 
+				this.shape.y = 90*i+100;
+
+				this.chooseLevels.addChild(this.shape);
+
+			}
+		}
+
+
+		stage.addChild(this.chooseLevels);
 	}
 
 	function startButtonClicked()
@@ -877,7 +927,7 @@
 			case "r":
 			case "t":
 			case "b":
-				if(this.currentLevel <= this.maxLevelReached)
+				if(this.currentLevel >= this.maxLevelReached)
 				{
 
 					setCookie("maxLevelReached",this.currentLevel+1,365);
