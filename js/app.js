@@ -49,7 +49,6 @@
 		checkCookie();
 		console.log("maxLevelReached= " + this.maxLevelReached);
 
-
 		makeMenu();
 
 		this.delayAnimation = 6;
@@ -246,10 +245,12 @@
 		keys = [];
 		arrTooltips = [];
 
-		if(this.currentLevel == 20)
+		if(this.currentLevel == 12)
 		{
 			dropShape1 = false;
 			dropShape2 = false;
+			this.startBoss = false;
+			this.elevatorDown = false;
 		}
 
 		startGame(levelNumber);
@@ -309,7 +310,20 @@
 		this.world.boundW = -(this.world.width - width);
 		stage.addChild(this.world.container);
 
-		var imageData = {images: ["images/lucht3.png"], frames: {width:800, height:400} }; 
+		//var bgImagePath = "images/lucht3.png";
+		if(this.currentLevel <= 8)
+		{
+			bgImagePath = "images/lucht3.png";
+		}
+		else if(this.currentLevel >= 9 && this.currentLevel <= 11)
+		{
+			bgImagePath = "images/lucht1.png";
+		}
+		else
+		{
+			bgImagePath = "images/lucht2.png";
+		}
+		var imageData = {images: [bgImagePath], frames: {width:800, height:400} }; 
 		var tilesetSheet = new createjs.SpriteSheet(imageData);
 		
 
@@ -396,12 +410,12 @@
 				var movingPlatform = new MovingPlatform(200,400,320,120,60,20,1,"red");
 				this.world.addChild(movingPlatform.container);
 				arrMovingPlatforms.push(movingPlatform);
-				movingPlatform.attach(0);
+				movingPlatform.attach(1);
 
 				var movingPlatform = new MovingPlatform(700,500,320,120,60,20,1,"yellow");
 				this.world.addChild(movingPlatform.container);
 				arrMovingPlatforms.push(movingPlatform);
-				movingPlatform.attach(1);
+				movingPlatform.attach(2);
 				break;	
 			case 8:
 				var movingPlatform = new MovingPlatform(240,240,280,750,60,20,3,"red");
@@ -423,19 +437,47 @@
 				arrMovingPlatforms.push(movingPlatform);
 				arrShapeVolgorde = ["square","rectangle","circle","square","triangle"];
 				break;	
-			case 20:
-				var blockade = new Blockade(200,520,20,20,possibleShapes[Math.floor(Math.random() * possibleShapes.length)],0);
-				this.world.addChild(blockade.container);
-				arrDropShapes.push(blockade);
+			case 10:
+				var ladder = new Ladder(40,120,40,270);
+				this.world.addChild(ladder.container);
+				ladders.push(ladder);
 
-				var blockade = new Blockade(560,520,20,20,possibleShapes[Math.floor(Math.random() * possibleShapes.length)],0);
-				this.world.addChild(blockade.container);
-				arrDropShapes.push(blockade);
+				var ladder = new Ladder(960,30,40,351);
+				this.world.addChild(ladder.container);
+				ladders.push(ladder);
 
 				this.playerFollowOffsetY = -100;
-				boss = new Boss(10,680,80,80);
+				var movingPlatform = new MovingPlatform(100,440,300,300,120,20,2,"yellow");
+				this.world.addChild(movingPlatform.container);
+				arrMovingPlatforms.push(movingPlatform);
+				movingPlatform.attach(3);
+
+				var movingPlatform = new MovingPlatform(460,0,420,420,120,20,2,"yellow");
+				this.world.addChild(movingPlatform.container);
+				arrMovingPlatforms.push(movingPlatform);
+				movingPlatform.attach(2);
+
+				arrShapeVolgorde = ["triangle","square","circle","rectangle"];
+				break;	
+			case 11:
+				this.playerFollowOffsetY = 0;	
+			case 12:
+				var movingPlatform = new MovingPlatform(320,320,80,540,100,20,2,"red");
+				this.world.addChild(movingPlatform.container);
+				arrMovingPlatforms.push(movingPlatform);
+
+				var blockade = new Blockade(210,710,20,20,possibleShapes[Math.floor(Math.random() * possibleShapes.length)],0);
+				this.world.addChild(blockade.container);
+				arrDropShapes.push(blockade);
+
+				var blockade = new Blockade(570,710,20,20,possibleShapes[Math.floor(Math.random() * possibleShapes.length)],0);
+				this.world.addChild(blockade.container);
+				arrDropShapes.push(blockade);
+
+				this.playerFollowOffsetY = -160;
+				boss = new Boss(10,860,80,80);
 				this.world.addChild(boss.container);
-				arrShapeVolgorde = ["rectangle","rectangle","square"];
+				arrShapeVolgorde = ["rectangle"];
 				break;	
 		}
 
@@ -563,7 +605,7 @@
 				case "t":
 				case "b":
 					arrLevers[i].change();
-					if(this.currentLevel == 20)
+					if(this.currentLevel == 12)
 					{
 						if(i == 0)
 						{
@@ -578,18 +620,34 @@
 					}
 					else
 					{
-						var blockade1Id = arrLevers[i].arrChangeBlockades[0] - 1;
-						var blockade2Id = arrLevers[i].arrChangeBlockades[1] - 1;
+						var blockade1Id = arrLevers[i].arrChangeBlockades[0];
+						var blockade2Id = arrLevers[i].arrChangeBlockades[1];
 
-						var tempX = blockades[blockade1Id].x;
-						var tempY =  blockades[blockade1Id].y;
+						var tempX = blockades[blockade1Id-1].x;
+						var tempY =  blockades[blockade1Id-1].y;
 
-						blockades[blockade1Id].changePosition(blockades[blockade2Id].x,blockades[blockade2Id].y);
-						blockades[blockade2Id].changePosition(tempX,tempY);
+						blockades[blockade1Id-1].changePosition(blockades[blockade2Id-1].x,blockades[blockade2Id-1].y);
+						blockades[blockade2Id-1].changePosition(tempX,tempY);
+
+						//var tempId = blockade1Id;
+						arrLevers[i].arrChangeBlockades[0] = blockade2Id;
+						arrLevers[i].arrChangeBlockades[1] = blockade1Id;
+
+						for(var j = 0; j < arrMovingPlatforms.length; j++)
+						{	
+							if(arrMovingPlatforms[j].attachId != null)
+							{
+								arrMovingPlatforms[j].attachId = arrLevers[i].arrChangeBlockades[j];
+							}
+						}
 					}
 				break;
 			}
 		}
+
+	
+		
+
 	}
 
 	function update()
@@ -674,17 +732,14 @@
 				player.x = startLocation.x;
 				player.y = startLocation.y;
 				restartLevel();
-				/*if(this.currentLevel == 20)
+				if(this.currentLevel == 12)
 				{
 					
 					clearLevel();
 					restartLevel();
 					startLevel(this.currentLevel);
 				}
-				else
-				{
-					restartLevel();
-				}*/
+				
 			}
 		}
 
@@ -694,7 +749,13 @@
 
 	function checkIfBossLevel()
 	{
-		if(this.currentLevel == 20)
+		if(player.y > 500 && this.startBoss == false)
+		{
+			this.elevatorDown = false;
+			this.startBoss = true;
+		}
+
+		if(this.currentLevel == 12 && this.startBoss)
 		{
 			if(dropShape1)
 			{
@@ -780,6 +841,7 @@
 			this.arrProjectiles[i].container.y-= 3;
 			if(this.arrProjectiles[i].y < 0)
 			{
+			//	this.world.removeChild(arrProjectiles[i].container);
 				this.arrProjectiles.splice(i, 1);
 			}
 
@@ -891,8 +953,6 @@
 					break;	
 			}
 
-			console.log(usingLadder);
-
 			if(breakThisSwitch)
 			{
 				return;
@@ -902,14 +962,16 @@
 
 	function checkMovingPlatform()
 	{
-
 		for(var i = 0; i < arrMovingPlatforms.length; i++)
 		{
-			arrMovingPlatforms[i].update();
-
+			if(this.currentLevel != 12 || this.elevatorDown)
+			{
+				arrMovingPlatforms[i].update();
+			}
+			
 			if(arrMovingPlatforms[i].attachId != null)
 			{
-				blockades[arrMovingPlatforms[i].attachId].changePosition(arrMovingPlatforms[i].x+(arrMovingPlatforms[i].width/2 - 20),arrMovingPlatforms[i].y-40);
+				blockades[arrMovingPlatforms[i].attachId-1].changePosition(arrMovingPlatforms[i].x+(arrMovingPlatforms[i].width/2 - 20),arrMovingPlatforms[i].y-40);
 			}
 
 			if(playerisOnMovingTrajectory[i])
@@ -932,11 +994,15 @@
 						}
 					break;
 					case "b":
+						if(this.elevatorDown == false && this.startBoss == false)
+						{
+							console.log(this.elevatorDown);
+							this.elevatorDown = true;
+						}
 						player.grounded = true;
 						player.jumping = false;
 						playerisOnMovingTrajectory[i] = true;
-						console.log(i);
-			
+		
 					break;
 			}
 		}
@@ -952,19 +1018,11 @@
 			case "b":
 				if(this.currentLevel >= this.maxLevelReached)
 				{
-
 					setCookie("maxLevelReached",this.currentLevel+1,365);
 				}
-
 				clearLevel();
 				this.currentLevel++;
 				startLevel(this.currentLevel);
-
-			
-			
-				
-
-
 				break;
 		}
 	}
