@@ -19,6 +19,9 @@
 	var worldHeight = 0;
 	var worldWidth = 0;
 	var arrMap;
+	var arrTooltips;
+	var menu;
+
 
 	var tileset;
 	var mapData;
@@ -31,6 +34,7 @@
 
 	function init()
 	{
+		//chape
 		stage = new  createjs.Stage("cnvs");
 		width = stage.canvas.width;
 		height = stage.canvas.height;
@@ -39,20 +43,12 @@
 
 		this.playerFollowOffsetY = this.playerFollowOffsetX = 0;
 
-		this.currentLevel = 1;
+		this.currentLevel = 9;
+		checkCookie();
+		console.log("maxLevelReached= " + this.maxLevelReached);
 
-		this.startScreen = new StartScreen(0,0,800,400);
-		stage.addChild(this.startScreen.container);
 
-		var startKnop = new createjs.Shape();
-		startKnop.graphics.f("00FF00");
-		startKnop.graphics.drawCircle(0,0,20);
-		startKnop.graphics.ef();
-		startKnop.x = 400;
-		startKnop.y = 200;
-
-		stage.addChild(startKnop);
-		startKnop.addEventListener("click",startButtonClicked);
+		makeMenu();
 
 		this.delayAnimation = 6;
 		this.delayAnimationCount = 1;
@@ -71,19 +67,76 @@
 		ticker.addEventListener("tick",update);
 
 		// comment volgende voor startscherm te tonen
-		//startButtonClicked();
+		startButtonClicked();
 	}
+
+	function makeMenu()
+	{
+		this.menu = new createjs.Container();
+
+		// BG
+		var imageData = {images: ["bgmall.png"], frames: {width:800, height:400} }; 
+		var tilesetSheet = new createjs.SpriteSheet(imageData);
+		var cellBitmap = new createjs.Sprite(tilesetSheet);
+		cellBitmap.gotoAndStop(0);
+		cellBitmap.x = 0;
+		cellBitmap.y = 0;
+		this.menu.addChild(cellBitmap);
+
+		var imageData = {images: ["images/spriteButtons.png"], frames: {width:499, height:81} }; 
+		var tilesetSheet = new createjs.SpriteSheet(imageData);
+
+		// STARTKNOP
+		var cellBitmap = new createjs.Sprite(tilesetSheet);
+		cellBitmap.x = width/2 - 250;
+		cellBitmap.y = 100;
+		console.log(cellBitmap.x);
+		cellBitmap.gotoAndStop(0);
+		cellBitmap.addEventListener("click",startButtonClicked);
+		this.menu.addChild(cellBitmap);
+
+		// CHOOSE LEVEL KNOP
+		var cellBitmap = new createjs.Sprite(tilesetSheet);
+		cellBitmap.gotoAndStop(1);
+		cellBitmap.x = width/2 - 250;
+		cellBitmap.y = 200;
+		cellBitmap.addEventListener("click",chooseLevelClicked);
+		this.menu.addChild(cellBitmap);
+
+
+
+
+		
+
+		//this.menu.addChild(startKnop);
+
+		stage.addChild(this.menu);
+
+
+		//this.startScreen = new StartScreen(0,0,800,400);
+		//stage.addChild(this.startScreen.container);
+
+		
+	}
+
+	function chooseLevelClicked()
+	
+	{
+		console.log(this.maxLevelReached);
+	}
+
 	function startButtonClicked()
 	{
 		startLevel(this.currentLevel);
 		//this.startScreen.container.alpha =
 
-		stage.removeChild(this.startScreen.container);
+		stage.removeChild(this.menu);
 	}
 
 	function restartLevel()
 	{
 		// zet de vorm van de getriggerde blockades terug op het scherm
+		console.log(blockades);
 		for(var i = 0; i < arrTriggeredBlockadesIds.length; i ++)
 		{
 			//console.log(blockades[arrTriggeredBlockadesIds[i]]);
@@ -104,6 +157,7 @@
 
 	function startLevel(levelNumber)
 	{
+
 		startLocation = {};
 		boxes = [];		
 		arrMovingPlatforms = [];
@@ -112,12 +166,12 @@
 		ladders = [];
 		arrLevers = [];
 		changeShape = false;
-		playerisOnMovingTrajectory = false;
+		playerisOnMovingTrajectory = [false];
 		actionKeyPressed = false;
 		this.arrProjectiles = [];
 		arrDropShapes = [];
 		keys = [];
-	
+		arrTooltips = [];
 
 		if(this.currentLevel == 20)
 		{
@@ -188,10 +242,13 @@
 
 		for(var i = 0; i < this.world.height; i += 400)
 		{
-			var cellBitmap = new createjs.Sprite(tilesetSheet);
-			cellBitmap.y = i;
-			console.log("drawbg");
-			this.world.addChild(cellBitmap);
+			for(var j = 0; j < this.world.width; j += 800)
+			{
+				var cellBitmap = new createjs.Sprite(tilesetSheet);
+				cellBitmap.x = j;
+				cellBitmap.y = i;
+				this.world.addChild(cellBitmap);
+			}
 		}
 
 
@@ -231,19 +288,67 @@
 		{
 			case 1:
 				arrShapeVolgorde = ["triangle","square"];
+				var tooltip = new Tooltip(0, 0, 100,100,"press space to jump",1);
+				//tooltip.pop();
+				this.world.addChild(tooltip.container);
+				arrTooltips.push(tooltip);
 				break;
 			case 2:	
 				arrShapeVolgorde = ["square","square","triangle"];
 				break;
 			case 3:
-				/*var ladder = new Ladder(160,180,40,140);
+				arrShapeVolgorde = ["triangle","square","circle"];
+				break;	
+			case 4:
+				arrShapeVolgorde = ["circle","square","square","rectangle","triangle"];	
+				break;
+			case 5:
+				var ladder = new Ladder(360,637,40,300);
 				this.world.addChild(ladder.container);
 				ladders.push(ladder);
 
-				var ladder = new Ladder(600,152,40,108);
+				var ladder = new Ladder(220,383,40,280);
 				this.world.addChild(ladder.container);
-				ladders.push(ladder);*/
-				arrShapeVolgorde = ["triangle","square","circle"];
+				ladders.push(ladder);
+				arrShapeVolgorde = ["triangle","rectangle","circle","triangle"];
+				break;
+			case 6:
+				var ladder = new Ladder(40,90,40,250);
+				this.world.addChild(ladder.container);
+				ladders.push(ladder);
+				arrShapeVolgorde = ["triangle","circle","square"];
+				break;	
+			case 7:
+				arrShapeVolgorde = ["square","rectangle"];
+				var movingPlatform = new MovingPlatform(200,400,320,120,60,20,1,"red");
+				this.world.addChild(movingPlatform.container);
+				arrMovingPlatforms.push(movingPlatform);
+				movingPlatform.attach(0);
+
+				var movingPlatform = new MovingPlatform(700,500,320,120,60,20,1,"yellow");
+				this.world.addChild(movingPlatform.container);
+				arrMovingPlatforms.push(movingPlatform);
+				movingPlatform.attach(1);
+				break;	
+			case 8:
+				var movingPlatform = new MovingPlatform(240,240,280,750,60,20,3,"red");
+				this.world.addChild(movingPlatform.container);
+				arrMovingPlatforms.push(movingPlatform);
+
+				var movingPlatform = new MovingPlatform(480,480,280,750,60,20,2,"yellow");
+				this.world.addChild(movingPlatform.container);
+				arrMovingPlatforms.push(movingPlatform);
+				arrShapeVolgorde = ["rectangle","circle","square"];
+				break;	
+			case 9:
+				var movingPlatform = new MovingPlatform(0,0,580,260,100,20,2,"red");
+				this.world.addChild(movingPlatform.container);
+				arrMovingPlatforms.push(movingPlatform);
+
+				var movingPlatform = new MovingPlatform(540,760,260,480,100,20,2,"yellow");
+				this.world.addChild(movingPlatform.container);
+				arrMovingPlatforms.push(movingPlatform);
+				arrShapeVolgorde = ["square","rectangle","circle","square","triangle"];
 				break;	
 			case 20:
 				var blockade = new Blockade(200,520,20,20,possibleShapes[Math.floor(Math.random() * possibleShapes.length)],0);
@@ -258,16 +363,13 @@
 				boss = new Boss(10,680,80,80);
 				this.world.addChild(boss.container);
 				arrShapeVolgorde = ["rectangle","rectangle","square"];
-				break;
-						
+				break;	
 		}
 
 		shapeVolgorde = new ShapeVolgorde(arrShapeVolgorde,0);
 		shapeVolgorde.container.x = 20;
 		shapeVolgorde.container.y = 20;
 		stage.addChild(shapeVolgorde.container);
-
-
 	}
 
 	function makeObject(layerData, tilesetSheet, tilewidth, tileheight)
@@ -325,9 +427,7 @@
 	function makeMovingPlatform()
 	{
 		//arrMovingPlatforms.push()
-		var movingPlatform = new MovingPlatform(100,280,100,20,1,100,300,280,80);
-		this.world.addChild(movingPlatform.shape);
-		arrMovingPlatforms.push(movingPlatform);
+	
 	}
 
 	function initLayer(layerData, tilesetSheet, tilewidth, tileheight) 
@@ -356,8 +456,10 @@
 	// aanroepen vooraleer je een nieuw level start
 	function clearLevel()
 	{
+		this.world.container.removeAllChildren();
 		stage.removeChild(this.world.container);
-		
+
+
 		//ticker.removeEventListener("tick",update);
 	}
 
@@ -419,9 +521,6 @@
 
 	function update()
 	{
-		console.log(ticker.getPaused());
-
-
 		if(ticker.getPaused())
 		{
 			if(keys[39] || keys[37])
@@ -459,7 +558,7 @@
 					player.velX --;
 				}
 				player.grounded = false;
-				playerisOnMovingTrajectory = false;
+				playerisOnMovingTrajectory = [false];
 			}
 			if(keys[39])
 			{
@@ -468,7 +567,7 @@
 					player.velX ++;
 				}
 				player.grounded = false;
-				playerisOnMovingTrajectory = false;
+				playerisOnMovingTrajectory = [false];
 			}		
 
 			checkCollisionPlatforms();
@@ -482,6 +581,17 @@
 			this.world.followPlayerY(player,height,this.playerFollowOffsetY);
 
 			player.update();
+
+
+			/*if(arrTooltips.length != 0)
+			{
+				if(player.x > 200)
+				{
+					arrTooltips[0].container.x = player.x;
+					arrTooltips[0].container.y = player.y;
+					arrTooltips[0].pop();
+				}
+			}*/
 			
 
 
@@ -708,6 +818,8 @@
 					break;	
 			}
 
+			console.log(usingLadder);
+
 			if(breakThisSwitch)
 			{
 				return;
@@ -722,7 +834,12 @@
 		{
 			arrMovingPlatforms[i].update();
 
-			if(playerisOnMovingTrajectory)
+			if(arrMovingPlatforms[i].attachId != null)
+			{
+				blockades[arrMovingPlatforms[i].attachId].changePosition(arrMovingPlatforms[i].x+(arrMovingPlatforms[i].width/2 - 20),arrMovingPlatforms[i].y-40);
+			}
+
+			if(playerisOnMovingTrajectory[i])
 			{
 				player.x += arrMovingPlatforms[i].speedX;
 				player.y += arrMovingPlatforms[i].speedY;
@@ -744,7 +861,8 @@
 					case "b":
 						player.grounded = true;
 						player.jumping = false;
-						playerisOnMovingTrajectory = true;
+						playerisOnMovingTrajectory[i] = true;
+						console.log(i);
 			
 					break;
 			}
@@ -759,11 +877,56 @@
 			case "r":
 			case "t":
 			case "b":
+				if(this.currentLevel <= this.maxLevelReached)
+				{
+
+					setCookie("maxLevelReached",this.currentLevel+1,365);
+				}
+
 				clearLevel();
 				this.currentLevel++;
 				startLevel(this.currentLevel);
+
+			
+			
+				
+
+
 				break;
 		}
+	}
+
+	function checkCookie()
+	{
+		var maxLevelReached=getCookie("maxLevelReached");
+		if(maxLevelReached!="")
+	  	{
+	  		this.maxLevelReached = maxLevelReached;
+	  	}
+	  	else
+	  	{
+	  		this.maxLevelReached = 1;
+	  	}
+	}
+
+	function setCookie(cname,cvalue,exdays)
+	{
+		var d = new Date();
+		d.setTime(d.getTime()+(exdays*24*60*60*1000));
+		var expires = "expires="+d.toGMTString();
+		document.cookie = cname + "=" + cvalue + "; " + expires;
+	}
+
+	function getCookie(cname)
+	{
+		var name = cname + "=";
+		var ca = document.cookie.split(';');
+		for(var i=0; i<ca.length; i++) 
+		  {
+		  var c = ca[i].trim();
+		  if (c.indexOf(name)==0) return c.substring(name.length,c.length);
+		  }
+		return "";
 	}
 
 	function checkBlockadesCollision()

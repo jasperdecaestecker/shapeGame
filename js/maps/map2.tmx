@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="40" height="22" tilewidth="20" tileheight="20">
  <tileset firstgid="1" name="tiles" tilewidth="20" tileheight="20">
-  <image source="tiles.png" width="260" height="240"/>
+  <image source="tiles.png" width="260" height="320"/>
  </tileset>
  <imagelayer name="bg" width="40" height="22">
   <image source="../../images/lucht3.png"/>
@@ -261,16 +261,16 @@
    <tile gid="48"/>
    <tile gid="49"/>
    <tile gid="49"/>
-   <tile gid="49"/>
-   <tile gid="49"/>
-   <tile gid="49"/>
-   <tile gid="49"/>
+   <tile gid="192"/>
    <tile gid="88"/>
-   <tile gid="49"/>
+   <tile gid="205"/>
+   <tile gid="192"/>
+   <tile gid="88"/>
+   <tile gid="205"/>
    <tile gid="49"/>
    <tile gid="48"/>
    <tile gid="49"/>
-   <tile gid="49"/>
+   <tile gid="192"/>
    <tile gid="88"/>
    <tile gid="88"/>
    <tile gid="75"/>
@@ -298,7 +298,7 @@
    <tile gid="31"/>
    <tile gid="83"/>
    <tile gid="88"/>
-   <tile gid="49"/>
+   <tile gid="205"/>
    <tile gid="48"/>
    <tile gid="49"/>
    <tile gid="75"/>
@@ -308,7 +308,7 @@
    <tile gid="0"/>
    <tile gid="127"/>
    <tile gid="48"/>
-   <tile gid="49"/>
+   <tile gid="192"/>
    <tile gid="88"/>
    <tile gid="75"/>
    <tile gid="0"/>
@@ -602,7 +602,7 @@
    <tile gid="63"/>
    <tile gid="102"/>
    <tile gid="102"/>
-   <tile gid="49"/>
+   <tile gid="166"/>
    <tile gid="49"/>
    <tile gid="49"/>
    <tile gid="49"/>
@@ -678,7 +678,7 @@
    <tile gid="102"/>
    <tile gid="102"/>
    <tile gid="102"/>
-   <tile gid="49"/>
+   <tile gid="166"/>
    <tile gid="49"/>
    <tile gid="49"/>
    <tile gid="49"/>
@@ -718,13 +718,13 @@
    <tile gid="49"/>
    <tile gid="49"/>
    <tile gid="49"/>
-   <tile gid="49"/>
+   <tile gid="192"/>
    <tile gid="88"/>
    <tile gid="88"/>
    <tile gid="88"/>
    <tile gid="88"/>
    <tile gid="88"/>
-   <tile gid="49"/>
+   <tile gid="205"/>
    <tile gid="49"/>
    <tile gid="49"/>
    <tile gid="49"/>
@@ -780,7 +780,7 @@
    <tile gid="95"/>
    <tile gid="102"/>
    <tile gid="102"/>
-   <tile gid="49"/>
+   <tile gid="166"/>
    <tile gid="49"/>
    <tile gid="48"/>
    <tile gid="140"/>
@@ -788,7 +788,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="63"/>
-   <tile gid="49"/>
+   <tile gid="166"/>
    <tile gid="49"/>
    <tile gid="49"/>
    <tile gid="49"/>
@@ -838,13 +838,13 @@
    <tile gid="49"/>
    <tile gid="49"/>
    <tile gid="49"/>
-   <tile gid="49"/>
+   <tile gid="179"/>
    <tile gid="114"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="62"/>
-   <tile gid="49"/>
+   <tile gid="166"/>
    <tile gid="49"/>
    <tile gid="49"/>
    <tile gid="49"/>
@@ -879,11 +879,11 @@
    <tile gid="48"/>
    <tile gid="49"/>
    <tile gid="49"/>
-   <tile gid="49"/>
+   <tile gid="179"/>
    <tile gid="97"/>
    <tile gid="97"/>
    <tile gid="101"/>
-   <tile gid="49"/>
+   <tile gid="166"/>
    <tile gid="49"/>
    <tile gid="49"/>
    <tile gid="49"/>
