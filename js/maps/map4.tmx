@@ -1780,8 +1780,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
    <tile gid="63"/>
+   <tile gid="102"/>
    <tile gid="102"/>
    <tile gid="166"/>
    <tile gid="49"/>
@@ -1813,12 +1813,12 @@
   <object name="3" type="square" x="1002" y="119" width="40" height="40"/>
   <object name="4" type="rectangle" x="638" y="120" width="40" height="40"/>
  </objectgroup>
- <objectgroup name="player" width="60" height="30">
-  <object name="spawnPoint" x="49" y="448"/>
-  <object name="endPoint" x="1141" y="100" width="20" height="60"/>
- </objectgroup>
  <objectgroup name="levers" width="60" height="30">
   <object name="lever1" type="1,2" x="424" y="480" width="60" height="40"/>
   <object name="lever2" type="3,4" x="223" y="99" width="60" height="40"/>
+ </objectgroup>
+ <objectgroup name="player" width="60" height="30">
+  <object name="spawnPoint" x="49" y="448"/>
+  <object name="endPoint" x="1141" y="100" width="20" height="60"/>
  </objectgroup>
 </map>

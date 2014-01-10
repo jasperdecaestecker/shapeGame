@@ -19,7 +19,7 @@
 	var worldHeight = 0;
 	var worldWidth = 0;
 	var arrMap;
-	var arrTooltips;
+	var tooltip;
 	var menu, chooseLevels;
 
 	var shape;
@@ -63,6 +63,7 @@
 		this.delayShooting = 60;
 		this.delayShootingCount = 1;
 
+		this.playedBossLevelOnce = false;
 		//
 
 		ticker = createjs.Ticker;
@@ -75,11 +76,6 @@
 
 	function loadSounds()
 	{
-		arrSounds = [];
-        src = "sounds/18-machinae_supremacy-lord_krutors_dominion.ogg";
-        createjs.Sound.alternateExtensions = ["mp3"];
-        //createjs.Sound.addEventListener("fileload", playSound);
-        createjs.Sound.registerSound(src); 
         this.arrSounds = [
         	{id:"shapeCorrect", src:"shapeCorrect.ogg"},
         	{id:"bossHit", src:"bossHit.ogg"},
@@ -356,7 +352,6 @@
 		this.arrProjectiles = [];
 		arrDropShapes = [];
 		keys = [];
-		arrTooltips = [];
 
 		if(this.currentLevel == 12)
 		{
@@ -486,10 +481,8 @@
 		{
 			case 1:
 				arrShapeVolgorde = ["triangle","square"];
-				var tooltip = new Tooltip(0, 0, 100,100,"press space to jump",1);
-				//tooltip.pop();
-				this.world.addChild(tooltip.container);
-				arrTooltips.push(tooltip);
+				this.tooltip = new Tooltip(0, 0, 100,100,"press space to jump",180);
+				this.world.addChild(this.tooltip.container);	
 				break;
 			case 2:	
 				arrShapeVolgorde = ["square","square","triangle"];
@@ -498,6 +491,8 @@
 				arrShapeVolgorde = ["triangle","square","circle"];
 				break;	
 			case 4:
+				this.tooltip = new Tooltip(0, 0, 100,100,"press E to use lever",180);
+				this.world.addChild(this.tooltip.container);	
 				arrShapeVolgorde = ["circle","square","square","rectangle","triangle"];	
 				break;
 			case 5:
@@ -508,6 +503,10 @@
 				var ladder = new Ladder(220,383,40,280);
 				this.world.addChild(ladder.container);
 				ladders.push(ladder);
+
+				this.tooltip = new Tooltip(0, 0, 120,100,"press up/down to climb ladder",180);
+				this.world.addChild(this.tooltip.container);
+
 				arrShapeVolgorde = ["triangle","rectangle","circle","triangle"];
 				break;
 			case 6:
@@ -637,6 +636,16 @@
 					player.friction = this.world.friction;
 					player.grounded = false;
 					this.world.addChild(player.container);
+
+					if(this.currentLevel == 12)
+					{
+						if(this.playedBossLevelOnce)
+						{
+							player.x = 380;
+							player.y = 440;
+						}
+					}
+
 				}
 				else if(layerData.objects[i].name == "endPoint")
 				{
@@ -670,13 +679,6 @@
 
 
 	}
-
-	function makeMovingPlatform()
-	{
-		//arrMovingPlatforms.push()
-	
-	}
-
 
 	function initLayer(layerData, tilesetSheet, tilewidth, tileheight) 
 	{
@@ -743,8 +745,6 @@
 						if(i == 0)
 						{
 							dropShape1 = true;	
-							/*arrDropShapes[i].blockadeShape = "rectangle";
-							arrDropShapes[i].draw();*/
 						}
 						else
 						{
@@ -762,7 +762,6 @@
 						blockades[blockade1Id-1].changePosition(blockades[blockade2Id-1].x,blockades[blockade2Id-1].y);
 						blockades[blockade2Id-1].changePosition(tempX,tempY);
 
-						//var tempId = blockade1Id;
 						arrLevers[i].arrChangeBlockades[0] = blockade2Id;
 						arrLevers[i].arrChangeBlockades[1] = blockade1Id;
 
@@ -771,23 +770,12 @@
 							if(arrMovingPlatforms[j].attachId != null && this.currentLevel != 11)
 							{
 								arrMovingPlatforms[j].attachId = arrLevers[i].arrChangeBlockades[j];
-							}
-							
-							/*if(arrMovingPlatforms[j].attachId == blockade1Id || blockade2Id)
-							{
-
-							}*/
-							
-							
+							}	
 						}
 					}
 				break;
 			}
 		}
-
-	
-		
-
 	}
 
 	function update()
@@ -860,8 +848,6 @@
 				chooseLevelClicked();
 			}
 
-
-
 			//keys game
 			if(keys[39] || keys[37])
 			{
@@ -916,35 +902,22 @@
 			checkBlockadesCollision();
 			checkIfFinished();
 			checkIfBossLevel();
+			checkTooltip();
 
 			this.world.followPlayerX(player,width,this.playerFollowOffsetX);
 			this.world.followPlayerY(player,height,this.playerFollowOffsetY);
 
 			player.update();
 
-
-			/*if(arrTooltips.length != 0)
-			{
-				if(player.x > 200)
-				{
-					arrTooltips[0].container.x = player.x;
-					arrTooltips[0].container.y = player.y;
-					arrTooltips[0].pop();
-				}
-			}*/
-			
-
-
 			// gevallen door de grond = mors dood	
 			if(player.y > this.world.height)
 			{
-				createjs.Sound.play("death", createjs.Sound.INTERRUPT_ANY);
+				createjs.Sound.play("death", {interupt:createjs.Sound.INTERRUPT_ANY,volume:0.4});
 				player.x = startLocation.x;
 				player.y = startLocation.y;
 				restartLevel();
 				if(this.currentLevel == 12)
-				{
-					
+				{	
 					clearLevel();
 					restartLevel();
 					startLevel(this.currentLevel);
@@ -954,6 +927,41 @@
 		}
 
 		stage.update();
+	}
+
+	function checkTooltip()
+	{
+		if(this.currentLevel == 1 && player.x > 150 && this.tooltip.popped == false)
+		{
+			this.tooltip.pop();
+		}
+
+		if(this.currentLevel == 4 && player.x > 280 && this.tooltip.popped == false)
+		{
+			this.tooltip.pop();
+		}
+
+		if(this.currentLevel == 5 && player.x > 300 && this.tooltip.popped == false)
+		{
+			this.tooltip.pop();
+		}
+
+		if(this.currentLevel == 1 || this.currentLevel == 4 || this.currentLevel == 5)
+		{
+			if(this.tooltip.popped && this.tooltip.stopped == false)
+			{
+				this.tooltip.container.x = 20 + player.x - this.tooltip.container.getBounds().width/2;
+				this.tooltip.container.y = player.y - 40;
+				this.tooltip.timeDelayCount++;
+				if(this.tooltip.timeDelayCount > this.tooltip.timeDelay)
+				{
+					this.tooltip.stopped = true;
+					this.tooltip.container.alpha = 0;
+					this.world.addChild(this.tooltip.container);	
+				}
+			}
+		}
+
 		
 	}
 
@@ -967,6 +975,7 @@
 
 		if(this.currentLevel == 12 && this.startBoss)
 		{
+			this.playedBossLevelOnce = true;
 			if(dropShape1)
 			{
 				arrDropShapes[0].y+=3;
@@ -1033,7 +1042,6 @@
 				this.arrProjectiles.push(blockade);
 				boss.projectileId++;
 				boss.delayShootingCount = 1;
-				//boss.nextShape(shape);
 			}
 			else
 			{
@@ -1296,7 +1304,7 @@
 						}
 						else
 						{
-							createjs.Sound.play("death", createjs.Sound.INTERRUPT_ANY);
+							createjs.Sound.play("death", {interupt:createjs.Sound.INTERRUPT_ANY,volume:0.4});
 							player.x = startLocation.x;
 							player.y = startLocation.y;
 							restartLevel();

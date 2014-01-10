@@ -58,7 +58,7 @@ var MovingPlatform = (function()
 
 	MovingPlatform.prototype.draw = function()
 	{
-		var imageData = {images: ["movingPlatformSprite.png"], frames: {width:20, height:20} }; 
+		var imageData = {images: ["images/movingPlatformSprite.png"], frames: {width:20, height:20} }; 
 		var tilesetSheet = new createjs.SpriteSheet(imageData);
 		
 		// left of platform

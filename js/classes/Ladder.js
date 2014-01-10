@@ -28,7 +28,7 @@ var Ladder = (function()
 		this.shape.graphics.ef();
 		this.shape.alpha = 0;
 
-		var imageData = {images: ["ladder.png"], frames: {width:40, height:27} }; 
+		var imageData = {images: ["images/ladder.png"], frames: {width:40, height:27} }; 
 		var tilesetSheet = new createjs.SpriteSheet(imageData);
 		
 

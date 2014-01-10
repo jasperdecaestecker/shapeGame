@@ -11,7 +11,6 @@ var ShapeVolgorde = (function()
 		this.container = new createjs.Container(); 
 		this.containerShapes = new createjs.Container(); 
 
-
 		this.imageData = {images: ["blockadeSprite.png"], frames: {width:40, height:40} }; 
 		this.tilesetSheet = new createjs.SpriteSheet(this.imageData);
 		this.bgShape = new createjs.Shape();
@@ -21,6 +20,16 @@ var ShapeVolgorde = (function()
 		this.bgShape.graphics.es();
 		this.bgShape.x -= 10;
 		this.bgShape.y -= 5;
+
+		var bgFill = new createjs.Shape();
+		bgFill.graphics.c();
+		bgFill.graphics.beginFill("#31302f");
+		bgFill.graphics.drawRoundRect(0,0,100,30,5);
+		bgFill.graphics.endFill();
+		bgFill.y-= 5;
+		bgFill.x-= 10;
+		bgFill.alpha = 0.5;
+		this.container.addChild(bgFill);
 
 		this.container.addChild(this.containerShapes);
 		this.container.addChild(this.bgShape);

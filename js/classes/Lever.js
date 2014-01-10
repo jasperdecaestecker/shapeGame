@@ -20,7 +20,7 @@ var Lever = (function()
 
 	Lever.prototype.draw = function()
 	{
-		var imageData = {images: ["lever.png"], frames: {width:80, height:45} }; 
+		var imageData = {images: ["images/lever.png"], frames: {width:80, height:45} }; 
 		var tilesetSheet = new createjs.SpriteSheet(imageData);
 		this.cellBitmap = new createjs.Sprite(tilesetSheet);
 		this.cellBitmap.x = this.cellBitmap.y = 0;
