@@ -716,7 +716,7 @@
 	function keyup(e)
 	{
 		keys[e.keyCode] = false;
-		if(e.keyCode == 69) // 69 hihi //<- vuil! dat komt van Jasper :-)
+		if(e.keyCode == 69)
 		{
 			actionKeyPressed = false;
 		}
