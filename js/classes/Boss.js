@@ -5,6 +5,7 @@ var Boss = (function()
 	var arrProjectiles;
 	var projectileId;
 	var bossShapes = ["square","circle","triangle"];
+	var cellBitmap;
 
 	function Boss(x,y,width,height)
 	{
@@ -34,38 +35,32 @@ var Boss = (function()
 
 	Boss.prototype.draw = function()
 	{
+		this.container.removeChild(this.cellBitmap);
 		this.shape.graphics.c();
+		var imageData = {images: ["images/bossSprite.png"], frames: {width:74, height:74} }; 
+		var tilesetSheet = new createjs.SpriteSheet(imageData);
+		this.cellBitmap = new createjs.Sprite(tilesetSheet);
+
 		switch(this.currentShape)
 		{
 			case "square":
-				this.shape.graphics.f("00FF00");
-				this.shape.graphics.drawRect(0,0,this.width,this.height);
-				this.shape.graphics.ef();
-				this.container.addChild(this.shape);
-				this.shape.x = 0;
-				this.shape.y = 0;
+
+				this.cellBitmap.gotoAndStop(0);
 				break;
 			case "triangle":
-				this.shape.graphics.f("00FF00");
-				this.shape.graphics.mt(0,this.height);
-				this.shape.graphics.lt(this.width,this.height);
-				this.shape.graphics.lt(this.width/2,0);
-				this.shape.graphics.ef();
-				this.shape.x = 0;
-				this.shape.y = 0;
-				this.container.addChild(this.shape);
+
+				this.cellBitmap.gotoAndStop(2);
 				break;	
 			case "circle":
-				this.shape.graphics.f("00FF00");
-				this.shape.graphics.drawCircle(0,0,this.height/2);
-				this.shape.graphics.ef();
-				this.shape.x = 40;
-				this.shape.y = 40;
-				this.container.addChild(this.shape);
+
+				this.cellBitmap.gotoAndStop(1);
 
 			
 			break;
 		}
+
+		this.container.addChild(this.cellBitmap);
+
 
 	
 	}
@@ -90,16 +85,15 @@ var Boss = (function()
 				this.speedY *= -1;
 			}
 			this.y += this.speedY;
-				this.shape.y = this.y;
+				this.cellBitmap.y = this.y
 		}
 	
 		this.x += this.speedX;
 		
-		//if(this.currentShape == circle)
-			
-		this.shape.x = this.x;
+
+		this.cellBitmap.x = this.x;
 	
-		//this.draw();
+
 	}
 
 	Boss.prototype.hit = function()
