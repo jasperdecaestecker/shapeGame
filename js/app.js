@@ -68,7 +68,7 @@
 		ticker.addEventListener("tick",update);
 
 		// comment volgende voor startscherm te tonen
-		startButtonClicked();
+		//startButtonClicked();
 	}
 
 	function makeMenu()
@@ -207,7 +207,8 @@
 	{
 		console.log('clicked '+e.currentTarget.name);
 		var lvlClicked = e.currentTarget.name + 1;
-		startLevel(lvlClicked);
+		this.currentLevel = lvlClicked + 1;
+		startLevel(this.currentLevel);
 		
 	}
 
