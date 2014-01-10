@@ -33,6 +33,10 @@
 
 	var delayAnimationB, delayAnimationCountB;
 
+	var musicPlaying;
+
+	var cellBitmapPlay;
+
 	function init()
 	{
 		//chape
@@ -84,6 +88,47 @@
         preload.installPlugin(createjs.Sound);
         preload.addEventListener("complete", doneLoadingSound);
         preload.loadManifest(this.arrSounds);
+
+    	var imageData = {images: ["images/playpauze.png"], frames: {width:24, height:25} }; 
+		var tilesetSheet = new createjs.SpriteSheet(imageData);
+		this.cellBitmapPlay = new createjs.Sprite(tilesetSheet);
+		this.cellBitmapPlay.x = 750;
+		this.cellBitmapPlay.y = 25;
+		this.cellBitmapPlay.gotoAndStop(0);
+    	stage.addChild(this.cellBitmapPlay);
+
+    	this.cellBitmapPlay.addEventListener('click',switchSounds);
+
+		this.musicPlaying = "play";
+	}
+
+	function playSound(event) 
+	{
+		soundInstance = createjs.Sound.play(event.src);  // start playing the sound we just loaded, storing the playing instance
+
+		createjs.Sound.setMute(false);
+
+    }
+
+    function switchSounds(e)
+    {
+    	if(this.musicPlaying=="play")
+    	{
+			this.cellBitmapPlay.gotoAndStop(1);
+			this.musicPlaying="pause";
+			//muteSound();
+    	}
+    	else if(this.musicPlaying == "pause")
+    	{
+    		this.cellBitmapPlay.gotoAndStop(0);
+    		this.musicPlaying = "play";
+    		//playSound();
+    	}
+    }
+
+    function muteSound()
+    {
+    	//muteSound;
     }
 
     function doneLoadingSound() 
@@ -140,9 +185,6 @@
 
 	function chooseLevelClicked()
 	{
-
-
-
 		console.log(this.maxLevelReached);
 		stage.removeChild(this.menu);
 
@@ -637,6 +679,7 @@
 	
 	}
 
+
 	function initLayer(layerData, tilesetSheet, tilewidth, tileheight) 
 	{
 		for ( var y = 0; y < layerData.height; y++) 
@@ -673,7 +716,7 @@
 	function keyup(e)
 	{
 		keys[e.keyCode] = false;
-		if(e.keyCode == 69) // 69 hihi
+		if(e.keyCode == 69) // 69 hihi //<- vuil! dat komt van Jasper :-)
 		{
 			actionKeyPressed = false;
 		}
