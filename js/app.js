@@ -855,7 +855,6 @@
 			this.arrProjectiles[i].container.y-= 3;
 			if(this.arrProjectiles[i].y < 0)
 			{
-			//	this.world.removeChild(arrProjectiles[i].container);
 				this.arrProjectiles.splice(i, 1);
 			}
 
@@ -910,7 +909,6 @@
 								 player.velY *= -1;
 							}
 							breakThisSwitch = true;
-						
 						break;
 						case "b":
 							player.grounded = true;
@@ -918,7 +916,6 @@
 							breakThisSwitch = true;
 						break;
 				}
-
 				if(breakThisSwitch)
 				{
 					return;
