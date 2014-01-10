@@ -43,7 +43,7 @@
 
 		this.playerFollowOffsetY = this.playerFollowOffsetX = 0;
 
-		this.currentLevel = 1;
+		this.currentLevel = 9;
 		checkCookie();
 		console.log("maxLevelReached= " + this.maxLevelReached);
 
@@ -67,7 +67,7 @@
 		ticker.addEventListener("tick",update);
 
 		// comment volgende voor startscherm te tonen
-		//startButtonClicked();
+		startButtonClicked();
 	}
 
 	function makeMenu()
@@ -339,7 +339,17 @@
 				this.world.addChild(movingPlatform.container);
 				arrMovingPlatforms.push(movingPlatform);
 				arrShapeVolgorde = ["rectangle","circle","square"];
-				break;		
+				break;	
+			case 9:
+				var movingPlatform = new MovingPlatform(0,0,580,260,100,20,2,"red");
+				this.world.addChild(movingPlatform.container);
+				arrMovingPlatforms.push(movingPlatform);
+
+				var movingPlatform = new MovingPlatform(540,760,260,480,100,20,2,"yellow");
+				this.world.addChild(movingPlatform.container);
+				arrMovingPlatforms.push(movingPlatform);
+				arrShapeVolgorde = ["square","rectangle","circle","square","triangle"];
+				break;	
 			case 20:
 				var blockade = new Blockade(200,520,20,20,possibleShapes[Math.floor(Math.random() * possibleShapes.length)],0);
 				this.world.addChild(blockade.container);
