@@ -35,6 +35,10 @@
 
 	var delayAnimationB, delayAnimationCountB;
 
+	var musicPlaying;
+
+	var cellBitmapPlay;
+
 	function init()
 	{
 		//chape
@@ -68,7 +72,7 @@
 		ticker.setPaused(false);
 		ticker.addEventListener("tick",update);
 
-		loadSounds()
+		loadSounds();
 
 		
 
@@ -92,6 +96,18 @@
         createjs.Sound.alternateExtensions = ["mp3"];
         createjs.Sound.addEventListener("fileload", playSound);
         createjs.Sound.registerSound(src); 
+
+    	var imageData = {images: ["images/playpauze.png"], frames: {width:24, height:25} }; 
+		var tilesetSheet = new createjs.SpriteSheet(imageData);
+		this.cellBitmapPlay = new createjs.Sprite(tilesetSheet);
+		this.cellBitmapPlay.x = 750;
+		this.cellBitmapPlay.y = 25;
+		this.cellBitmapPlay.gotoAndStop(0);
+    	stage.addChild(this.cellBitmapPlay);
+
+    	this.cellBitmapPlay.addEventListener('click',switchSounds);
+
+		this.musicPlaying = "play";
 	}
 
 	function playSound(event) 
@@ -99,6 +115,28 @@
 			soundInstance = createjs.Sound.play(event.src);  // start playing the sound we just loaded, storing the playing instance
 
 		createjs.Sound.setMute(false);
+
+    }
+
+    function switchSounds(e)
+    {
+    	if(this.musicPlaying=="play")
+    	{
+			this.cellBitmapPlay.gotoAndStop(1);
+			this.musicPlaying="pause";
+			//muteSound();
+    	}
+    	else if(this.musicPlaying == "pause")
+    	{
+    		this.cellBitmapPlay.gotoAndStop(0);
+    		this.musicPlaying = "play";
+    		//playSound();
+    	}
+    }
+
+    function muteSound()
+    {
+    	//muteSound;
     }
 
 	function makeMenu()
@@ -647,6 +685,7 @@
 		//arrMovingPlatforms.push()
 	
 	}
+
 
 	function initLayer(layerData, tilesetSheet, tilewidth, tileheight) 
 	{
