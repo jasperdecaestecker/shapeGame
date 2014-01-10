@@ -43,7 +43,7 @@
 
 		this.playerFollowOffsetY = this.playerFollowOffsetX = 0;
 
-		this.currentLevel = 1;
+		this.currentLevel = 10;
 		checkCookie();
 		console.log("maxLevelReached= " + this.maxLevelReached);
 
@@ -362,7 +362,9 @@
 				movingPlatform.attach(2);
 
 				arrShapeVolgorde = ["triangle","square","circle"];
-				break;		
+				break;	
+			case 11:
+				this.playerFollowOffsetY = 0;	
 			case 20:
 				var blockade = new Blockade(200,520,20,20,possibleShapes[Math.floor(Math.random() * possibleShapes.length)],0);
 				this.world.addChild(blockade.container);
@@ -538,6 +540,14 @@
 						arrLevers[i].arrChangeBlockades[0] = blockade2Id;
 						arrLevers[i].arrChangeBlockades[1] = blockade1Id;
 
+						for(var j = 0; j < arrMovingPlatforms.length; j++)
+						{	
+							if(arrMovingPlatforms[j].attachId != null)
+							{
+								arrMovingPlatforms[j].attachId = arrLevers[i].arrChangeBlockades[j];
+							}
+						}
+
 
 						/*if(arrMovingPlatforms[blockade1Id-1].attachId != null)
 						{
@@ -584,34 +594,7 @@
 			}
 		}
 
-		for(var j = 0; j < arrMovingPlatforms.length; j++)
-		{	
-			if(arrMovingPlatforms[j].attachId == blockade2Id)
-			{
-
-			}
-			arrMovingPlatforms[j].dettach();
-			arrMovingPlatforms[j].attach()
-
-
-			//arrMovingPlatforms[j].attach(blockade1Id);
-			//arrMovingPlatforms[j]
-
-
-			/*if(arrMovingPlatforms[j].attachId == blockade2Id)
-			{
-				arrMovingPlatforms[j].dettach();
-				//arrMovingPlatforms[j].dettach();
-				arrMovingPlatforms[j].attach(blockade1Id);
-				console.log("attached");
-			}
-			if(arrMovingPlatforms[j].attachId == blockade1Id)
-			{
-				arrMovingPlatforms[j].dettach();
-				arrMovingPlatforms[j].attach(blockade2Id);
-				console.log("attached");
-			}*/
-		}
+	
 		
 
 	}
