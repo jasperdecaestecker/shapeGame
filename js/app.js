@@ -102,33 +102,22 @@
 		this.musicPlaying = "play";
 	}
 
-	function playSound(event) 
-	{
-		soundInstance = createjs.Sound.play(event.src);  // start playing the sound we just loaded, storing the playing instance
-
-		createjs.Sound.setMute(false);
-
-    }
-
     function switchSounds(e)
     {
     	if(this.musicPlaying=="play")
     	{
 			this.cellBitmapPlay.gotoAndStop(1);
-			this.musicPlaying="pause";
+			this.musicPlaying= "pause";
+			 createjs.Sound.setMute(true);
 			//muteSound();
     	}
     	else if(this.musicPlaying == "pause")
     	{
     		this.cellBitmapPlay.gotoAndStop(0);
     		this.musicPlaying = "play";
+    		createjs.Sound.setMute(false);
     		//playSound();
     	}
-    }
-
-    function muteSound()
-    {
-    	//muteSound;
     }
 
     function doneLoadingSound() 
