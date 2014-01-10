@@ -43,10 +43,9 @@
 
 		this.playerFollowOffsetY = this.playerFollowOffsetX = 0;
 
-		this.currentLevel = 9;
+		this.currentLevel = 1;
 		checkCookie();
 		console.log("maxLevelReached= " + this.maxLevelReached);
-
 
 		makeMenu();
 
@@ -323,12 +322,12 @@
 				var movingPlatform = new MovingPlatform(200,400,320,120,60,20,1,"red");
 				this.world.addChild(movingPlatform.container);
 				arrMovingPlatforms.push(movingPlatform);
-				movingPlatform.attach(0);
+				movingPlatform.attach(1);
 
 				var movingPlatform = new MovingPlatform(700,500,320,120,60,20,1,"yellow");
 				this.world.addChild(movingPlatform.container);
 				arrMovingPlatforms.push(movingPlatform);
-				movingPlatform.attach(1);
+				movingPlatform.attach(2);
 				break;	
 			case 8:
 				var movingPlatform = new MovingPlatform(240,240,280,750,60,20,3,"red");
@@ -350,6 +349,20 @@
 				arrMovingPlatforms.push(movingPlatform);
 				arrShapeVolgorde = ["square","rectangle","circle","square","triangle"];
 				break;	
+			case 10:
+				this.playerFollowOffsetY = -100;
+				var movingPlatform = new MovingPlatform(100,500,300,300,120,20,2,"yellow");
+				this.world.addChild(movingPlatform.container);
+				arrMovingPlatforms.push(movingPlatform);
+				movingPlatform.attach(1);
+
+				var movingPlatform = new MovingPlatform(500,100,400,400,120,20,2,"yellow");
+				this.world.addChild(movingPlatform.container);
+				arrMovingPlatforms.push(movingPlatform);
+				movingPlatform.attach(2);
+
+				arrShapeVolgorde = ["triangle","square","circle"];
+				break;		
 			case 20:
 				var blockade = new Blockade(200,520,20,20,possibleShapes[Math.floor(Math.random() * possibleShapes.length)],0);
 				this.world.addChild(blockade.container);
@@ -505,18 +518,102 @@
 					}
 					else
 					{
-						var blockade1Id = arrLevers[i].arrChangeBlockades[0] - 1;
-						var blockade2Id = arrLevers[i].arrChangeBlockades[1] - 1;
+						var blockade1Id = arrLevers[i].arrChangeBlockades[0];
+						var blockade2Id = arrLevers[i].arrChangeBlockades[1];
 
-						var tempX = blockades[blockade1Id].x;
-						var tempY =  blockades[blockade1Id].y;
+						console.log("blockade1Id:" + blockade1Id);
+						console.log("blockade2Id:" + blockade2Id);
 
-						blockades[blockade1Id].changePosition(blockades[blockade2Id].x,blockades[blockade2Id].y);
-						blockades[blockade2Id].changePosition(tempX,tempY);
+						//console.log("arrMovingPlatforms[blockade1Id-1].attachId: " + arrMovingPlatforms[blockade1Id-1].attachId);
+						//console.log("arrMovingPlatforms[blockade1Id-2].attachId: " + arrMovingPlatforms[blockade2Id-1].attachId);
+
+
+						var tempX = blockades[blockade1Id-1].x;
+						var tempY =  blockades[blockade1Id-1].y;
+
+						blockades[blockade1Id-1].changePosition(blockades[blockade2Id-1].x,blockades[blockade2Id-1].y);
+						blockades[blockade2Id-1].changePosition(tempX,tempY);
+
+						//var tempId = blockade1Id;
+						arrLevers[i].arrChangeBlockades[0] = blockade2Id;
+						arrLevers[i].arrChangeBlockades[1] = blockade1Id;
+
+
+						/*if(arrMovingPlatforms[blockade1Id-1].attachId != null)
+						{
+							arrMovingPlatforms[blockade1Id-1].dettach();
+							arrMovingPlatforms[blockade1Id-1].attach(blockade2Id);
+						}
+
+						if(arrMovingPlatforms[blockade2Id-1].attachId != null)
+						{
+							arrMovingPlatforms[blockade2Id-1].dettach();
+							arrMovingPlatforms[blockade2Id-1].attach(blockade1Id);
+						}*/
+
+						//if(arrMovingPlatforms[blockade1Id-1].attachId)
+
+
+
+						/*for(var j = 0; j < arrMovingPlatforms.length; j++)
+						{		
+	//console.log("j :" + j);
+							if(arrMovingPlatforms[j].attachId != null)
+							{
+							
+								console.log("arrMovingPlatforms[j].attachId :" + arrMovingPlatforms[j].attachId);
+								console.log(arrMovingPlatforms[j].attachId);
+								arrMovingPlatforms[j].dettach();
+
+								if(j == 0)
+								{
+									arrMovingPlatforms[j].attach(arrLevers[i].arrChangeBlockades[1]);
+								}
+								else
+								{
+									arrMovingPlatforms[j].attach(arrLevers[i].arrChangeBlockades[0]);
+								}
+								
+							}
+						}	*/
+							//arrMovingPlatforms[0].attach(0);
+
+						
 					}
 				break;
 			}
 		}
+
+		for(var j = 0; j < arrMovingPlatforms.length; j++)
+		{	
+			if(arrMovingPlatforms[j].attachId == blockade2Id)
+			{
+
+			}
+			arrMovingPlatforms[j].dettach();
+			arrMovingPlatforms[j].attach()
+
+
+			//arrMovingPlatforms[j].attach(blockade1Id);
+			//arrMovingPlatforms[j]
+
+
+			/*if(arrMovingPlatforms[j].attachId == blockade2Id)
+			{
+				arrMovingPlatforms[j].dettach();
+				//arrMovingPlatforms[j].dettach();
+				arrMovingPlatforms[j].attach(blockade1Id);
+				console.log("attached");
+			}
+			if(arrMovingPlatforms[j].attachId == blockade1Id)
+			{
+				arrMovingPlatforms[j].dettach();
+				arrMovingPlatforms[j].attach(blockade2Id);
+				console.log("attached");
+			}*/
+		}
+		
+
 	}
 
 	function update()
@@ -836,7 +933,7 @@
 
 			if(arrMovingPlatforms[i].attachId != null)
 			{
-				blockades[arrMovingPlatforms[i].attachId].changePosition(arrMovingPlatforms[i].x+(arrMovingPlatforms[i].width/2 - 20),arrMovingPlatforms[i].y-40);
+				blockades[arrMovingPlatforms[i].attachId-1].changePosition(arrMovingPlatforms[i].x+(arrMovingPlatforms[i].width/2 - 20),arrMovingPlatforms[i].y-40);
 			}
 
 			if(playerisOnMovingTrajectory[i])
@@ -879,19 +976,12 @@
 			case "b":
 				if(this.currentLevel <= this.maxLevelReached)
 				{
-
-					setCookie("maxLevelReached",this.currentLevel+1,365);
+					
 				}
-
+				setCookie("maxLevelReached",this.currentLevel+1,365);
 				clearLevel();
 				this.currentLevel++;
 				startLevel(this.currentLevel);
-
-			
-			
-				
-
-
 				break;
 		}
 	}

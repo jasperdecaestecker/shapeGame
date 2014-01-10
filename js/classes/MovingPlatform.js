@@ -51,6 +51,11 @@ var MovingPlatform = (function()
 		this.attachId = blockadeId;
 	}
 
+	MovingPlatform.prototype.dettach = function()
+	{
+		this.attachId = null;
+	}
+
 	MovingPlatform.prototype.draw = function()
 	{
 		var imageData = {images: ["movingPlatformSprite.png"], frames: {width:20, height:20} }; 
