@@ -131,6 +131,7 @@
 		cellBitmap.y = 0;
 		this.chooseLevels.addChild(cellBitmap);
 
+		var countClick = 0;
 		for(var i=0;i<3;i++)
 		{
 			console.log('for 1');
@@ -145,6 +146,10 @@
 				this.shape.graphics.ef();
 				this.shape.x = 90*j+270; 
 				this.shape.y = 90*i+100;
+				this.shape.name = countClick;
+
+				this.shape.addEventListener('click', lvlButtonClicked);
+
 
 				this.chooseLevels.addChild(this.shape);
 
@@ -155,6 +160,10 @@
 				this.shape.graphics.ef();
 				this.shape.x = 90*j+270; 
 				this.shape.y = 90*i+100;
+				this.shape.name = countClick;
+
+				this.shape.addEventListener('click', lvlButtonClicked);
+
 
 				this.chooseLevels.addChild(this.shape);
 
@@ -165,14 +174,28 @@
 				this.shape.graphics.ef();
 				this.shape.x = 90*j+270; 
 				this.shape.y = 90*i+100;
+				this.shape.name = countClick;
+
+				this.shape.addEventListener('click', lvlButtonClicked);
+				//this.shape.click(lvlButtonClicked(countClick))
 
 				this.chooseLevels.addChild(this.shape);
+
+				countClick++;
 
 			}
 		}
 
 
 		stage.addChild(this.chooseLevels);
+	}
+
+	function lvlButtonClicked(e)
+	{
+		console.log('clicked '+e.currentTarget.name);
+		var lvlClicked = e.currentTarget.name + 1;
+		startLevel(lvlClicked);
+		
 	}
 
 	function startButtonClicked()
