@@ -45,7 +45,7 @@
 
 		this.playerFollowOffsetY = this.playerFollowOffsetX = 0;
 
-		this.currentLevel = 1;
+		this.currentLevel = 11;
 		checkCookie();
 		console.log("maxLevelReached= " + this.maxLevelReached);
 
@@ -226,7 +226,8 @@
 	{
 		console.log('clicked '+e.currentTarget.name);
 		var lvlClicked = e.currentTarget.name + 1;
-		startLevel(lvlClicked);
+		this.currentLevel = lvlClicked + 1;
+		startLevel(this.currentLevel);
 		
 	}
 
@@ -493,7 +494,28 @@
 				arrShapeVolgorde = ["triangle","square","circle","rectangle"];
 				break;	
 			case 11:
+				var movingPlatform = new MovingPlatform(80,350,450,450,60,20,2,"yellow");
+				this.world.addChild(movingPlatform.container);
+				arrMovingPlatforms.push(movingPlatform);
+				movingPlatform.attach(1);
+
+				var movingPlatform = new MovingPlatform(400,100,300,300,60,20,2,"red");
+				this.world.addChild(movingPlatform.container);
+				arrMovingPlatforms.push(movingPlatform);
+				movingPlatform.attach(2);
+
+				var movingPlatform = new MovingPlatform(60,320,160,260,60,20,1,"red");
+				this.world.addChild(movingPlatform.container);
+				arrMovingPlatforms.push(movingPlatform);
+				movingPlatform.attach(3);
+
+				var ladder = new Ladder(220,47,40,490);
+				this.world.addChild(ladder.container);
+				ladders.push(ladder);
 				this.playerFollowOffsetY = 0;	
+
+				arrShapeVolgorde = ["rectangle","square","circle","rectangle"];
+				break;
 			case 12:
 				var movingPlatform = new MovingPlatform(320,320,80,540,100,20,2,"red");
 				this.world.addChild(movingPlatform.container);
