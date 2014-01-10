@@ -35,7 +35,9 @@
 
 	var musicPlaying;
 
-	var cellBitmapPlay;
+	var cellBitmapPlay, cellBitmapEnd;
+
+	var won;
 
 	function init()
 	{
@@ -852,12 +854,22 @@
 			{
 				clearLevel();
 				makeMenu();
+				
 			}
 
 			if(keys[67] && keys[76])
 			{
 				clearLevel();
 				chooseLevelClicked();
+			}
+
+			if(keys[87] && keys[73] && keys[78])
+			{
+				clearLevel();
+				winningFunction();
+				this.currentLevel = 12;
+				setCookie("maxLevelReached",this.currentLevel,365);
+				this.maxLevelReached = 12;
 			}
 
 
@@ -1014,10 +1026,11 @@
 
 								if(boss.hits == 3)
 								{
-									console.log("won");
 									clearLevel();
-									this.currentLevel++;
-									startLevel(this.currentLevel);
+									/*this.currentLevel++;
+									startLevel(this.currentLevel);*/
+									winningFunction();
+
 								}
 							}
 						break;
@@ -1042,6 +1055,29 @@
 			checkCollisionPlayerWithProjectiles();
 			boss.update();
 		}
+	}
+
+	function winningFunction()
+	{
+		clearLevel();
+		var imageData = {images: ["images/einde.png"], frames: {width:800, height:400} }; 
+		var tilesetSheet = new createjs.SpriteSheet(imageData);
+		this.cellBitmapEnd = new createjs.Sprite(tilesetSheet);
+		this.cellBitmapEnd.x = this.cellBitmapEnd.y = 0;
+		stage.addChild(this.cellBitmapEnd);
+		this.cellBitmapEnd.gotoAndStop(0);
+
+		this.cellBitmapEnd.addEventListener("click", winningRestart);
+	}
+
+	function winningRestart()
+	{
+		this.world.removeChild(this.cellBitmapEnd);
+		this.currentLevel = 1;
+		setCookie("maxLevelReached",this.currentLevel,365);
+		this.maxLevelReached = 1;
+		makeMenu();
+
 	}
 
 	function checkCollisionPlayerWithProjectiles()
