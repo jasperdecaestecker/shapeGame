@@ -194,6 +194,25 @@
 
 				this.chooseLevels.addChild(this.shape);
 
+				var showLevel = countClick+1;
+				var text = new createjs.Text(showLevel.toString(), "bold 30px Helvetica", "#252323");
+	            if(showLevel>9)
+	            {
+	            	text.x = 90*j+252;
+	            }
+	            else
+	            {
+		            text.x = 90*j+263;
+	            }
+	            text.y = 90*i+82;
+	            text.name = countClick;
+
+	            if(countClick<maxLevelReached)
+				{
+	           		 text.addEventListener('click', lvlButtonClicked);
+				}
+	            this.chooseLevels.addChild(text);
+
 				countClick++;
 
 			}
