@@ -660,7 +660,6 @@
     		{
     			var lever = new Lever(layerData.objects[i].x,layerData.objects[i].y,70,45,layerData.objects[i].type);
     			this.world.addChild(lever.container);
-    			lever.container.addEventListener("click", test);
     			arrLevers.push(lever);
     		}
 		}
