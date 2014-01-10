@@ -130,6 +130,15 @@
 		cellBitmap.y = 0;
 		this.chooseLevels.addChild(cellBitmap);
 
+		var imageData = {images: ["images/backbtn.png"], frames: {width:162, height:62} }; 
+		var tilesetSheet = new createjs.SpriteSheet(imageData);
+		var cellBitmap = new createjs.Sprite(tilesetSheet);
+		cellBitmap.gotoAndStop(0);
+		cellBitmap.x = 14;
+		cellBitmap.y = 20;
+		this.chooseLevels.addChild(cellBitmap);
+		cellBitmap.addEventListener("click",backClicked);
+
 		var countClick = 0;
 		for(var i=0;i<3;i++)
 		{
@@ -222,11 +231,17 @@
 		stage.addChild(this.chooseLevels);
 	}
 
+	function backClicked(e)
+	{
+		stage.removeChild(this.chooseLevels);
+		makeMenu();
+	}
+
 	function lvlButtonClicked(e)
 	{
 		console.log('clicked '+e.currentTarget.name);
 		var lvlClicked = e.currentTarget.name + 1;
-		this.currentLevel = lvlClicked + 1;
+		this.currentLevel = lvlClicked;
 		startLevel(this.currentLevel);
 		
 	}
