@@ -10,10 +10,14 @@ Design
 - UI
 - Verhaal
 <<<<<<< HEAD
+<<<<<<< HEAD
 - Tiles maken
 =======
 - ~~Character animaties~~
 >>>>>>> 2dda4d54b8234b04d62526baa48d00c094fb7c27
+=======
+- ~~Tiles maken~~
+>>>>>>> 7468d6cbac7cf36145c5d8dfe79409d07c35cb3d
 
 General
 ------
@@ -29,7 +33,7 @@ General
 Mechanics
 ------
 - Intro mechanic
-- EindBoss mechanic
+- ~~EindBoss mechanic~~
 - ~~Bewegende platforms~~
 - ~~Levers~~
 - ~~ShapeVolgorde~~
@@ -37,7 +41,7 @@ Mechanics
 
 Performance / bugs
 ------
-- restart level heeft nog bugs bij herpositioneren van shapes. voornamelijk cirkel
+- ~~restart level heeft nog bugs bij herpositioneren van shapes. voornamelijk cirkel~~
 - ~~Kijken in de collision detection for lus om de lus meteen te breaken wanneer 1 collision voorkomt.~~
 
 Credits
