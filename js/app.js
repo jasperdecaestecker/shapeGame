@@ -23,6 +23,7 @@
 	var menu, chooseLevels;
 
 	var shape;
+	var arrSounds;
 
 
 	var tileset;
@@ -45,7 +46,7 @@
 
 		this.playerFollowOffsetY = this.playerFollowOffsetX = 0;
 
-		this.currentLevel = 11;
+		this.currentLevel = 1;
 		checkCookie();
 		console.log("maxLevelReached= " + this.maxLevelReached);
 
@@ -67,9 +68,38 @@
 		ticker.setPaused(false);
 		ticker.addEventListener("tick",update);
 
+		loadSounds()
+
+		
+
+	  // Create a single item to load.
+       
+        // NOTE the "|" character is used by Sound to separate source into distinct files, which allows you to provide multiple extensions for wider browser support
+
+			// add other extensions to try loading if the src file extension is not supported
+        //createjs.Sound.onLoadComplete = playSound;  // add a callback for when load is completed
+        // add an event listener for when load is completed
+         // register sound, which preloads by default
+
 		// comment volgende voor startscherm te tonen
 		//startButtonClicked();
 	}
+
+	function loadSounds()
+	{
+		arrSounds = [];
+        src = "sounds/18-machinae_supremacy-lord_krutors_dominion.ogg";
+        createjs.Sound.alternateExtensions = ["mp3"];
+        createjs.Sound.addEventListener("fileload", playSound);
+        createjs.Sound.registerSound(src); 
+	}
+
+	function playSound(event) 
+	{
+			soundInstance = createjs.Sound.play(event.src);  // start playing the sound we just loaded, storing the playing instance
+
+		createjs.Sound.setMute(false);
+    }
 
 	function makeMenu()
 	{
@@ -96,6 +126,7 @@
 		cellBitmap.addEventListener("click",startButtonClicked);
 		this.menu.addChild(cellBitmap);
 
+
 		// CHOOSE LEVEL KNOP
 		var cellBitmap = new createjs.Sprite(tilesetSheet);
 		cellBitmap.gotoAndStop(1);
@@ -116,8 +147,10 @@
 	}
 
 	function chooseLevelClicked()
-	
 	{
+
+
+
 		console.log(this.maxLevelReached);
 		stage.removeChild(this.menu);
 
@@ -529,7 +562,7 @@
 				ladders.push(ladder);
 				this.playerFollowOffsetY = 0;	
 
-				arrShapeVolgorde = ["rectangle","square","circle","rectangle"];
+				arrShapeVolgorde = ["rectangle","square","triangle","triangle","circle","square","circle"];
 				break;
 			case 12:
 				var movingPlatform = new MovingPlatform(320,320,80,540,100,20,2,"red");
@@ -705,10 +738,17 @@
 
 						for(var j = 0; j < arrMovingPlatforms.length; j++)
 						{	
-							if(arrMovingPlatforms[j].attachId != null)
+							if(arrMovingPlatforms[j].attachId != null && this.currentLevel != 11)
 							{
 								arrMovingPlatforms[j].attachId = arrLevers[i].arrChangeBlockades[j];
 							}
+							
+							/*if(arrMovingPlatforms[j].attachId == blockade1Id || blockade2Id)
+							{
+
+							}*/
+							
+							
 						}
 					}
 				break;
