@@ -94,7 +94,7 @@
 		arrSounds = [];
         src = "sounds/18-machinae_supremacy-lord_krutors_dominion.ogg";
         createjs.Sound.alternateExtensions = ["mp3"];
-        createjs.Sound.addEventListener("fileload", playSound);
+        //createjs.Sound.addEventListener("fileload", playSound);
         createjs.Sound.registerSound(src); 
 
     	var imageData = {images: ["images/playpauze.png"], frames: {width:24, height:25} }; 
@@ -729,7 +729,7 @@
 	function keydown(e)
 	{
 		keys[e.keyCode] = true;
-		//console.log(e.keyCode);
+		console.log(e.keyCode);
 	}
 
 	function checkLeverActivated()
@@ -800,6 +800,42 @@
 	{
 		if(ticker.getPaused())
 		{
+			//cheats
+			if(keys[78] && keys[76])
+			{
+				if(this.currentLevel<12)
+				{
+					var nextLevel = this.currentLevel+1;
+					startLevel(nextLevel);
+					this.currentLevel = nextLevel;
+				}
+				else if(this.currentLevel == 12)
+				{
+					this.currentLevel = 1;
+					startLevel(this.currentLevel);
+				}
+			}
+
+			if(keys[80] && keys[76])
+			{
+				if(this.currentLevel>1)
+				{
+					var previousLevel = this.currentLevel-1;
+					startLevel(previousLevel);
+					this.currentLevel = previousLevel;
+				}
+				else if(this.currentLevel == 1)
+				{
+					this.currentLevel = 12;
+					startLevel(this.currentLevel);
+				}
+				
+			}
+
+
+
+
+			//keys game
 			if(keys[39] || keys[37])
 			{
 				if(this.delayAnimationCountB % this.delayAnimationB == 0)
