@@ -1014,7 +1014,7 @@
  </objectgroup>
  <objectgroup name="player" width="50" height="20">
   <object name="endPoint" x="901" y="259" width="20" height="60"/>
-  <object name="spawnPoint" x="111" y="296"/>
+  <object name="spawnPoint" x="70" y="313"/>
  </objectgroup>
  <objectgroup name="levers" width="50" height="20">
   <object name="lever1" type="2,3" x="160" y="100" width="60" height="40"/>

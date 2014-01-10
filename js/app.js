@@ -1257,6 +1257,7 @@
 				}
 				clearLevel();
 				this.currentLevel++;
+				ticker.setPaused(false);
 				startLevel(this.currentLevel);
 				break;
 		}
