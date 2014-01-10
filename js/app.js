@@ -23,8 +23,6 @@
 	var menu, chooseLevels;
 
 	var shape;
-	var arrSounds;
-
 
 	var tileset;
 	var mapData;
@@ -73,20 +71,6 @@
 		ticker.addEventListener("tick",update);
 
 		loadSounds();
-
-		
-
-	  // Create a single item to load.
-       
-        // NOTE the "|" character is used by Sound to separate source into distinct files, which allows you to provide multiple extensions for wider browser support
-
-			// add other extensions to try loading if the src file extension is not supported
-        //createjs.Sound.onLoadComplete = playSound;  // add a callback for when load is completed
-        // add an event listener for when load is completed
-         // register sound, which preloads by default
-
-		// comment volgende voor startscherm te tonen
-		//startButtonClicked();
 	}
 
 	function loadSounds()
@@ -96,6 +80,19 @@
         createjs.Sound.alternateExtensions = ["mp3"];
         //createjs.Sound.addEventListener("fileload", playSound);
         createjs.Sound.registerSound(src); 
+        this.arrSounds = [
+        	{id:"shapeCorrect", src:"shapeCorrect.ogg"},
+        	{id:"bossHit", src:"bossHit.ogg"},
+            {id:"death", src:"death.ogg"},
+            {id:"musicGrass", src:"musicGrass.mp3"},
+            {id:"musicBoss", src:"musicBoss.ogg"}
+        ];
+
+		createjs.Sound.alternateExtensions = ["mp3"];
+        preload = new createjs.LoadQueue(true, "sounds/");
+        preload.installPlugin(createjs.Sound);
+        preload.addEventListener("complete", doneLoadingSound);
+        preload.loadManifest(this.arrSounds);
 
     	var imageData = {images: ["images/playpauze.png"], frames: {width:24, height:25} }; 
 		var tilesetSheet = new createjs.SpriteSheet(imageData);
@@ -110,34 +107,30 @@
 		this.musicPlaying = "play";
 	}
 
-	function playSound(event) 
-	{
-			soundInstance = createjs.Sound.play(event.src);  // start playing the sound we just loaded, storing the playing instance
-
-		createjs.Sound.setMute(false);
-
-    }
-
     function switchSounds(e)
     {
     	if(this.musicPlaying=="play")
     	{
 			this.cellBitmapPlay.gotoAndStop(1);
-			this.musicPlaying="pause";
+			this.musicPlaying= "pause";
+			 createjs.Sound.setMute(true);
 			//muteSound();
     	}
     	else if(this.musicPlaying == "pause")
     	{
     		this.cellBitmapPlay.gotoAndStop(0);
     		this.musicPlaying = "play";
+    		createjs.Sound.setMute(false);
     		//playSound();
     	}
     }
 
-    function muteSound()
+    function doneLoadingSound() 
     {
-    	//muteSound;
-    }
+        createjs.Sound.play("musicGrass", {interrupt:createjs.Sound.INTERRUPT_NONE, loop:-1, volume:0.2});
+        createjs.Sound.setMute(false);
+	}	
+        
 
 	function makeMenu()
 	{
@@ -187,7 +180,11 @@
 	function chooseLevelClicked()
 	{
 		console.log(this.maxLevelReached);
-		stage.removeChild(this.menu);
+		if(this.menu)
+		{
+			stage.removeChild(this.menu);
+		}
+		
 
 		this.chooseLevels = new createjs.Container();
 		var imageData = {images: ["bgmall.png"], frames: {width:800, height:400} }; 
@@ -346,7 +343,6 @@
 
 	function startLevel(levelNumber)
 	{
-
 		startLocation = {};
 		boxes = [];		
 		arrMovingPlatforms = [];
@@ -368,6 +364,8 @@
 			dropShape2 = false;
 			this.startBoss = false;
 			this.elevatorDown = false;
+			createjs.Sound.stop();
+			createjs.Sound.play("musicBoss", {interrupt:createjs.Sound.INTERRUPT_NONE, loop:-1, volume:0.2});
 		}
 
 		startGame(levelNumber);
@@ -376,10 +374,6 @@
 	function startGame(levelNumber)
 	{
 		loadMap(levelNumber);
-
-		/*ticker = createjs.Ticker;
-		ticker.setFPS(60);
-		ticker.addEventListener("tick",update);*/
 
 		window.onkeyup = keyup;
 		window.onkeydown = keydown;
@@ -806,12 +800,14 @@
 				if(this.currentLevel<12)
 				{
 					var nextLevel = this.currentLevel+1;
+					clearLevel();
 					startLevel(nextLevel);
 					this.currentLevel = nextLevel;
 				}
 				else if(this.currentLevel == 12)
 				{
 					this.currentLevel = 1;
+					clearLevel();
 					startLevel(this.currentLevel);
 				}
 			}
@@ -821,17 +817,48 @@
 				if(this.currentLevel>1)
 				{
 					var previousLevel = this.currentLevel-1;
+					clearLevel();
 					startLevel(previousLevel);
 					this.currentLevel = previousLevel;
 				}
 				else if(this.currentLevel == 1)
 				{
 					this.currentLevel = 12;
+					clearLevel();
 					startLevel(this.currentLevel);
 				}
-				
 			}
 
+
+			if(keys[82] && keys[76])
+			{
+				clearLevel();
+				this.currentLevel = 1;
+				startLevel(this.currentLevel);
+				setCookie("maxLevelReached",this.currentLevel,365);
+				this.maxLevelReached = 1;
+			}
+
+			if(keys[65] && keys[76])
+			{
+				clearLevel();
+				this.currentLevel = 12;
+				setCookie("maxLevelReached",this.currentLevel,365);
+				this.maxLevelReached = 12;
+				chooseLevelClicked();
+			}
+
+			if(keys[77] && keys[69])
+			{
+				clearLevel();
+				makeMenu();
+			}
+
+			if(keys[67] && keys[76])
+			{
+				clearLevel();
+				chooseLevelClicked();
+			}
 
 
 
@@ -911,6 +938,7 @@
 			// gevallen door de grond = mors dood	
 			if(player.y > this.world.height)
 			{
+				createjs.Sound.play("death", createjs.Sound.INTERRUPT_ANY);
 				player.x = startLocation.x;
 				player.y = startLocation.y;
 				restartLevel();
@@ -971,6 +999,7 @@
 							if(arrDropShapes[i].blockadeShape == boss.currentShape)
 							{
 								boss.hit();
+								createjs.Sound.play("bossHit", createjs.Sound.INTERRUPT_ANY);
 								arrDropShapes[i].blockadeShape = possibleShapes[Math.floor(Math.random() * possibleShapes.length)];
 								arrDropShapes[i].draw();
 								arrDropShapes[i].changePosition(arrDropShapes[i].orgX,arrDropShapes[i].orgY);
@@ -1256,6 +1285,7 @@
 					{
 						if(blockades[j].blockadeShape == player.currentPlayerShape)
 						{
+							createjs.Sound.play("shapeCorrect", {interupt:createjs.Sound.INTERRUPT_ANY,volume:0.3});
 							arrTriggeredBlockadesIds.push(triggeredBlockId);
 							this.world.removeChild(blockades[j].container);
 							shapeVolgorde.nextShape();
@@ -1266,6 +1296,7 @@
 						}
 						else
 						{
+							createjs.Sound.play("death", createjs.Sound.INTERRUPT_ANY);
 							player.x = startLocation.x;
 							player.y = startLocation.y;
 							restartLevel();
